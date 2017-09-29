@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400' rel='stylesheet' type='text/css'>
+<style>
+body {padding: 50px}
+.header_1 {font-family: 'Open Sans', sans-serif; font-size: 18pt; font-weight: 400; padding-bottom: 10px}
+.header_2 {font-family: 'Open Sans', sans-serif; font-size: 16pt; font-weight: 400; padding-bottom: 10px; padding-top: 20px}
+.header_3 {font-family: 'Open Sans', sans-serif; font-size: 14pt; font-weight: 300; padding-bottom: 5px; padding-top: 20px}
+.item {font-family: 'Open Sans', sans-serif; font-size: 11pt; font-weight: 300; padding-bottom: 5px}
+.content {width: 900px; margin-left: auto; margin-right: auto;}
+</style>
+<title>Regions Help</title>
+</head>
+
+<body>
+	<div class="content">
+		<div class="header_1">Regions</div>
+		<div class="item">Annotate genomic regions.</div>
+		
+		<div class="header_2">Installation</div>
+		<ul>
+			<li class="item">Make a copy of the regions folder (this folder) on your Desktop or other personal folder before running the application.</li>
+			<li class="item">This application requires Java 1.6 or higher to run.</li>
+		</ul>
+		
+		<div class="header_2">Getting Started</div>
+		<div class="item">If you are running Windows XP/7/8, double click <span style="font-weight: bold">regions.bat</span> to start.</div>
+		<div class="item">If you are running Mac OSX, double click <span style="font-weight: bold">regions.command</span> to start.</div>
+		<div class="item">If you are running Linux, run <span style="font-weight: bold">regions.sh</span> to start.</div>
+		
+		<div class="header_2">File formats</div>
+		<div class="item">Regions will accept Excel xlsx, text, and BED files as input.</div>
+		<div class="item">Excel and text files must have a header line and the first column must contain 
+		genomic coordinates of the form <span style="font-weight: bold">chrX:A-B</span> (e.g. chr1:20000-20100).</div>
+		<div class="item">BED files do not contain a header. The first column must contain chromosomes of the form chrX,
+		the second column must contain start positions, the third column must contain end positions, and the fourth column
+		must contain an identifier for the genomic location.</div>
+		
+		<div class="header_2">Data sources</div>
+		<div class="item">Super-enhancers were obtained from http://bioinfo.au.tsinghua.edu.cn/dbsuper/documentation.php</div>
+		
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,169 @@
+package edu.columbia.rdf.matcalc.toolbox.regions.tasks;
+
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.SwingWorker;
+
+import org.jebtk.bioinformatics.gapsearch.BinaryGapSearch;
+import org.jebtk.bioinformatics.genomic.Chromosome;
+import org.jebtk.bioinformatics.genomic.GenomicRegion;
+import org.jebtk.core.io.Io;
+import org.jebtk.core.text.TextUtils;
+import org.jebtk.math.matrix.AnnotationMatrix;
+import edu.columbia.rdf.matcalc.MainMatCalcWindow;
+
+import edu.columbia.rdf.matcalc.bio.Annotation;
+
+public class DistancePlotTask extends SwingWorker<Void, Void> {
+
+	private BinaryGapSearch<Annotation> mSearch;
+	private Path mFile2;
+	private double mStart;
+	private double mEnd;
+	private int mUnits;
+	private double mBinSize;
+	private int mBinUnits;
+	private MainMatCalcWindow mWindow;
+
+	public DistancePlotTask(MainMatCalcWindow window, 
+			BinaryGapSearch<Annotation> gappedSearch,
+			Path file2,
+			double start,
+			double end,
+			int units,
+			double binSize,
+			int binUnits) {
+		mWindow = window;
+		mSearch = gappedSearch;
+		mFile2 = file2;
+
+		mStart = start;
+		mEnd = end;
+		mUnits = units;
+		mBinSize = Math.abs(binSize);
+		mBinUnits = binUnits;
+	}
+
+	@Override
+	public Void doInBackground() {
+		plot();
+
+		return null;
+	}
+
+	public void plot() {
+		AnnotationMatrix model = mWindow.getCurrentMatrix();
+
+		List<Double> tssPoints = new ArrayList<Double>();
+
+		for (int i = 0; i < model.getRowCount(); ++i) {
+			GenomicRegion region = null;
+
+			if (Io.isEmptyLine(model.getText(i, 0))) {
+				continue;
+			}
+
+			if (model.getText(i, 0).contains(TextUtils.NA)) {
+				continue;
+			}
+
+			if (GenomicRegion.isGenomicRegion(model.getText(i, 0))) {
+				region = GenomicRegion.parse(model.getText(i, 0));
+			} else {
+				// three column format
+
+				region = new GenomicRegion(Chromosome.parse(model.getText(i, 0)),
+						Integer.parseInt(model.getText(i, 1)),
+						Integer.parseInt(model.getText(i, 2)));
+			}
+
+			//System.err.println("region: " + region);
+
+			GenomicRegion midPoint = GenomicRegion.midRegion(region);
+
+			// Find Gene TSS near the midpoint
+			List<Annotation> results = mSearch.getClosestFeatures(midPoint);
+
+			if (results != null) {
+				double tss = Double.MAX_VALUE;
+
+				// region is from file 1
+				for (Annotation annotation : results) {
+					tss = Math.min(tss, GenomicRegion.midDist(annotation.getRegion(), region));
+				}
+
+				tssPoints.add(tss);
+			}
+		}
+
+
+		List<Double> plotTssPoints = new ArrayList<Double>();
+
+		double s = mStart * mUnits;
+		double e = mEnd * mUnits;
+
+		System.err.println("s " + s + " " + e + " " + (mBinSize * mBinUnits / mUnits));
+
+		for (double x : tssPoints) {
+			if (x < s || x > e) {
+				continue;
+			}
+
+			plotTssPoints.add(x / mUnits);
+		}
+		
+		
+		TssPlotTask.plot(mWindow,
+				tssPoints,
+				mStart,
+				mEnd,
+				mUnits,
+				mBinSize,
+				mBinUnits);
+		
+		/*
+		List<HistBin> tssHist = 
+				Statistics.histogram(plotTssPoints, mStart, mEnd, mBinSize * mBinUnits / mUnits);
+
+		TssPlotCanvas tssCanvas = new TssPlotCanvas(TextUtils.truncate(PathUtils.getName(mFile2), 50), 
+				null, 
+				tssHist,
+				mStart,
+				mEnd,
+				Math.pow(10, Math.floor(Math.log10(Math.abs(mStart)))));
+
+
+
+		List<Double> log10TssPoints = new ArrayList<Double>();
+
+		for (double x : tssPoints) {
+			double v = Mathematics.log10(Math.abs(x) + 1);
+
+			if (v <= 8) {
+				log10TssPoints.add(v);
+			}
+		}
+
+		List<HistBin> log10TssHist = 
+				Statistics.histogram(log10TssPoints, 0, 8, 0.1);
+
+		System.err.println(log10TssHist.size());
+
+		Log10TssPlotCanvas tssLogCanvas = 
+				new Log10TssPlotCanvas(TextUtils.truncate(PathUtils.getName(mFile2), 50), null, log10TssHist);
+
+		Figure figure = new Figure(new FigureLayoutGrid(1, 2));
+		figure.getSubFigureZModel().addChild(tssCanvas);
+		figure.getSubFigureZModel().addChild(tssLogCanvas);
+
+		Graph2dWindow plotWindow = new Graph2dWindow(mWindow, 
+				figure);
+
+		plotWindow.getStyle().set(PlotStyle.BARS);
+
+		plotWindow.setVisible(true);
+		*/
+	}
+}

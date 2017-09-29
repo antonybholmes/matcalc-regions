@@ -1,0 +1,124 @@
+VERSION 27 - 06/19/15
+
+  * Transition to new matrix objects for improved performance.
+  * UI tweaks.
+  
+  
+VERSION 25 - 05/27/15
+
+  * Fixed bugs in overlapping gene annotation feature.
+  
+  
+VERSION 24 - 04/23/15
+
+  * Adjust plot range of distance plots.
+  
+  
+VERSION 22 - 04/17/15
+
+  * Added width to two way overlap.
+  
+  
+VERSION 21 - 04/08/15
+
+  * Bug fixes.
+  
+  
+VERSION 20 - 03/30/15
+
+  * Select overlap column.
+  
+  
+VERSION 19 - 03/27/15
+
+  * Add TSS to closest genes.
+  
+  
+VERSION 18 - 03/25/15
+
+  * Adjustable y axis.
+  * Bug fixes.
+  
+  
+VERSION 17 - 03/25/15
+
+  * Closest features
+  
+  
+VERSION 16 - 03/19/15
+
+  * Union overlaps.
+  * Venn diagrams.
+  * BED coordinate conversion bugs fixed.
+  
+  
+VERSION 14 - 03/09/15
+
+  * Fixed intergenic annotation bug.
+  * Fixed UCSC coordinate conversion bugs (zero offset problem).
+  
+  
+VERSION 12 - 03/03/15
+
+  * Support for graphs.
+  * Support for next closest genes.
+  
+  
+VERSION 11 - 02/16/15
+
+  * Support overlap of bedgraph files.
+  
+  
+VERSION 10 - 02/14/15
+
+  * UI improvements.
+  * Better handling of malformed coordinates.
+  
+  
+VERSION 9 - 02/02/15
+
+  * Bug fixes and improved BED file reading.
+  
+  
+VERSION 8 - 01/28/15
+
+  * Updated UI.
+  
+  
+VERSION 7 - 01/15/15
+
+  * Support for extending peaks.
+  * Support for mouse annotation.
+  
+  
+VERSION 6 - 01/06/15
+
+  * Support for stitching peaks.
+  
+  
+VERSION 5 - 12/11/14
+
+  * Support for conservation.
+  
+  
+VERSION 4 - 12/04/14
+
+  * Support for closest gene.
+ 
+ 
+VERSION 3 - 12/03/14
+
+  * Export Excel tables preserving numbers.
+  * Read BED files.
+  
+  
+VERSION 2 - 12/02/14
+
+  * Super-enhancers are now in individual columns.
+  * Fixed overlap bugs.
+  
+  
+VERSION 1 - 12/01/14
+
+  * Add super-enhancers to annotation.
+  * Allow overlapping of annotations.
