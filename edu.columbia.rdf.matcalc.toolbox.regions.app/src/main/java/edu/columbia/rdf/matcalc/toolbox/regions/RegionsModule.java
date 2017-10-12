@@ -39,8 +39,8 @@ import org.jebtk.bioinformatics.ui.Bioinformatics;
 import org.jebtk.bioinformatics.ui.external.ucsc.BedGraphGuiFileFilter;
 import org.jebtk.bioinformatics.ui.external.ucsc.BedGuiFileFilter;
 import org.jebtk.bioinformatics.ui.groups.Group;
-import org.jebtk.math.matrix.AnnotatableMatrix;
-import org.jebtk.math.matrix.AnnotationMatrix;
+import org.jebtk.math.matrix.DataFrame;
+import org.jebtk.math.matrix.DataFrame;
 import org.jebtk.math.statistics.Statistics;
 import org.jebtk.math.ui.external.microsoft.XlsxGuiFileFilter;
 import org.jebtk.modern.UIService;
@@ -86,7 +86,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 	private class EnhancerTask extends SwingWorker<Void, Void> {
 
 		private Map<String, BinaryGapSearch<Annotation>> mGappedSearch;
-		private AnnotationMatrix mNewModel;
+		private DataFrame mNewModel;
 		private boolean mOverlapMode;
 		private MessageDialogTaskGlassPane mSearchScreen;
 
@@ -120,12 +120,12 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 			mSearchScreen.close();
 		}
 
-		private AnnotationMatrix enhancers() throws IOException, ParseException {
-			AnnotationMatrix model = getCurrentModel();
+		private DataFrame enhancers() throws IOException, ParseException {
+			DataFrame model = getCurrentModel();
 
 			List<String> annotations = CollectionUtils.sortKeys(mGappedSearch);
 
-			AnnotationMatrix matrix = AnnotatableMatrix.createAnnotatableMatrix(model.getRowCount(), model.getColumnCount() + annotations.size());
+			DataFrame matrix = DataFrame.createDataFrame(model.getRowCount(), model.getColumnCount() + annotations.size());
 
 			for (int i = 0; i < model.getColumnCount(); ++i) {
 				matrix.setColumnName(i, model.getColumnName(i));
@@ -268,7 +268,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 		}
 
 		private XlsxTableModel overlap() throws Exception {
-			AnnotationMatrix model = getCurrentModel();
+			DataFrame model = getCurrentModel();
 
 			XSSFWorkbook workbook = new XSSFWorkbook();
 
@@ -427,7 +427,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 	private class OverlapTask extends SwingWorker<Void, Void> {
 
 		private FixedGapSearch<Annotation> mGappedSearch1;
-		private AnnotationMatrix mNewModel;
+		private DataFrame mNewModel;
 		private MessageDialogTaskGlassPane mSearchScreen;
 		private Path mFile;
 		private boolean mAddBeginning;
@@ -462,10 +462,10 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 			mSearchScreen.close();
 		}
 
-		private AnnotationMatrix overlap() throws Exception {
-			AnnotationMatrix model = getCurrentModel();
+		private DataFrame overlap() throws Exception {
+			DataFrame model = getCurrentModel();
 
-			AnnotationMatrix matrix = 
+			DataFrame matrix = 
 					AnnotatableMatrix.createMatrix(model.getRowCount(), model.getColumnCount() + 4);
 
 			int c = 0;
@@ -569,7 +569,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 	 */
 	private class TwoWayOverlapTask extends SwingWorker<Void, Void> {
 
-		private AnnotationMatrix mNewModel;
+		private DataFrame mNewModel;
 		private MessageDialogTaskGlassPane mSearchScreen;
 		private Path mFile2;
 		private Path mFile1;
@@ -640,7 +640,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 			mSearchScreen.close();
 		}
 
-		private AnnotationMatrix overlap() throws Exception {
+		private DataFrame overlap() throws Exception {
 			Set<GenomicRegion> allocated = new HashSet<GenomicRegion>();
 
 			Map<Chromosome, Map<GenomicRegion, Map<Path, GenomicRegion>>> overlapMap = 
@@ -761,7 +761,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 				}
 			}
 
-			AnnotationMatrix matrix = AnnotatableMatrix.createAnnotatableMatrix(r, 9);
+			DataFrame matrix = DataFrame.createDataFrame(r, 9);
 
 			matrix.setColumnName(0, "Overlap Region");
 			matrix.setColumnName(1, "Overlap Width");
@@ -850,7 +850,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 
 	private class ConservationTask extends SwingWorker<Void, Void> {
 
-		private AnnotationMatrix mNewModel;
+		private DataFrame mNewModel;
 		private MessageDialogTaskGlassPane mSearchScreen;
 		private boolean mShowScores;
 		private boolean mShowMedian;
@@ -886,8 +886,8 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 			mSearchScreen.close();
 		}
 
-		private AnnotationMatrix conservation() throws Exception {
-			AnnotationMatrix model = getCurrentModel();
+		private DataFrame conservation() throws Exception {
+			DataFrame model = getCurrentModel();
 
 			int extra = 0;
 
@@ -903,10 +903,10 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 				++extra;
 			}
 
-			AnnotationMatrix matrix = 
-					AnnotatableMatrix.createAnnotatableMatrix(model.getRowCount(), model.getColumnCount() + extra);
+			DataFrame matrix = 
+					DataFrame.createDataFrame(model.getRowCount(), model.getColumnCount() + extra);
 
-			AnnotationMatrix.copyColumnAnnotations(model, matrix);
+			DataFrame.copyColumnAnnotations(model, matrix);
 
 			int c = model.getColumnCount();
 
@@ -964,7 +964,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 
 	private class ConservationMouseOnlyTask extends SwingWorker<Void, Void> {
 
-		private AnnotationMatrix mNewModel;
+		private DataFrame mNewModel;
 		private MessageDialogTaskGlassPane mSearchScreen;
 		private boolean mShowScores;
 		private boolean mShowConservation;
@@ -998,8 +998,8 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 			mSearchScreen.close();
 		}
 
-		private AnnotationMatrix conservation() throws Exception {
-			AnnotationMatrix model = getCurrentModel();
+		private DataFrame conservation() throws Exception {
+			DataFrame model = getCurrentModel();
 
 			int extra = 0;
 
@@ -1011,9 +1011,9 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 				++extra;
 			}
 
-			AnnotationMatrix matrix = AnnotatableMatrix.createAnnotatableMatrix(model.getRowCount(), model.getColumnCount() + extra);
+			DataFrame matrix = DataFrame.createDataFrame(model.getRowCount(), model.getColumnCount() + extra);
 
-			AnnotationMatrix.copyColumnAnnotations(model, matrix);
+			DataFrame.copyColumnAnnotations(model, matrix);
 
 			int c = model.getColumnCount();
 
@@ -1062,7 +1062,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 	}
 
 	private class StitchTask extends SwingWorker<Void, Void> {
-		private AnnotationMatrix mNewModel;
+		private DataFrame mNewModel;
 		private MessageDialogTaskGlassPane mSearchScreen;
 		private int mDistance;
 		private boolean mTssExclusion;
@@ -1104,8 +1104,8 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 			mSearchScreen.close();
 		}
 
-		private AnnotationMatrix stitch() throws IOException, ParseException {
-			AnnotationMatrix model = getCurrentModel();
+		private DataFrame stitch() throws IOException, ParseException {
+			DataFrame model = getCurrentModel();
 
 			// Keep track of all peaks closest to a given reference start
 			// peak
@@ -1203,8 +1203,8 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 				}
 			}
 
-			AnnotationMatrix matrix = 
-					AnnotatableMatrix.createTextMatrix(stitchCount, 1);
+			DataFrame matrix = 
+					DataFrame.createTextMatrix(stitchCount, 1);
 
 			matrix.setColumnName(0, "Stitched Region");
 
@@ -1337,7 +1337,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 	}
 
 	private class ExtendTask extends SwingWorker<Void, Void> {
-		private AnnotationMatrix mNewModel;
+		private DataFrame mNewModel;
 		private MessageDialogTaskGlassPane mSearchScreen;
 		private int mExt3p;
 		private int mExt5p;
@@ -1370,16 +1370,16 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 			mSearchScreen.close();
 		}
 
-		private AnnotationMatrix extend() throws IOException, ParseException {
-			AnnotationMatrix model = getCurrentModel();
+		private DataFrame extend() throws IOException, ParseException {
+			DataFrame model = getCurrentModel();
 
 			List<GenomicRegion> regions = getRegions(model);
 
 			List<GenomicRegion> extendedRegions = 
 					GenomicRegion.extend(regions, mExt5p, mExt3p);
 
-			AnnotationMatrix matrix = 
-					AnnotatableMatrix.createTextMatrix(extendedRegions.size(), 1);
+			DataFrame matrix = 
+					DataFrame.createTextMatrix(extendedRegions.size(), 1);
 
 			matrix.setColumnName(0, "Extended Region");
 
@@ -1665,7 +1665,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 	}
 
 	private void exportBed() throws IOException {
-		AnnotationMatrix m = mWindow.getCurrentMatrix();
+		DataFrame m = mWindow.getCurrentMatrix();
 
 		if (m == null) {
 			return;
@@ -1991,7 +1991,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 		task.plot();
 	}
 
-	private AnnotationMatrix getCurrentModel() {
+	private DataFrame getCurrentModel() {
 		return mWindow.getCurrentMatrix();
 	}
 
@@ -2005,7 +2005,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 				new BedGraphGuiFileFilter());
 	}
 
-	private static List<GenomicRegion> getRegions(AnnotationMatrix model) {
+	private static List<GenomicRegion> getRegions(DataFrame model) {
 
 		List<GenomicRegion> regions = 
 				new ArrayList<GenomicRegion>();

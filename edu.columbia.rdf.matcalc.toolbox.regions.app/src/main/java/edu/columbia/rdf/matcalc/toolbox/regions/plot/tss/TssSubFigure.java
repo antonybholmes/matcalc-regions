@@ -7,8 +7,8 @@ import org.jebtk.graphplot.figure.Axes;
 import org.jebtk.graphplot.figure.Plot;
 import org.jebtk.graphplot.figure.SubFigure;
 import org.jebtk.graphplot.figure.series.XYSeries;
-import org.jebtk.math.matrix.AnnotatableMatrix;
-import org.jebtk.math.matrix.AnnotationMatrix;
+import org.jebtk.math.matrix.DataFrame;
+import org.jebtk.math.matrix.DataFrame;
 import org.jebtk.math.statistics.HistBin;
 
 /**
@@ -37,8 +37,8 @@ public class TssSubFigure extends SubFigure {
 
 		plot.setBarWidth(1);
 		
-		AnnotationMatrix m = 
-				AnnotatableMatrix.createNumericalMatrix(tssHist.size(), 2);
+		DataFrame m = 
+				DataFrame.createNumericalMatrix(tssHist.size(), 2);
 
 		m.setColumnNames("x", "y");
 		

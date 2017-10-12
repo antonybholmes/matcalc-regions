@@ -16,7 +16,7 @@ import org.jebtk.graphplot.figure.Figure;
 import org.jebtk.graphplot.figure.PlotStyle;
 import org.jebtk.graphplot.plotbox.PlotBoxGridLayout;
 import org.jebtk.graphplot.plotbox.PlotBoxGridStorage;
-import org.jebtk.math.matrix.AnnotationMatrix;
+import org.jebtk.math.matrix.DataFrame;
 import org.jebtk.math.statistics.HistBin;
 import org.jebtk.math.statistics.Statistics;
 
@@ -70,7 +70,7 @@ public class TssPlotTask extends SwingWorker<Void, Void> {
 	}
 
 	public void plot() throws ParseException {
-		AnnotationMatrix matrix = mWindow.getCurrentMatrix();
+		DataFrame matrix = mWindow.getCurrentMatrix();
 		
 		List<Double> tssPoints = new ArrayList<Double>();
 

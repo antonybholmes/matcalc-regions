@@ -34,8 +34,8 @@ import org.jebtk.core.io.PathUtils;
 import org.jebtk.core.stream.Stream;
 import org.jebtk.core.stream.StringMapFunction;
 import org.jebtk.core.text.TextUtils;
-import org.jebtk.math.matrix.AnnotatableMatrix;
-import org.jebtk.math.matrix.AnnotationMatrix;
+import org.jebtk.math.matrix.DataFrame;
+import org.jebtk.math.matrix.DataFrame;
 import edu.columbia.rdf.matcalc.MainMatCalcWindow;
 
 import edu.columbia.rdf.matcalc.bio.Annotation;
@@ -119,10 +119,10 @@ public class OneWayOverlapTask extends SwingWorker<Void, Void> {
 
 		Path file = mFiles.get(0);
 
-		AnnotationMatrix matrix = Annotation.toMatrix(file);
+		DataFrame matrix = Annotation.toMatrix(file);
 
-		AnnotationMatrix outputMatrix = 
-				AnnotatableMatrix.createAnnotatableMatrix(matrix.getRowCount(), matrix.getColumnCount() + NEW_COLUMN_COUNT);
+		DataFrame outputMatrix = 
+				DataFrame.createDataFrame(matrix.getRowCount(), matrix.getColumnCount() + NEW_COLUMN_COUNT);
 
 		int c = 0;
 

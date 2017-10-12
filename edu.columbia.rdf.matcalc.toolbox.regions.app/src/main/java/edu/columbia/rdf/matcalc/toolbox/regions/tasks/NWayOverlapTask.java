@@ -25,8 +25,8 @@ import org.jebtk.core.io.PathUtils;
 import org.jebtk.core.text.Join;
 import org.jebtk.core.text.TextUtils;
 import org.jebtk.bioinformatics.ui.groups.Group;
-import org.jebtk.math.matrix.AnnotatableMatrix;
-import org.jebtk.math.matrix.AnnotationMatrix;
+import org.jebtk.math.matrix.DataFrame;
+import org.jebtk.math.matrix.DataFrame;
 import edu.columbia.rdf.matcalc.MainMatCalcWindow;
 import edu.columbia.rdf.matcalc.toolbox.core.venn.CircleStyle;
 import edu.columbia.rdf.matcalc.toolbox.core.venn.MainVennWindow;
@@ -183,8 +183,8 @@ public class NWayOverlapTask extends SwingWorker<Void, Void> {
 			rowCount += locationCoreMap.get(chr).size();
 		}
 
-		AnnotationMatrix matrix = 
-				AnnotatableMatrix.createAnnotatableMatrix(rowCount, 3 + 3 * mFiles.size());
+		DataFrame matrix = 
+				DataFrame.createDataFrame(rowCount, 3 + 3 * mFiles.size());
 
 		int c = 0;
 

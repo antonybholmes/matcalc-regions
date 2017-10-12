@@ -11,7 +11,7 @@ import org.jebtk.bioinformatics.genomic.Chromosome;
 import org.jebtk.bioinformatics.genomic.GenomicRegion;
 import org.jebtk.core.io.Io;
 import org.jebtk.core.text.TextUtils;
-import org.jebtk.math.matrix.AnnotationMatrix;
+import org.jebtk.math.matrix.DataFrame;
 import edu.columbia.rdf.matcalc.MainMatCalcWindow;
 
 import edu.columbia.rdf.matcalc.bio.Annotation;
@@ -54,7 +54,7 @@ public class DistancePlotTask extends SwingWorker<Void, Void> {
 	}
 
 	public void plot() {
-		AnnotationMatrix model = mWindow.getCurrentMatrix();
+		DataFrame model = mWindow.getCurrentMatrix();
 
 		List<Double> tssPoints = new ArrayList<Double>();
 
