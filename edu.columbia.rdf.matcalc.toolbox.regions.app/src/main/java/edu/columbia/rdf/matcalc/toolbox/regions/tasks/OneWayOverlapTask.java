@@ -192,34 +192,36 @@ public class OneWayOverlapTask extends SwingWorker<Void, Void> {
 				double maxP = 0;
 
 				for (GappedSearchFeatures<Annotation> features: results) {
-					for (Annotation annotation : features) {
-						//System.err.println("Comp " + region + " " + annotation.getRegion());
+					for (GenomicRegion r : features) {
+						for (Annotation annotation : features.getValues(r)) {
+							//System.err.println("Comp " + region + " " + annotation.getRegion());
 
-						GenomicRegion overlap = 
-								GenomicRegion.overlap(region, annotation.getRegion());
+							GenomicRegion overlap = 
+									GenomicRegion.overlap(region, annotation.getRegion());
 
-						if (overlap != null) {
-							double p = 100.0 * Math.min(1.0, overlap.getLength() / l);
+							if (overlap != null) {
+								double p = 100.0 * Math.min(1.0, overlap.getLength() / l);
 
-							if (mSimpleMode) {
-								if (p > maxP) {
-									maxP = p;
+								if (mSimpleMode) {
+									if (p > maxP) {
+										maxP = p;
 
-									maxOverlapWidth.clear();
-									maxOverlap.clear();
-									maxAnnotation.clear();
-									maxOverlapType.clear();
+										maxOverlapWidth.clear();
+										maxOverlap.clear();
+										maxAnnotation.clear();
+										maxOverlapType.clear();
 
+										maxOverlapWidth.add(p);
+										maxOverlap.add(overlap);
+										maxAnnotation.add(annotation);
+										maxOverlapType.add(GenomicRegion.overlapType(region, annotation.getRegion()));
+									}
+								} else {
 									maxOverlapWidth.add(p);
 									maxOverlap.add(overlap);
 									maxAnnotation.add(annotation);
 									maxOverlapType.add(GenomicRegion.overlapType(region, annotation.getRegion()));
 								}
-							} else {
-								maxOverlapWidth.add(p);
-								maxOverlap.add(overlap);
-								maxAnnotation.add(annotation);
-								maxOverlapType.add(GenomicRegion.overlapType(region, annotation.getRegion()));
 							}
 						}
 					}

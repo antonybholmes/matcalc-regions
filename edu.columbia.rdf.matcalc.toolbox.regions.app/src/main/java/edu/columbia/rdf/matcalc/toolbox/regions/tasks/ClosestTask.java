@@ -13,9 +13,8 @@ import org.jebtk.core.io.Io;
 import org.jebtk.core.io.PathUtils;
 import org.jebtk.core.text.TextUtils;
 import org.jebtk.math.matrix.DataFrame;
-import org.jebtk.math.matrix.DataFrame;
-import edu.columbia.rdf.matcalc.MainMatCalcWindow;
 
+import edu.columbia.rdf.matcalc.MainMatCalcWindow;
 import edu.columbia.rdf.matcalc.bio.Annotation;
 
 /**
@@ -60,8 +59,7 @@ public class ClosestTask extends SwingWorker<Void, Void> {
 	private DataFrame closest() throws Exception {
 		DataFrame m = mWindow.getCurrentMatrix();
 
-		DataFrame matrix = 
-				DataFrame.createDataFrame(m.getRowCount(), m.getColumnCount() + 3);
+		DataFrame matrix = DataFrame.createDataFrame(m.getRowCount(), m.getColumnCount() + 3);
 
 		matrix.setColumnName(m.getColumnCount(), "Closest Feature");
 		matrix.setColumnName(m.getColumnCount() + 1, "Closest Feature Location");

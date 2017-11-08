@@ -116,33 +116,36 @@ public class NWayOverlapTask extends SwingWorker<Void, Void> {
 							Path file2 = mFiles.get(j);
 
 							for (GappedSearchFeatures<Annotation> gsf2 : gs2.getFeatures(consensusRegion)) {
-								for (Annotation an2 : gsf2) {
-									GenomicRegion testRegion = an2.getRegion();
+								for (GenomicRegion r : gsf2) {
+									for (Annotation an2 : gsf2.getValues(r)) {
 
-									// Don't test the region on itself
-									if (testRegion.equals(region)) {
-										continue;
-									}
+										GenomicRegion testRegion = an2.getRegion();
 
-									//if (allocatedRegions.contains(testRegion)) {
-									//	continue;
-									//}
+										// Don't test the region on itself
+										if (testRegion.equals(region)) {
+											continue;
+										}
 
-									if (used.contains(testRegion)) {
-										continue;
-									}
+										//if (allocatedRegions.contains(testRegion)) {
+										//	continue;
+										//}
 
-									GenomicRegion newConsensus = 
-											GenomicRegion.overlap(consensusRegion, testRegion);
+										if (used.contains(testRegion)) {
+											continue;
+										}
 
-									if (newConsensus != null) {
-										// Adjust the size of the overlap
+										GenomicRegion newConsensus = 
+												GenomicRegion.overlap(consensusRegion, testRegion);
 
-										consensusRegion = newConsensus;
+										if (newConsensus != null) {
+											// Adjust the size of the overlap
 
-										overlaps.get(file2).add(testRegion);
+											consensusRegion = newConsensus;
 
-										used.add(testRegion);
+											overlaps.get(file2).add(testRegion);
+
+											used.add(testRegion);
+										}
 									}
 								}
 							}

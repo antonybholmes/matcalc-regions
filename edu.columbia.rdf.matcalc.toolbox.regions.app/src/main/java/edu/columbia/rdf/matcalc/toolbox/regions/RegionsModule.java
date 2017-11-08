@@ -18,6 +18,7 @@ import java.util.TreeMap;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.jebtk.bioinformatics.conservation.ConservationAssembly;
 import org.jebtk.bioinformatics.conservation.ConservationAssemblyWeb;
 import org.jebtk.bioinformatics.ext.ucsc.Bed;
@@ -27,19 +28,17 @@ import org.jebtk.bioinformatics.gapsearch.FixedGapSearch;
 import org.jebtk.bioinformatics.gapsearch.GappedSearchFeatures;
 import org.jebtk.bioinformatics.genomic.Chromosome;
 import org.jebtk.bioinformatics.genomic.GenomicRegion;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.jebtk.bioinformatics.ui.BioInfDialog;
+import org.jebtk.bioinformatics.ui.Bioinformatics;
+import org.jebtk.bioinformatics.ui.external.ucsc.BedGraphGuiFileFilter;
+import org.jebtk.bioinformatics.ui.external.ucsc.BedGuiFileFilter;
+import org.jebtk.bioinformatics.ui.groups.Group;
 import org.jebtk.core.Mathematics;
 import org.jebtk.core.collections.CollectionUtils;
 import org.jebtk.core.io.Io;
 import org.jebtk.core.io.PathUtils;
 import org.jebtk.core.settings.SettingsService;
 import org.jebtk.core.text.TextUtils;
-import org.jebtk.bioinformatics.ui.BioInfDialog;
-import org.jebtk.bioinformatics.ui.Bioinformatics;
-import org.jebtk.bioinformatics.ui.external.ucsc.BedGraphGuiFileFilter;
-import org.jebtk.bioinformatics.ui.external.ucsc.BedGuiFileFilter;
-import org.jebtk.bioinformatics.ui.groups.Group;
-import org.jebtk.math.matrix.DataFrame;
 import org.jebtk.math.matrix.DataFrame;
 import org.jebtk.math.statistics.Statistics;
 import org.jebtk.math.ui.external.microsoft.XlsxGuiFileFilter;
@@ -61,7 +60,11 @@ import org.jebtk.modern.ribbon.RibbonLargeButton;
 import org.jebtk.modern.ribbon.RibbonLargeDropDownButton;
 import org.jebtk.modern.widget.ModernClickWidget;
 import org.jebtk.modern.widget.tooltip.ModernToolTip;
+
 import edu.columbia.rdf.matcalc.MainMatCalcWindow;
+import edu.columbia.rdf.matcalc.bio.Annotation;
+import edu.columbia.rdf.matcalc.bio.AnnotationGene;
+import edu.columbia.rdf.matcalc.bio.AnnotationService;
 import edu.columbia.rdf.matcalc.toolbox.CalcModule;
 import edu.columbia.rdf.matcalc.toolbox.core.venn.CircleStyle;
 import edu.columbia.rdf.matcalc.toolbox.core.venn.MainVennWindow;
@@ -72,9 +75,6 @@ import edu.columbia.rdf.matcalc.toolbox.regions.tasks.DistancePlotTask;
 import edu.columbia.rdf.matcalc.toolbox.regions.tasks.NWayOverlapTask;
 import edu.columbia.rdf.matcalc.toolbox.regions.tasks.OneWayOverlapTask;
 import edu.columbia.rdf.matcalc.toolbox.regions.tasks.TssPlotTask;
-import edu.columbia.rdf.matcalc.bio.Annotation;
-import edu.columbia.rdf.matcalc.bio.AnnotationGene;
-import edu.columbia.rdf.matcalc.bio.AnnotationService;
 
 public class RegionsModule extends CalcModule implements ModernClickListener {
 	private MainMatCalcWindow mWindow;
@@ -171,13 +171,14 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 					if (results != null) {
 						if (mOverlapMode) {
 							for (GappedSearchFeatures<Annotation> features: results) {
-								for (Annotation annotation : features) {
+								for (GenomicRegion r : features) {
+									for (Annotation annotation : features.getValues(r)) {
 
+										GenomicRegion overlap = GenomicRegion.overlap(region, annotation.getRegion());
 
-									GenomicRegion overlap = GenomicRegion.overlap(region, annotation.getRegion());
-
-									if (overlap != null) {
-										enhancers.add(annotation.getName());
+										if (overlap != null) {
+											enhancers.add(annotation.getName());
+										}
 									}
 								}
 							}
@@ -185,21 +186,25 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 							int minD = Integer.MAX_VALUE;
 
 							for (GappedSearchFeatures<Annotation> features: results) {
-								for (Annotation annotation : features) {
-									int d = GenomicRegion.midDist(region, annotation.getRegion());
+								for (GenomicRegion r : features) {
+									for (Annotation annotation : features.getValues(r)) {
+										int d = GenomicRegion.midDist(region, annotation.getRegion());
 
-									if (Math.abs(d) < minD) {
-										minD = Math.abs(d);
+										if (Math.abs(d) < minD) {
+											minD = Math.abs(d);
+										}
 									}
 								}
 							}
 
 							for (GappedSearchFeatures<Annotation> features: results) {
-								for (Annotation annotation : features) {
-									int d = GenomicRegion.midDist(region, annotation.getRegion());
+								for (GenomicRegion r : features) {
+									for (Annotation annotation : features.getValues(r)) {
+										int d = GenomicRegion.midDist(region, annotation.getRegion());
 
-									if (Math.abs(d) == minD) {
-										enhancers.add(annotation.getName());
+										if (Math.abs(d) == minD) {
+											enhancers.add(annotation.getName());
+										}
 									}
 								}
 							}
@@ -220,7 +225,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 		}
 	}
 
-	
+
 
 	/**
 	 * Overlap segments.
@@ -1527,7 +1532,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 		//
 
 		ModernPopupMenu popup;
-		
+
 		/*
 		ModernPopupMenu popup = new ModernPopupMenu();
 
@@ -1544,8 +1549,8 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 		button.setToolTip("Conservation", "Add conservation scores to regions.");
 		mWindow.getRibbon().getToolbar("Genomic").getSection("Regions").add(button);
 		button.addClickListener(this);
-		*/
-		
+		 */
+
 		/*
 		button = new RibbonLargeButton("46-way Cons", UIService.getInstance().loadIcon("conservation", 24));
 		button.setToolTip(new ModernToolTip("46-way Conservation", 
@@ -1565,7 +1570,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 		//
 		// Tss plots
 		//
-		
+
 		ribbon.getToolbar("Genomic").getSection("Regions").addSeparator();
 
 		popup = new ModernPopupMenu();
@@ -1815,7 +1820,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 		task.done();
 	}
 
-	
+
 
 	private void stitch() throws IOException {
 		if (mWindow.getInputFile() == null) {
@@ -1975,13 +1980,12 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 
 			gappedSearch = Annotation.parsePeaks(model);
 		}
-		
-		
-		
+
+
+
 
 		DistancePlotTask task = new DistancePlotTask(mWindow,
-				gappedSearch, 
-				file,
+				gappedSearch,
 				plotDialog.getStart(),
 				plotDialog.getEnd(),
 				plotDialog.getUnits(),
@@ -2033,5 +2037,5 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 		return regions;
 	}
 
-	
+
 }

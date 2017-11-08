@@ -221,7 +221,7 @@ public class EnhancerTreePanel extends ModernWidget {
 							map.put(tissue, new BinaryGapSearch<Annotation>());
 						}
 						
-						map.get(tissue).addFeature(region, annotation);
+						map.get(tissue).add(region, annotation);
 					}
 				}
 			} finally {

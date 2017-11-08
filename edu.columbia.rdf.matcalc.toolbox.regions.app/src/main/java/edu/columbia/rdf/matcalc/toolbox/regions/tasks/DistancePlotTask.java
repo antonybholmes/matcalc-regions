@@ -1,6 +1,5 @@
 package edu.columbia.rdf.matcalc.toolbox.regions.tasks;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,14 +11,13 @@ import org.jebtk.bioinformatics.genomic.GenomicRegion;
 import org.jebtk.core.io.Io;
 import org.jebtk.core.text.TextUtils;
 import org.jebtk.math.matrix.DataFrame;
-import edu.columbia.rdf.matcalc.MainMatCalcWindow;
 
+import edu.columbia.rdf.matcalc.MainMatCalcWindow;
 import edu.columbia.rdf.matcalc.bio.Annotation;
 
 public class DistancePlotTask extends SwingWorker<Void, Void> {
 
 	private BinaryGapSearch<Annotation> mSearch;
-	private Path mFile2;
 	private double mStart;
 	private double mEnd;
 	private int mUnits;
@@ -29,7 +27,6 @@ public class DistancePlotTask extends SwingWorker<Void, Void> {
 
 	public DistancePlotTask(MainMatCalcWindow window, 
 			BinaryGapSearch<Annotation> gappedSearch,
-			Path file2,
 			double start,
 			double end,
 			int units,
@@ -37,7 +34,6 @@ public class DistancePlotTask extends SwingWorker<Void, Void> {
 			int binUnits) {
 		mWindow = window;
 		mSearch = gappedSearch;
-		mFile2 = file2;
 
 		mStart = start;
 		mEnd = end;
