@@ -59,18 +59,18 @@ public class ClosestTask extends SwingWorker<Void, Void> {
 	private DataFrame closest() throws Exception {
 		DataFrame m = mWindow.getCurrentMatrix();
 
-		DataFrame matrix = DataFrame.createDataFrame(m.getRowCount(), m.getColumnCount() + 3);
+		DataFrame matrix = DataFrame.createDataFrame(m.getRows(), m.getCols() + 3);
 
-		matrix.setColumnName(m.getColumnCount(), "Closest Feature");
-		matrix.setColumnName(m.getColumnCount() + 1, "Closest Feature Location");
-		matrix.setColumnName(m.getColumnCount() + 2, "Closest Feature Distance (bp)");
+		matrix.setColumnName(m.getCols(), "Closest Feature");
+		matrix.setColumnName(m.getCols() + 1, "Closest Feature Location");
+		matrix.setColumnName(m.getCols() + 2, "Closest Feature Distance (bp)");
 
 		DataFrame.copyColumnAnnotations(m, matrix);
-		matrix.copyRows(m, 0, m.getRowCount() - 1);
+		matrix.copyRows(m, 0, m.getRows() - 1);
 
-		int c = m.getColumnCount();
+		int c = m.getCols();
 
-		for (int i = 0; i < m.getRowCount(); ++i) {
+		for (int i = 0; i < m.getRows(); ++i) {
 			GenomicRegion region = null;
 
 			if (Io.isEmptyLine(m.getText(i, 0))) {

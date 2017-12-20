@@ -8,7 +8,6 @@ import org.jebtk.graphplot.figure.Plot;
 import org.jebtk.graphplot.figure.SubFigure;
 import org.jebtk.graphplot.figure.series.XYSeries;
 import org.jebtk.math.matrix.DataFrame;
-import org.jebtk.math.matrix.DataFrame;
 import org.jebtk.math.statistics.HistBin;
 
 /**
@@ -55,7 +54,7 @@ public class TssSubFigure extends SubFigure {
 		plot.setMatrix(m);
 
 		XYSeries series = new XYSeries("Distance");
-		series.addRegexes("x", "y");
+		series.addRegex("x", "y");
 
 		
 		series.getStyle().getLineStyle().setColor(Color.RED);

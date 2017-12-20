@@ -125,19 +125,19 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 
 			List<String> annotations = CollectionUtils.sortKeys(mGappedSearch);
 
-			DataFrame matrix = DataFrame.createDataFrame(model.getRowCount(), model.getColumnCount() + annotations.size());
+			DataFrame matrix = DataFrame.createDataFrame(model.getRows(), model.getCols() + annotations.size());
 
-			for (int i = 0; i < model.getColumnCount(); ++i) {
+			for (int i = 0; i < model.getCols(); ++i) {
 				matrix.setColumnName(i, model.getColumnName(i));
 			}
 
-			int c = model.getColumnCount();
+			int c = model.getCols();
 
 			for (int i = 0; i < annotations.size(); ++i) {
 				matrix.setColumnName(c + i, annotations.get(i) + " Super Enhancers");
 			}
 
-			for (int i = 0; i < model.getRowCount(); ++i) {
+			for (int i = 0; i < model.getRows(); ++i) {
 
 				// Copy the existing data
 				matrix.copyRow(model, i, i);
@@ -158,7 +158,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 							TextUtils.parseInt(model.getText(i, 2)));
 				}
 
-				c = model.getColumnCount();
+				c = model.getCols();
 
 				for (int j = 0; j < annotations.size(); ++j) {
 					String type = annotations.get(j);
@@ -909,11 +909,11 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 			}
 
 			DataFrame matrix = 
-					DataFrame.createDataFrame(model.getRowCount(), model.getColumnCount() + extra);
+					DataFrame.createDataFrame(model.getRows(), model.getCols() + extra);
 
 			DataFrame.copyColumnAnnotations(model, matrix);
 
-			int c = model.getColumnCount();
+			int c = model.getCols();
 
 			if (mShowMean) {
 				matrix.setColumnName(c++, "Mean Conservation %");
@@ -927,7 +927,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 				matrix.setColumnName(c++, "Conservation Scores");
 			}
 
-			for (int i = 0; i < model.getRowCount(); ++i) {
+			for (int i = 0; i < model.getRows(); ++i) {
 				matrix.copyRow(model, i, i);
 
 				GenomicRegion region;
@@ -946,7 +946,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 							TextUtils.parseInt(model.getText(i, 2)));
 				}
 
-				c = model.getColumnCount();
+				c = model.getCols();
 
 				List<Double> scores = mConservationAssembly.getScores(region);
 
@@ -1016,11 +1016,11 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 				++extra;
 			}
 
-			DataFrame matrix = DataFrame.createDataFrame(model.getRowCount(), model.getColumnCount() + extra);
+			DataFrame matrix = DataFrame.createDataFrame(model.getRows(), model.getCols() + extra);
 
 			DataFrame.copyColumnAnnotations(model, matrix);
 
-			int c = model.getColumnCount();
+			int c = model.getCols();
 
 			if (mShowConservation) {
 				matrix.setColumnName(c++, "Mouse Conservation %");
@@ -1030,7 +1030,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 				matrix.setColumnName(c++, "Mouse Conservation Scores");
 			}
 
-			for (int i = 0; i < model.getRowCount(); ++i) {
+			for (int i = 0; i < model.getRows(); ++i) {
 				matrix.copyRow(model, i, i);
 
 				GenomicRegion region;
@@ -1049,7 +1049,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 							TextUtils.parseInt(model.getText(i, 2)));
 				}
 
-				c = model.getColumnCount();
+				c = model.getCols();
 
 				List<Double> scores = mMouseConservationAssembly.getScores(region);
 
@@ -2014,7 +2014,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 		List<GenomicRegion> regions = 
 				new ArrayList<GenomicRegion>();
 
-		for (int i = 0; i < model.getRowCount(); ++i) {
+		for (int i = 0; i < model.getRows(); ++i) {
 			GenomicRegion region = null;
 
 			if (Io.isEmptyLine(model.getText(i, 0))) {

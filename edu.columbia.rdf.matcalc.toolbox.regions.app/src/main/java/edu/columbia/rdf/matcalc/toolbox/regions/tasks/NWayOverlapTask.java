@@ -11,27 +11,27 @@ import java.util.Set;
 
 import javax.swing.SwingWorker;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.jebtk.bioinformatics.gapsearch.FixedGapSearch;
 import org.jebtk.bioinformatics.gapsearch.GappedSearchFeatures;
 import org.jebtk.bioinformatics.genomic.Chromosome;
 import org.jebtk.bioinformatics.genomic.GenomicRegion;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.jebtk.bioinformatics.ui.groups.Group;
 import org.jebtk.core.Mathematics;
 import org.jebtk.core.collections.CollectionUtils;
 import org.jebtk.core.collections.DefaultTreeMap;
 import org.jebtk.core.collections.DefaultTreeMapCreator;
+import org.jebtk.core.collections.IterMap;
 import org.jebtk.core.collections.TreeSetCreator;
 import org.jebtk.core.io.PathUtils;
 import org.jebtk.core.text.Join;
 import org.jebtk.core.text.TextUtils;
-import org.jebtk.bioinformatics.ui.groups.Group;
 import org.jebtk.math.matrix.DataFrame;
-import org.jebtk.math.matrix.DataFrame;
+
 import edu.columbia.rdf.matcalc.MainMatCalcWindow;
+import edu.columbia.rdf.matcalc.bio.Annotation;
 import edu.columbia.rdf.matcalc.toolbox.core.venn.CircleStyle;
 import edu.columbia.rdf.matcalc.toolbox.core.venn.MainVennWindow;
-
-import edu.columbia.rdf.matcalc.bio.Annotation;
 
 /**
  * Overlap segments.
@@ -79,8 +79,8 @@ public class NWayOverlapTask extends SwingWorker<Void, Void> {
 		// First get all the regions to search into one sorted map
 
 
-		Map<Chromosome, Map<GenomicRegion, Map<Path, Set<GenomicRegion>>>> locationCoreMap =
-				DefaultTreeMap.create(new DefaultTreeMapCreator<GenomicRegion, Map<Path, Set<GenomicRegion>>>(new DefaultTreeMapCreator<Path, Set<GenomicRegion>>(new TreeSetCreator<GenomicRegion>())));
+		Map<Chromosome, IterMap<GenomicRegion, IterMap<Path, Set<GenomicRegion>>>> locationCoreMap =
+				DefaultTreeMap.create(new DefaultTreeMapCreator<GenomicRegion, IterMap<Path, Set<GenomicRegion>>>(new DefaultTreeMapCreator<Path, Set<GenomicRegion>>(new TreeSetCreator<GenomicRegion>())));
 
 		//Set<GenomicRegion> allocatedRegions = new HashSet<GenomicRegion>();
 

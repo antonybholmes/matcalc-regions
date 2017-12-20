@@ -54,7 +54,7 @@ public class DistancePlotTask extends SwingWorker<Void, Void> {
 
 		List<Double> tssPoints = new ArrayList<Double>();
 
-		for (int i = 0; i < model.getRowCount(); ++i) {
+		for (int i = 0; i < model.getRows(); ++i) {
 			GenomicRegion region = null;
 
 			if (Io.isEmptyLine(model.getText(i, 0))) {

@@ -55,7 +55,7 @@ public class Log10TssSubFigure extends SubFigure {
 		plot.setMatrix(m);
 		
 		XYSeries series = new XYSeries("Log10 Distance");
-		series.addRegexes("x", "y");
+		series.addRegex("x", "y");
 
 		
 

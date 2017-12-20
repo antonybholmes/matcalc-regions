@@ -74,7 +74,7 @@ public class TssPlotTask extends SwingWorker<Void, Void> {
 		
 		List<Double> tssPoints = new ArrayList<Double>();
 
-		for (int i = 0; i < matrix.getRowCount(); ++i) {
+		for (int i = 0; i < matrix.getRows(); ++i) {
 			GenomicRegion region = null;
 
 			if (Io.isEmptyLine(matrix.getText(i, 0))) {

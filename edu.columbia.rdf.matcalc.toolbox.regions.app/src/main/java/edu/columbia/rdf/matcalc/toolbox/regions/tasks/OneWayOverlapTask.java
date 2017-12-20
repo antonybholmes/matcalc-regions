@@ -23,21 +23,20 @@ import java.util.List;
 
 import javax.swing.SwingWorker;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.jebtk.bioinformatics.gapsearch.FixedGapSearch;
 import org.jebtk.bioinformatics.gapsearch.GappedSearchFeatures;
 import org.jebtk.bioinformatics.genomic.Chromosome;
 import org.jebtk.bioinformatics.genomic.GenomicRegion;
 import org.jebtk.bioinformatics.genomic.OverlapType;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.jebtk.core.io.Io;
 import org.jebtk.core.io.PathUtils;
 import org.jebtk.core.stream.Stream;
 import org.jebtk.core.stream.StringMapFunction;
 import org.jebtk.core.text.TextUtils;
 import org.jebtk.math.matrix.DataFrame;
-import org.jebtk.math.matrix.DataFrame;
-import edu.columbia.rdf.matcalc.MainMatCalcWindow;
 
+import edu.columbia.rdf.matcalc.MainMatCalcWindow;
 import edu.columbia.rdf.matcalc.bio.Annotation;
 
 /**
@@ -122,14 +121,14 @@ public class OneWayOverlapTask extends SwingWorker<Void, Void> {
 		DataFrame matrix = Annotation.toMatrix(file);
 
 		DataFrame outputMatrix = 
-				DataFrame.createDataFrame(matrix.getRowCount(), matrix.getColumnCount() + NEW_COLUMN_COUNT);
+				DataFrame.createDataFrame(matrix.getRows(), matrix.getCols() + NEW_COLUMN_COUNT);
 
 		int c = 0;
 
 		if (mAddBeginning) {
 			c = 0;
 		} else {
-			c = outputMatrix.getColumnCount() - NEW_COLUMN_COUNT;
+			c = outputMatrix.getCols() - NEW_COLUMN_COUNT;
 		}
 
 		String name = PathUtils.getNameNoExt(mFiles.get(1));
@@ -148,17 +147,17 @@ public class OneWayOverlapTask extends SwingWorker<Void, Void> {
 			c = 0;
 		}
 
-		for (int i = 0; i < matrix.getColumnCount(); ++i) {
+		for (int i = 0; i < matrix.getCols(); ++i) {
 			outputMatrix.copyColumn(matrix, i, c + i);
 		}
 
 		if (mAddBeginning) {
 			c = 0;
 		} else {
-			c = outputMatrix.getColumnCount() - NEW_COLUMN_COUNT;
+			c = outputMatrix.getCols() - NEW_COLUMN_COUNT;
 		}
 
-		for (int i = 0; i < matrix.getRowCount(); ++i) {
+		for (int i = 0; i < matrix.getRows(); ++i) {
 			GenomicRegion region = null;
 
 			if (Io.isEmptyLine(matrix.getText(i, 0))) {
@@ -231,23 +230,23 @@ public class OneWayOverlapTask extends SwingWorker<Void, Void> {
 			if (maxOverlap.size() > 0) {
 				outputMatrix.set(i, 
 						c, 
-						Stream.stream(maxOverlap)
+						Stream.of(maxOverlap)
 						.join(";")); //Join.onSemiColon().values(maxOverlap).toString());
 				outputMatrix.set(i, c + 1, name);
 				outputMatrix.set(i, c + 2, maxOverlap.size());
 				outputMatrix.set(i, 
 						c + 3,
-						Stream.stream(maxOverlapWidth)
-						.mapToDouble()
+						Stream.of(maxOverlapWidth)
+						.asDouble()
 						.round(2)
 						.join(";")); //Join.onSemiColon().values(Mathematics.round(maxOverlapWidth, 2)).toString()
 				outputMatrix.set(i, 
 						c + 4, 
-						Stream.stream(maxOverlapType)
+						Stream.of(maxOverlapType)
 						.join(";")); //Join.onSemiColon().values(maxOverlapType).toString());
 				outputMatrix.set(i, 
 						c + 5, 
-						Stream.stream(maxAnnotation)
+						Stream.of(maxAnnotation)
 						.map(new StringMapFunction<Annotation>() {
 							@Override
 							public String apply(Annotation a) {
@@ -257,7 +256,7 @@ public class OneWayOverlapTask extends SwingWorker<Void, Void> {
 
 				outputMatrix.set(i, 
 						c + 6, 
-						Stream.stream(maxAnnotation)
+						Stream.of(maxAnnotation)
 						.map(new StringMapFunction<Annotation>() {
 							@Override
 							public String apply(Annotation a) {
