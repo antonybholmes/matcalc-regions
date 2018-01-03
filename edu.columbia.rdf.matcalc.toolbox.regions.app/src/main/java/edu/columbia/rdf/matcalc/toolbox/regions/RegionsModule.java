@@ -27,6 +27,7 @@ import org.jebtk.bioinformatics.gapsearch.BinarySearch;
 import org.jebtk.bioinformatics.gapsearch.FixedGapSearch;
 import org.jebtk.bioinformatics.gapsearch.GappedSearchFeatures;
 import org.jebtk.bioinformatics.genomic.Chromosome;
+import org.jebtk.bioinformatics.genomic.ChromosomeService;
 import org.jebtk.bioinformatics.genomic.GenomicRegion;
 import org.jebtk.bioinformatics.ui.BioInfDialog;
 import org.jebtk.bioinformatics.ui.Bioinformatics;
@@ -153,9 +154,9 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 				} else {
 					// three column format
 
-					region = new GenomicRegion(Chromosome.parse(model.getText(i, 0)),
-							TextUtils.parseInt(model.getText(i, 1)),
-							TextUtils.parseInt(model.getText(i, 2)));
+					region = new GenomicRegion(ChromosomeService.getInstance().parse(model.getText(i, 0)),
+							Integer.parseInt(model.getText(i, 1)),
+							Integer.parseInt(model.getText(i, 2)));
 				}
 
 				c = model.getCols();
@@ -331,7 +332,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 				} else {
 					// three column format
 
-					region = new GenomicRegion(Chromosome.parse(model.getText(i, 0)),
+					region = new GenomicRegion(ChromosomeService.getInstance().parse(model.getText(i, 0)),
 							TextUtils.parseInt(model.getText(i, 1)),
 							TextUtils.parseInt(model.getText(i, 2)));
 				}
@@ -516,7 +517,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 				} else {
 					// three column format
 
-					region = new GenomicRegion(Chromosome.parse(model.getText(i, 0)),
+					region = new GenomicRegion(ChromosomeService.getInstance().parse(model.getText(i, 0)),
 							TextUtils.parseInt(model.getText(i, 1)),
 							TextUtils.parseInt(model.getText(i, 2)));
 				}
@@ -941,7 +942,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 				} else {
 					// three column format
 
-					region = new GenomicRegion(Chromosome.parse(model.getText(i, 0)),
+					region = new GenomicRegion(ChromosomeService.getInstance().parse(model.getText(i, 0)),
 							TextUtils.parseInt(model.getText(i, 1)),
 							TextUtils.parseInt(model.getText(i, 2)));
 				}
@@ -1044,7 +1045,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 				} else {
 					// three column format
 
-					region = new GenomicRegion(Chromosome.parse(model.getText(i, 0)),
+					region = new GenomicRegion(ChromosomeService.getInstance().parse(model.getText(i, 0)),
 							TextUtils.parseInt(model.getText(i, 1)),
 							TextUtils.parseInt(model.getText(i, 2)));
 				}
@@ -2026,7 +2027,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 			} else {
 				// three column format
 
-				region = new GenomicRegion(Chromosome.parse(model.getText(i, 0)),
+				region = new GenomicRegion(ChromosomeService.getInstance().parse(model.getText(i, 0)),
 						Integer.parseInt(model.getText(i, 1)),
 						Integer.parseInt(model.getText(i, 2)));
 			}

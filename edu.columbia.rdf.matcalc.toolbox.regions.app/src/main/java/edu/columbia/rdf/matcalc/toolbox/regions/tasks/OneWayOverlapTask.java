@@ -26,7 +26,7 @@ import javax.swing.SwingWorker;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.jebtk.bioinformatics.gapsearch.FixedGapSearch;
 import org.jebtk.bioinformatics.gapsearch.GappedSearchFeatures;
-import org.jebtk.bioinformatics.genomic.Chromosome;
+import org.jebtk.bioinformatics.genomic.ChromosomeService;
 import org.jebtk.bioinformatics.genomic.GenomicRegion;
 import org.jebtk.bioinformatics.genomic.OverlapType;
 import org.jebtk.core.io.Io;
@@ -169,7 +169,7 @@ public class OneWayOverlapTask extends SwingWorker<Void, Void> {
 			} else {
 				// three column format
 
-				region = new GenomicRegion(Chromosome.parse(matrix.getText(i, 0)),
+				region = new GenomicRegion(ChromosomeService.getInstance().parse(matrix.getText(i, 0)),
 						TextUtils.parseInt(matrix.getText(i, 1)),
 						TextUtils.parseInt(matrix.getText(i, 2)));
 			}

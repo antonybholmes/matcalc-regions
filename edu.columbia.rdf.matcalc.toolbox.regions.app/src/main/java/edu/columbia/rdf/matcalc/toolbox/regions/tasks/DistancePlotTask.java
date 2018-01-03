@@ -6,7 +6,7 @@ import java.util.List;
 import javax.swing.SwingWorker;
 
 import org.jebtk.bioinformatics.gapsearch.BinaryGapSearch;
-import org.jebtk.bioinformatics.genomic.Chromosome;
+import org.jebtk.bioinformatics.genomic.ChromosomeService;
 import org.jebtk.bioinformatics.genomic.GenomicRegion;
 import org.jebtk.core.io.Io;
 import org.jebtk.core.text.TextUtils;
@@ -70,7 +70,7 @@ public class DistancePlotTask extends SwingWorker<Void, Void> {
 			} else {
 				// three column format
 
-				region = new GenomicRegion(Chromosome.parse(model.getText(i, 0)),
+				region = new GenomicRegion(ChromosomeService.getInstance().parse(model.getText(i, 0)),
 						Integer.parseInt(model.getText(i, 1)),
 						Integer.parseInt(model.getText(i, 2)));
 			}

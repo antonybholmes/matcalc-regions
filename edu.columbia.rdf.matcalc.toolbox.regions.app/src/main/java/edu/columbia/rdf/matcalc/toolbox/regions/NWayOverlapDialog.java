@@ -5,15 +5,14 @@ import java.util.List;
 
 import javax.swing.Box;
 
-import org.jebtk.core.settings.SettingsService;
 import org.jebtk.bioinformatics.ui.external.ucsc.BedGraphGuiFileFilter;
 import org.jebtk.bioinformatics.ui.external.ucsc.BedGuiFileFilter;
+import org.jebtk.core.settings.SettingsService;
 import org.jebtk.math.ui.external.microsoft.ExcelGuiFileFilter;
 import org.jebtk.modern.BorderService;
 import org.jebtk.modern.ModernComponent;
 import org.jebtk.modern.UI;
 import org.jebtk.modern.button.ModernButtonGroup;
-import org.jebtk.modern.button.ModernCheckBox;
 import org.jebtk.modern.button.ModernCheckSwitch;
 import org.jebtk.modern.button.ModernRadioButton;
 import org.jebtk.modern.dialog.ModernDialogHelpWindow;
@@ -25,8 +24,8 @@ import org.jebtk.modern.io.CsvGuiFileFilter;
 import org.jebtk.modern.io.TsvGuiFileFilter;
 import org.jebtk.modern.panel.VBox;
 import org.jebtk.modern.widget.ModernTwoStateWidget;
-import org.jebtk.modern.widget.ModernWidget;
 import org.jebtk.modern.window.WindowWidgetFocusEvents;
+
 import edu.columbia.rdf.matcalc.MainMatCalcWindow;
 
 /**

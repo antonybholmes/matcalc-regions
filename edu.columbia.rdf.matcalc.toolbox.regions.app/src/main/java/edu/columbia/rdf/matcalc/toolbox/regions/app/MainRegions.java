@@ -8,11 +8,10 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.jebtk.core.AppService;
 import org.jebtk.modern.theme.ThemeService;
-import edu.columbia.rdf.matcalc.MainMatCalc;
-import edu.columbia.rdf.matcalc.ModuleLoader;
-
 import org.xml.sax.SAXException;
 
+import edu.columbia.rdf.matcalc.MainMatCalc;
+import edu.columbia.rdf.matcalc.ModuleLoader;
 import edu.columbia.rdf.matcalc.bio.BioModuleLoader;
 import edu.columbia.rdf.matcalc.toolbox.regions.RegionsModule;
 

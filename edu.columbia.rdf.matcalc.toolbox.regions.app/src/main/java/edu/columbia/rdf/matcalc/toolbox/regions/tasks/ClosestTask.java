@@ -7,7 +7,7 @@ import java.util.List;
 import javax.swing.SwingWorker;
 
 import org.jebtk.bioinformatics.gapsearch.BinaryGapSearch;
-import org.jebtk.bioinformatics.genomic.Chromosome;
+import org.jebtk.bioinformatics.genomic.ChromosomeService;
 import org.jebtk.bioinformatics.genomic.GenomicRegion;
 import org.jebtk.core.io.Io;
 import org.jebtk.core.io.PathUtils;
@@ -82,7 +82,7 @@ public class ClosestTask extends SwingWorker<Void, Void> {
 			} else if (isThreeColumnGenomicLocation(m, i)) {
 				// three column format
 
-				region = new GenomicRegion(Chromosome.parse(m.getText(i, 0)),
+				region = new GenomicRegion(ChromosomeService.getInstance().parse(m.getText(i, 0)),
 						TextUtils.parseInt(m.getText(i, 1)),
 						TextUtils.parseInt(m.getText(i, 2)));
 			} else {
