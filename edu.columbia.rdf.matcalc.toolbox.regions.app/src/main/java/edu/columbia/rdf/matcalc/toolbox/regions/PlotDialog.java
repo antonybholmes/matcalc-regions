@@ -21,90 +21,85 @@ import org.jebtk.modern.window.WindowWidgetFocusEvents;
  *
  */
 public class PlotDialog extends ModernDialogTaskWindow {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	private ModernCompactSpinner mFieldStart = 
-			new ModernCompactSpinner(-100, -1, -4, 1, false);
-	
-	private ModernCompactSpinner mFieldEnd = 
-			new ModernCompactSpinner(1, 100, 4, 1, false);
-	
-	private ModernCompactSpinner mFieldBin = 
-			new ModernCompactSpinner(1, 1000, 100, 1, false);
+  private ModernCompactSpinner mFieldStart = new ModernCompactSpinner(-100, -1, -4, 1, false);
 
-	private ModernComboBox mUnitsCombo = new UnitsComboBox();
+  private ModernCompactSpinner mFieldEnd = new ModernCompactSpinner(1, 100, 4, 1, false);
 
-	private ModernComboBox mBinUnitsCombo = new UnitsComboBox();
+  private ModernCompactSpinner mFieldBin = new ModernCompactSpinner(1, 1000, 100, 1, false);
 
-	
-	public PlotDialog(ModernWindow parent) {
-		super(parent);
+  private ModernComboBox mUnitsCombo = new UnitsComboBox();
 
-		setTitle("Plot Options");
+  private ModernComboBox mBinUnitsCombo = new UnitsComboBox();
 
-		createUi();
-		
-		setup();
-	}
+  public PlotDialog(ModernWindow parent) {
+    super(parent);
 
-	private void setup() {
-		addWindowListener(new WindowWidgetFocusEvents(mOkButton));
+    setTitle("Plot Options");
 
-		setSize(480, 240);
+    createUi();
 
-		UI.centerWindowToScreen(this);
-	}
+    setup();
+  }
 
-	private final void createUi() {
-		Box box = VBox.create();
+  private void setup() {
+    addWindowListener(new WindowWidgetFocusEvents(mOkButton));
 
-		box.add(new HExpandBox("Range", 
-				new HSpacedBox(mFieldStart, new ModernAutoSizeLabel("to"), mFieldEnd, mUnitsCombo)));
-		
-		box.add(UI.createVGap(10));
+    setSize(480, 240);
 
-		box.add(new HExpandBox("Bins", 
-				new HSpacedBox(mFieldBin, mBinUnitsCombo)));
+    UI.centerWindowToScreen(this);
+  }
 
-		setDialogCardContent(box);
-		
-		mUnitsCombo.setSelectedIndex(1);
-		
-		UI.setSize(mUnitsCombo, ModernWidget.SMALL_SIZE);
-		UI.setSize(mBinUnitsCombo, ModernWidget.SMALL_SIZE);
-	}
+  private final void createUi() {
+    Box box = VBox.create();
 
-	public double getStart() {
-		return mFieldStart.getValue();
-	}
-	
-	public double getEnd() {
-		return mFieldEnd.getValue();
-	}
-	
-	public int getUnits() {
-		switch(mUnitsCombo.getSelectedIndex()) {
-		case 2:
-			return 1000000;
-		case 1:
-			return 1000;
-		default:
-			return 1;
-		}
-	}
-	
-	public double getBinSize() {
-		return mFieldBin.getValue();
-	}
-	
-	public int getBinUnits() {
-		switch(mBinUnitsCombo.getSelectedIndex()) {
-		case 2:
-			return 1000000;
-		case 1:
-			return 1000;
-		default:
-			return 1;
-		}
-	}
+    box.add(
+        new HExpandBox("Range", new HSpacedBox(mFieldStart, new ModernAutoSizeLabel("to"), mFieldEnd, mUnitsCombo)));
+
+    box.add(UI.createVGap(10));
+
+    box.add(new HExpandBox("Bins", new HSpacedBox(mFieldBin, mBinUnitsCombo)));
+
+    setDialogCardContent(box);
+
+    mUnitsCombo.setSelectedIndex(1);
+
+    UI.setSize(mUnitsCombo, ModernWidget.SMALL_SIZE);
+    UI.setSize(mBinUnitsCombo, ModernWidget.SMALL_SIZE);
+  }
+
+  public double getStart() {
+    return mFieldStart.getValue();
+  }
+
+  public double getEnd() {
+    return mFieldEnd.getValue();
+  }
+
+  public int getUnits() {
+    switch (mUnitsCombo.getSelectedIndex()) {
+    case 2:
+      return 1000000;
+    case 1:
+      return 1000;
+    default:
+      return 1;
+    }
+  }
+
+  public double getBinSize() {
+    return mFieldBin.getValue();
+  }
+
+  public int getBinUnits() {
+    switch (mBinUnitsCombo.getSelectedIndex()) {
+    case 2:
+      return 1000000;
+    case 1:
+      return 1000;
+    default:
+      return 1;
+    }
+  }
 }

@@ -11,45 +11,41 @@ import org.jebtk.modern.search.Sorter;
 import org.jebtk.modern.tree.ModernTree;
 
 /**
- * The experiment tree can be sorted in multiple ways. Given a list
- * of experiments and a tree, generate a custom sorted tree of experiments.
+ * The experiment tree can be sorted in multiple ways. Given a list of
+ * experiments and a tree, generate a custom sorted tree of experiments.
  *
  * @author Antony Holmes Holmes
  *
  */
 public abstract class EnhancerSorter extends Sorter<Enhancer> {
-	@Override
-	public String getType() {
-		return "Common Properties";
-	}
+  @Override
+  public String getType() {
+    return "Common Properties";
+  }
 
-	protected static <T extends Comparable<? super T>> void arrange(ModernTree<Enhancer> tree, 
-			Map<T, Set<Enhancer>> map,
-			boolean ascending) {
-		List<T> sortedNames = CollectionUtils.sortKeys(map, ascending);
-		
-		tree.clear();
+  protected static <T extends Comparable<? super T>> void arrange(ModernTree<Enhancer> tree, Map<T, Set<Enhancer>> map,
+      boolean ascending) {
+    List<T> sortedNames = CollectionUtils.sortKeys(map, ascending);
 
-		TreeRootNode<Enhancer> root = 
-				new TreeRootNode<Enhancer>();
-		
-		for (T array : sortedNames) {
-			TreeNode<Enhancer> node = 
-					new TreeNode<Enhancer>(array.toString());
+    tree.clear();
 
-			List<Enhancer> sortedChipSeqSamples = sortByName(map.get(array), ascending);
+    TreeRootNode<Enhancer> root = new TreeRootNode<Enhancer>();
 
-			for (Enhancer ChipSeqSample : sortedChipSeqSamples) {
-				node.addChild(new TreeNode<Enhancer>(ChipSeqSample.getName(), ChipSeqSample));
-			}
+    for (T array : sortedNames) {
+      TreeNode<Enhancer> node = new TreeNode<Enhancer>(array.toString());
 
-			root.addChild(node);
-		}
-		
-		tree.setRoot(root);
-		
-		//tree.getSelectionModel().setSelection(1);
-	}
+      List<Enhancer> sortedChipSeqSamples = sortByName(map.get(array), ascending);
 
-	
+      for (Enhancer ChipSeqSample : sortedChipSeqSamples) {
+        node.addChild(new TreeNode<Enhancer>(ChipSeqSample.getName(), ChipSeqSample));
+      }
+
+      root.addChild(node);
+    }
+
+    tree.setRoot(root);
+
+    // tree.getSelectionModel().setSelection(1);
+  }
+
 }

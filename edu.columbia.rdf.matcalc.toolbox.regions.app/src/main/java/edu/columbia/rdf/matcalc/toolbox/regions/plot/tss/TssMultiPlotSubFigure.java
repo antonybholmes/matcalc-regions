@@ -20,70 +20,63 @@ import org.jebtk.math.statistics.HistBin;
  */
 public class TssMultiPlotSubFigure extends SubFigure {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	public TssMultiPlotSubFigure(String title,
-			String xPrefix,
-			List<List<HistBin>> tssHists,
-			double start,
-			double end,
-			double step) {
-		super(title + " Distance");
+  public TssMultiPlotSubFigure(String title, String xPrefix, List<List<HistBin>> tssHists, double start, double end,
+      double step) {
+    super(title + " Distance");
 
-		// set the graph limits
+    // set the graph limits
 
-		// Create a series for each bedgraph in the group
+    // Create a series for each bedgraph in the group
 
-		for (List<HistBin> tssHist : tssHists) {
-			Axes axes = currentAxes();
-			
-			Plot plot = axes.currentPlot();
+    for (List<HistBin> tssHist : tssHists) {
+      Axes axes = currentAxes();
 
-			plot.setBarWidth(1);
-			
+      Plot plot = axes.currentPlot();
 
-			DataFrame m = 
-					DataFrame.createDataFrame(tssHist.size(), 2);
+      plot.setBarWidth(1);
 
-			m.setColumnNames(CollectionUtils.toString("x", "y"));
-			
-			int r = 0;
-			for (HistBin hist : tssHist) {
-				m.set(r, 0, hist.getX());
-				m.set(r, 1, hist.getCount());
-				
-				++r;
-			}
-			
-			plot.setMatrix(m);
-			
-			XYSeries series = new XYSeries("Distance");
+      DataFrame m = DataFrame.createDataFrame(tssHist.size(), 2);
 
+      m.setColumnNames(CollectionUtils.toString("x", "y"));
 
-			series.getStyle().getLineStyle().setColor(Color.RED);
-			series.getStyle().getFillStyle().setColor(Color.RED);
-			//series.getShape().getStyle().getFillStyle().setColor(Color.RED);
-			//series.getShape().getLineStyle().setColor(Color.RED);
+      int r = 0;
+      for (HistBin hist : tssHist) {
+        m.set(r, 0, hist.getX());
+        m.set(r, 1, hist.getCount());
 
-			currentAxes().currentPlot().getAllSeries().add(series);
-		}
-		
-		// set the labels to be in logs
+        ++r;
+      }
 
-		currentAxes().getTitle().setText(getName());
+      plot.setMatrix(m);
 
-		currentAxes().getX1Axis().setLimits(start, end, step);
-		//getGraphSpace().getGraphProperties().getXAxisProperties().getMajorTicks().set(labels);
+      XYSeries series = new XYSeries("Distance");
 
-		if (!TextUtils.isNullOrEmpty(xPrefix)) {
-			currentAxes().getX1Axis().getTitle().setText(xPrefix + " Distance (kb)");
-		} else {
-			currentAxes().getX1Axis().getTitle().setText("Distance (kb)");
-		}
+      series.getStyle().getLineStyle().setColor(Color.RED);
+      series.getStyle().getFillStyle().setColor(Color.RED);
+      // series.getShape().getStyle().getFillStyle().setColor(Color.RED);
+      // series.getShape().getLineStyle().setColor(Color.RED);
 
-		currentAxes().setY1AxisLimitAutoRound();
-		currentAxes().getY1Axis().getTitle().setText("Count");
+      currentAxes().currentPlot().getAllSeries().add(series);
+    }
 
-		currentAxes().setInternalSize(600, 400);
-	}
+    // set the labels to be in logs
+
+    currentAxes().getTitle().setText(getName());
+
+    currentAxes().getX1Axis().setLimits(start, end, step);
+    // getGraphSpace().getGraphProperties().getXAxisProperties().getMajorTicks().set(labels);
+
+    if (!TextUtils.isNullOrEmpty(xPrefix)) {
+      currentAxes().getX1Axis().getTitle().setText(xPrefix + " Distance (kb)");
+    } else {
+      currentAxes().getX1Axis().getTitle().setText("Distance (kb)");
+    }
+
+    currentAxes().setY1AxisLimitAutoRound();
+    currentAxes().getY1Axis().getTitle().setText("Count");
+
+    currentAxes().setInternalSize(600, 400);
+  }
 }

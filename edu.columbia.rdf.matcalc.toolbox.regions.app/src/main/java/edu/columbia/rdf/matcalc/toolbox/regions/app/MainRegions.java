@@ -15,17 +15,16 @@ import edu.columbia.rdf.matcalc.ModuleLoader;
 import edu.columbia.rdf.matcalc.bio.BioModuleLoader;
 import edu.columbia.rdf.matcalc.toolbox.regions.RegionsModule;
 
-
-
-
 public class MainRegions {
-	public static final void main(String[] args) throws FontFormatException, IOException, SAXException, ParserConfigurationException, ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
-		AppService.getInstance().setAppInfo("regions");
-		
-		ThemeService.getInstance().setTheme();
-		
-		ModuleLoader ml = new BioModuleLoader().addModule(RegionsModule.class);
-		
-		MainMatCalc.main(new RegionsInfo(), ml);
-	}
+  public static final void main(String[] args)
+      throws FontFormatException, IOException, SAXException, ParserConfigurationException, ClassNotFoundException,
+      InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+    AppService.getInstance().setAppInfo("regions");
+
+    ThemeService.getInstance().setTheme();
+
+    ModuleLoader ml = new BioModuleLoader().addModule(RegionsModule.class);
+
+    MainMatCalc.main(new RegionsInfo(), ml);
+  }
 }

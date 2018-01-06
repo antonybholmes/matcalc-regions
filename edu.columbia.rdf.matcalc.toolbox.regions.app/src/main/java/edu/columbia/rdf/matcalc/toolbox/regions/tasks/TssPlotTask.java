@@ -34,156 +34,126 @@ import edu.columbia.rdf.matcalc.toolbox.regions.plot.tss.TssSubFigure;
  */
 public class TssPlotTask extends SwingWorker<Void, Void> {
 
-	private BinarySearch<AnnotationGene> mTssSearch;
-	private double mStart;
-	private double mEnd;
-	private int mUnits;
-	private double mBinSize;
-	private int mBinUnits;
-	private MainMatCalcWindow mWindow;
+  private BinarySearch<AnnotationGene> mTssSearch;
+  private double mStart;
+  private double mEnd;
+  private int mUnits;
+  private double mBinSize;
+  private int mBinUnits;
+  private MainMatCalcWindow mWindow;
 
-	public TssPlotTask(MainMatCalcWindow window, 
-			BinarySearch<AnnotationGene> tssSearch,
-			double start,
-			double end,
-			int units,
-			double binSize,
-			int binUnits) {
-		mWindow = window;
-		mTssSearch = tssSearch;
-		mStart = start;
-		mEnd = end;
-		mUnits = units;
-		mBinSize = Math.abs(binSize);
-		mBinUnits = binUnits;
-	}
+  public TssPlotTask(MainMatCalcWindow window, BinarySearch<AnnotationGene> tssSearch, double start, double end,
+      int units, double binSize, int binUnits) {
+    mWindow = window;
+    mTssSearch = tssSearch;
+    mStart = start;
+    mEnd = end;
+    mUnits = units;
+    mBinSize = Math.abs(binSize);
+    mBinUnits = binUnits;
+  }
 
-	@Override
-	public Void doInBackground() {
-		try {
-			plot();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+  @Override
+  public Void doInBackground() {
+    try {
+      plot();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
 
-		return null;
-	}
+    return null;
+  }
 
-	public void plot() throws ParseException {
-		DataFrame matrix = mWindow.getCurrentMatrix();
-		
-		List<Double> tssPoints = new ArrayList<Double>();
+  public void plot() throws ParseException {
+    DataFrame matrix = mWindow.getCurrentMatrix();
 
-		for (int i = 0; i < matrix.getRows(); ++i) {
-			GenomicRegion region = null;
+    List<Double> tssPoints = new ArrayList<Double>();
 
-			if (Io.isEmptyLine(matrix.getText(i, 0))) {
-				continue;
-			} else if (matrix.getText(i, 0).contains(TextUtils.NA)) {
-				continue;
-			} else if (GenomicRegion.isGenomicRegion(matrix.getText(i, 0))) {
-				region = GenomicRegion.parse(matrix.getText(i, 0));
-			} else {
-				// three column format
+    for (int i = 0; i < matrix.getRows(); ++i) {
+      GenomicRegion region = null;
 
-				region = new GenomicRegion(ChromosomeService.getInstance().parse(matrix.getText(i, 0)),
-						TextUtils.parseInt(matrix.getText(i, 1)),
-						TextUtils.parseInt(matrix.getText(i, 2)));
-			}
+      if (Io.isEmptyLine(matrix.getText(i, 0))) {
+        continue;
+      } else if (matrix.getText(i, 0).contains(TextUtils.NA)) {
+        continue;
+      } else if (GenomicRegion.isGenomicRegion(matrix.getText(i, 0))) {
+        region = GenomicRegion.parse(matrix.getText(i, 0));
+      } else {
+        // three column format
 
-			//System.err.println("region: " + region);
+        region = new GenomicRegion(ChromosomeService.getInstance().parse(matrix.getText(i, 0)),
+            TextUtils.parseInt(matrix.getText(i, 1)), TextUtils.parseInt(matrix.getText(i, 2)));
+      }
 
-			GenomicRegion midPoint = GenomicRegion.midRegion(region);
+      // System.err.println("region: " + region);
 
-			// Find Gene TSS near the midpoint
-			List<AnnotationGene> results = 
-					mTssSearch.getClosestFeatures(midPoint);
+      GenomicRegion midPoint = GenomicRegion.midRegion(region);
 
-			if (results != null) {
-				double tss = Double.MAX_VALUE;
+      // Find Gene TSS near the midpoint
+      List<AnnotationGene> results = mTssSearch.getClosestFeatures(midPoint);
 
-				for (AnnotationGene gene : results) {
-					tss = Math.min(tss, AnnotationGene.getTssMidDist(gene, midPoint.getStart()));
-				}
+      if (results != null) {
+        double tss = Double.MAX_VALUE;
 
-				tssPoints.add(tss);
-			}
-		}
+        for (AnnotationGene gene : results) {
+          tss = Math.min(tss, AnnotationGene.getTssMidDist(gene, midPoint.getStart()));
+        }
 
-		plot(mWindow,
-				tssPoints,
-				mStart,
-				mEnd,
-				mUnits,
-				mBinSize,
-				mBinUnits);
-	}
-	
-	public static void plot(MainMatCalcWindow window,
-			List<Double> tssPoints,
-			double start,
-			double end,
-			int units,
-			double binSize,
-			int binUnits) {
+        tssPoints.add(tss);
+      }
+    }
 
-		// Nearest plot
+    plot(mWindow, tssPoints, mStart, mEnd, mUnits, mBinSize, mBinUnits);
+  }
 
-		List<Double> plotTssPoints = new ArrayList<Double>();
+  public static void plot(MainMatCalcWindow window, List<Double> tssPoints, double start, double end, int units,
+      double binSize, int binUnits) {
 
-		double s = start * units;
-		double e = end * units;
+    // Nearest plot
 
-		System.err.println("s " + s + " " + e + " " + (binSize * binUnits / units));
+    List<Double> plotTssPoints = new ArrayList<Double>();
 
-		for (double x : tssPoints) {
-			if (x < s || x > e) {
-				continue;
-			}
+    double s = start * units;
+    double e = end * units;
 
-			plotTssPoints.add(x / units);
-		}
+    System.err.println("s " + s + " " + e + " " + (binSize * binUnits / units));
 
-		// Convert to histograms
-		List<HistBin> tssHist = Statistics.histogram(plotTssPoints, 
-				start, 
-				end, 
-				binSize * binUnits / units);
+    for (double x : tssPoints) {
+      if (x < s || x > e) {
+        continue;
+      }
 
+      plotTssPoints.add(x / units);
+    }
 
-		TssSubFigure tssCanvas = new TssSubFigure("TSS", 
-				"TSS", 
-				tssHist,
-				start,
-				end,
-				Math.pow(10, Math.floor(Math.log10(Math.abs(start)))));
+    // Convert to histograms
+    List<HistBin> tssHist = Statistics.histogram(plotTssPoints, start, end, binSize * binUnits / units);
 
+    TssSubFigure tssCanvas = new TssSubFigure("TSS", "TSS", tssHist, start, end,
+        Math.pow(10, Math.floor(Math.log10(Math.abs(start)))));
 
-		List<Double> log10TssPoints = new ArrayList<Double>();
+    List<Double> log10TssPoints = new ArrayList<Double>();
 
-		for (double x : tssPoints) {
-			double v = Mathematics.log10(Math.max(1, Math.abs(x)));
+    for (double x : tssPoints) {
+      double v = Mathematics.log10(Math.max(1, Math.abs(x)));
 
-			if (v <= 8) {
-				log10TssPoints.add(v);
-			}
-		}
+      if (v <= 8) {
+        log10TssPoints.add(v);
+      }
+    }
 
-		List<HistBin> log10TssHist = 
-				Statistics.histogram(log10TssPoints, 0, 8, 0.1);
+    List<HistBin> log10TssHist = Statistics.histogram(log10TssPoints, 0, 8, 0.1);
 
-		Log10TssSubFigure tssLogCanvas = 
-				new Log10TssSubFigure("TSS", "TSS", log10TssHist);
+    Log10TssSubFigure tssLogCanvas = new Log10TssSubFigure("TSS", "TSS", log10TssHist);
 
-		Figure figure = new Figure("TSS Figure", new PlotBoxGridStorage(1, 2), new PlotBoxGridLayout(1, 2));
-		figure.addChild(tssCanvas, 0, 0);
-		figure.addChild(tssLogCanvas, 0, 1);
+    Figure figure = new Figure("TSS Figure", new PlotBoxGridStorage(1, 2), new PlotBoxGridLayout(1, 2));
+    figure.addChild(tssCanvas, 0, 0);
+    figure.addChild(tssLogCanvas, 0, 1);
 
-		Graph2dWindow plotWindow = new Graph2dWindow(window, figure);
+    Graph2dWindow plotWindow = new Graph2dWindow(window, figure);
 
-		plotWindow.getStyle().set(PlotStyle.JOINED_BARS);
+    plotWindow.getStyle().set(PlotStyle.JOINED_BARS);
 
-
-		plotWindow.setVisible(true);
-	}
+    plotWindow.setVisible(true);
+  }
 }

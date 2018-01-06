@@ -26,104 +26,99 @@ import edu.columbia.rdf.matcalc.bio.GenomesPanel;
  *
  */
 public class TssPlotDialog extends ModernDialogTaskWindow {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	private ModernCompactSpinner mFieldStart = 
-			new ModernCompactSpinner(-100, -1, -4, 1, false);
-	
-	private ModernCompactSpinner mFieldEnd = 
-			new ModernCompactSpinner(1, 100, 4, 1, false);
-	
-	private ModernCompactSpinner mFieldBin = 
-			new ModernCompactSpinner(1, 1000, 100, 1, false);
+  private ModernCompactSpinner mFieldStart = new ModernCompactSpinner(-100, -1, -4, 1, false);
 
-	private ModernComboBox mUnitsCombo = new UnitsComboBox();
+  private ModernCompactSpinner mFieldEnd = new ModernCompactSpinner(1, 100, 4, 1, false);
 
-	private ModernComboBox mBinUnitsCombo = new UnitsComboBox();
+  private ModernCompactSpinner mFieldBin = new ModernCompactSpinner(1, 1000, 100, 1, false);
 
-	private GenomesPanel mGenomesPanel = 
-			new GenomesPanel(ModernCheckTreeMode.RADIO);
-	
-	public TssPlotDialog(ModernWindow parent) {
-		super(parent);
+  private ModernComboBox mUnitsCombo = new UnitsComboBox();
 
-		setTitle("Plot Options");
+  private ModernComboBox mBinUnitsCombo = new UnitsComboBox();
 
-		createUi();
-		
-		setup();
-	}
+  private GenomesPanel mGenomesPanel = new GenomesPanel(ModernCheckTreeMode.RADIO);
 
-	private void setup() {
-		addWindowListener(new WindowWidgetFocusEvents(mOkButton));
+  public TssPlotDialog(ModernWindow parent) {
+    super(parent);
 
-		setSize(640, 480);
+    setTitle("Plot Options");
 
-		UI.centerWindowToScreen(this);
-	}
+    createUi();
 
-	private final void createUi() {
-		Box box = VBox.create();
+    setup();
+  }
 
-		sectionHeader("Genome", box);
-		//box.add(new HExpandBox("Species", mSpeciesCombo));
+  private void setup() {
+    addWindowListener(new WindowWidgetFocusEvents(mOkButton));
 
-		UI.setSize(mGenomesPanel, 600, 200);
-		box.add(mGenomesPanel);
-		
-		midSectionHeader("Distance", box);
-		
-		box.add(new HExpandBox("Range", 
-				new HSpacedBox(mFieldStart, new ModernAutoSizeLabel("to"), mFieldEnd, mUnitsCombo)));
-		
-		box.add(UI.createVGap(10));
+    setSize(640, 480);
 
-		box.add(new HExpandBox("Bins", 
-				new HSpacedBox(mFieldBin, mBinUnitsCombo)));
+    UI.centerWindowToScreen(this);
+  }
 
-		setDialogCardContent(box);
-		
-		mUnitsCombo.setSelectedIndex(1);
-		
-		UI.setSize(mUnitsCombo, ModernWidget.SMALL_SIZE);
-		UI.setSize(mBinUnitsCombo, ModernWidget.SMALL_SIZE);
-	}
+  private final void createUi() {
+    Box box = VBox.create();
 
-	public double getStart() throws ParseException {
-		return mFieldStart.getValue();
-	}
-	
-	public double getEnd() throws ParseException {
-		return mFieldEnd.getValue();
-	}
-	
-	public int getUnits() {
-		switch(mUnitsCombo.getSelectedIndex()) {
-		case 2:
-			return 1000000;
-		case 1:
-			return 1000;
-		default:
-			return 1;
-		}
-	}
-	
-	public double getBinSize() throws ParseException {
-		return mFieldBin.getValue();
-	}
-	
-	public int getBinUnits() {
-		switch(mBinUnitsCombo.getSelectedIndex()) {
-		case 2:
-			return 1000000;
-		case 1:
-			return 1000;
-		default:
-			return 1;
-		}
-	}
-	
-	public String getGenome() {
-		return mGenomesPanel.getGenome();
-	}
+    sectionHeader("Genome", box);
+    // box.add(new HExpandBox("Species", mSpeciesCombo));
+
+    UI.setSize(mGenomesPanel, 600, 200);
+    box.add(mGenomesPanel);
+
+    midSectionHeader("Distance", box);
+
+    box.add(
+        new HExpandBox("Range", new HSpacedBox(mFieldStart, new ModernAutoSizeLabel("to"), mFieldEnd, mUnitsCombo)));
+
+    box.add(UI.createVGap(10));
+
+    box.add(new HExpandBox("Bins", new HSpacedBox(mFieldBin, mBinUnitsCombo)));
+
+    setDialogCardContent(box);
+
+    mUnitsCombo.setSelectedIndex(1);
+
+    UI.setSize(mUnitsCombo, ModernWidget.SMALL_SIZE);
+    UI.setSize(mBinUnitsCombo, ModernWidget.SMALL_SIZE);
+  }
+
+  public double getStart() throws ParseException {
+    return mFieldStart.getValue();
+  }
+
+  public double getEnd() throws ParseException {
+    return mFieldEnd.getValue();
+  }
+
+  public int getUnits() {
+    switch (mUnitsCombo.getSelectedIndex()) {
+    case 2:
+      return 1000000;
+    case 1:
+      return 1000;
+    default:
+      return 1;
+    }
+  }
+
+  public double getBinSize() throws ParseException {
+    return mFieldBin.getValue();
+  }
+
+  public int getBinUnits() {
+    switch (mBinUnitsCombo.getSelectedIndex()) {
+    case 2:
+      return 1000000;
+    case 1:
+      return 1000;
+    default:
+      return 1;
+    }
+  }
+
+  public String getGenome() {
+    return mGenomesPanel.getGenome();
+  }
 }

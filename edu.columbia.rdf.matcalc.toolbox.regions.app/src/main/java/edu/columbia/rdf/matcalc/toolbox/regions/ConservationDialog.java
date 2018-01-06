@@ -15,58 +15,59 @@ import org.jebtk.modern.window.WindowWidgetFocusEvents;
  *
  */
 public class ConservationDialog extends ModernDialogTaskWindow {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	private ModernCheckBox mCheckMean = new ModernCheckBox("Mean Conservation", true);
-	private ModernCheckBox mCheckMedian = new ModernCheckBox("Median Conservation");
-	private ModernCheckBox mCheckScores = new ModernCheckBox("Scores");
-	
-	public ConservationDialog(ModernWindow parent) {
-		super(parent);
-		
-		setTitle("Conservation");
+  private ModernCheckBox mCheckMean = new ModernCheckBox("Mean Conservation", true);
+  private ModernCheckBox mCheckMedian = new ModernCheckBox("Median Conservation");
+  private ModernCheckBox mCheckScores = new ModernCheckBox("Scores");
 
-		setup();
+  public ConservationDialog(ModernWindow parent) {
+    super(parent);
 
-		createUi();
-	}
+    setTitle("Conservation");
 
-	private void setup() {
-		addWindowListener(new WindowWidgetFocusEvents(mOkButton));
-		
+    setup();
 
-		setSize(360, 240);
-		
-		UI.centerWindowToScreen(this);
-	}
+    createUi();
+  }
 
-	private final void createUi() {
-		//this.getContentPane().add(new JLabel("Change " + getProductDetails().getProductName() + " settings", JLabel.LEFT), BorderLayout.PAGE_START);
+  private void setup() {
+    addWindowListener(new WindowWidgetFocusEvents(mOkButton));
 
-		Box box = Box.createVerticalBox();
-		
-		box.add(mCheckMean);
-		
-		box.add(UI.createVGap(10));
-		
-		box.add(mCheckMedian);
-		
-		box.add(UI.createVGap(10));
-		
-		box.add(mCheckScores);
-		
-		setCardContent(box);
-	}
+    setSize(360, 240);
 
-	public boolean getShowMean() {
-		return mCheckMean.isSelected();
-	}
-	
-	public boolean getShowMedian() {
-		return mCheckMedian.isSelected();
-	}
-	
-	public boolean getShowScores() {
-		return mCheckScores.isSelected();
-	}
+    UI.centerWindowToScreen(this);
+  }
+
+  private final void createUi() {
+    // this.getContentPane().add(new JLabel("Change " +
+    // getProductDetails().getProductName() + " settings", JLabel.LEFT),
+    // BorderLayout.PAGE_START);
+
+    Box box = Box.createVerticalBox();
+
+    box.add(mCheckMean);
+
+    box.add(UI.createVGap(10));
+
+    box.add(mCheckMedian);
+
+    box.add(UI.createVGap(10));
+
+    box.add(mCheckScores);
+
+    setCardContent(box);
+  }
+
+  public boolean getShowMean() {
+    return mCheckMean.isSelected();
+  }
+
+  public boolean getShowMedian() {
+    return mCheckMedian.isSelected();
+  }
+
+  public boolean getShowScores() {
+    return mCheckScores.isSelected();
+  }
 }

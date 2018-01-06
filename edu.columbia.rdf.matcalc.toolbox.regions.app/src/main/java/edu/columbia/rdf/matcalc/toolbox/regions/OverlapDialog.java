@@ -32,148 +32,140 @@ import org.jebtk.modern.window.WindowWidgetFocusEvents;
  *
  */
 public class OverlapDialog extends ModernDialogTaskWindow implements ModernClickListener {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	private ModernRadioButton mCheckOneWay = 
-			new ModernRadioButton("One way", true);
-	
-	private ModernRadioButton mCheckTwoWay = new ModernRadioButton("Two way");
+  private ModernRadioButton mCheckOneWay = new ModernRadioButton("One way", true);
 
-	private ModernCheckBox mCheckVenn = 
-			new ModernCheckBox("Venn diagram", ModernWidget.LARGE_SIZE);
+  private ModernRadioButton mCheckTwoWay = new ModernRadioButton("Two way");
 
-	private ModernCheckBox mCheckAddBeginning = 
-			new ModernCheckBox("Annotation at beginning", 
-					SettingsService.getInstance().getAsBool("regions.overlap.annotation.first-columns"), 
-					ModernWidget.EXTRA_LARGE_SIZE);
-	
-	private Path mFile1;
+  private ModernCheckBox mCheckVenn = new ModernCheckBox("Venn diagram", ModernWidget.LARGE_SIZE);
 
-	private Path mFile2;
+  private ModernCheckBox mCheckAddBeginning = new ModernCheckBox("Annotation at beginning",
+      SettingsService.getInstance().getAsBool("regions.overlap.annotation.first-columns"),
+      ModernWidget.EXTRA_LARGE_SIZE);
 
-	private ModernComboBox mHeader1;
+  private Path mFile1;
 
-	private ModernComboBox mHeader2;
-	
-	public OverlapDialog(ModernWindow parent, Path file1, Path file2) {
-		super(parent);
+  private Path mFile2;
 
-		mFile1 = file1;
-		mFile2 = file2;
+  private ModernComboBox mHeader1;
 
-		setTitle("Overlap");
+  private ModernComboBox mHeader2;
 
-		setup();
+  public OverlapDialog(ModernWindow parent, Path file1, Path file2) {
+    super(parent);
 
-		createUi();
-	}
+    mFile1 = file1;
+    mFile2 = file2;
 
-	private void setup() {
-		addWindowListener(new WindowWidgetFocusEvents(mOkButton));
-	
-		setSize(480, 300);
+    setTitle("Overlap");
 
-		UI.centerWindowToScreen(this);
-	}
+    setup();
 
-	private final void createUi() {
-		//this.getContentPane().add(new JLabel("Change " + getProductDetails().getProductName() + " settings", JLabel.LEFT), BorderLayout.PAGE_START);
+    createUi();
+  }
 
-		Box box = VBox.create();
+  private void setup() {
+    addWindowListener(new WindowWidgetFocusEvents(mOkButton));
 
-		box.add(mCheckOneWay);
+    setSize(480, 300);
 
-		box.add(UI.createVGap(10));
+    UI.centerWindowToScreen(this);
+  }
 
-		box.add(mCheckTwoWay);
+  private final void createUi() {
+    // this.getContentPane().add(new JLabel("Change " +
+    // getProductDetails().getProductName() + " settings", JLabel.LEFT),
+    // BorderLayout.PAGE_START);
 
-		mCheckVenn.setBorder(BorderService.getInstance().createLeftBorder(20));
-		box.add(mCheckVenn);
+    Box box = VBox.create();
 
+    box.add(mCheckOneWay);
 
+    box.add(UI.createVGap(10));
 
-		if (!PathUtils.getFileExt(mFile1).contains("bed")) {
-			box.add(UI.createVGap(10));
+    box.add(mCheckTwoWay);
 
-			Box box2 = HBox.create();
+    mCheckVenn.setBorder(BorderService.getInstance().createLeftBorder(20));
+    box.add(mCheckVenn);
 
-			box2.add(new ModernAutoSizeLabel("Input file genomic location", 
-					ModernWidget.EXTRA_LARGE_SIZE));
+    if (!PathUtils.getFileExt(mFile1).contains("bed")) {
+      box.add(UI.createVGap(10));
 
-			try {
-				mHeader1 = new ModernComboBox(Excel.getHeader(mFile1), 
-						ModernWidget.EXTRA_LARGE_SIZE);
-				box2.add(mHeader1);
-			} catch (InvalidFormatException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+      Box box2 = HBox.create();
 
-			box.add(box2);
-		}
+      box2.add(new ModernAutoSizeLabel("Input file genomic location", ModernWidget.EXTRA_LARGE_SIZE));
 
-		if (!PathUtils.getFileExt(mFile2).contains("bed")) {
-			box.add(UI.createVGap(10));
+      try {
+        mHeader1 = new ModernComboBox(Excel.getHeader(mFile1), ModernWidget.EXTRA_LARGE_SIZE);
+        box2.add(mHeader1);
+      } catch (InvalidFormatException e) {
+        e.printStackTrace();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
 
-			Box box2 = HBox.create();
+      box.add(box2);
+    }
 
-			box2 = HBox.create();
+    if (!PathUtils.getFileExt(mFile2).contains("bed")) {
+      box.add(UI.createVGap(10));
 
-			box2.add(new ModernAutoSizeLabel("Overlap file genomic location", 
-					ModernWidget.EXTRA_LARGE_SIZE));
+      Box box2 = HBox.create();
 
-			try {
-				mHeader2 = new ModernComboBox(Excel.getHeader(mFile2), 
-						ModernWidget.EXTRA_LARGE_SIZE);
-				
-				box2.add(mHeader2);
-			} catch (InvalidFormatException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+      box2 = HBox.create();
 
-			box.add(box2);
-		}
-		
-		box.add(UI.createVGap(10));
-		
-		box.add(mCheckAddBeginning);
+      box2.add(new ModernAutoSizeLabel("Overlap file genomic location", ModernWidget.EXTRA_LARGE_SIZE));
 
-		setDialogCardContent(box);
+      try {
+        mHeader2 = new ModernComboBox(Excel.getHeader(mFile2), ModernWidget.EXTRA_LARGE_SIZE);
 
-		new ModernButtonGroup(mCheckOneWay, mCheckTwoWay);
-	}
+        box2.add(mHeader2);
+      } catch (InvalidFormatException e) {
+        e.printStackTrace();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
 
-	@Override
-	public void clicked(ModernClickEvent e) {
-		if (e.getMessage().equals(UI.BUTTON_OK)) {
-			// Update whether to add overlap columns at start or end
-			SettingsService.getInstance().update("regions.overlap.annotation.first-columns", 
-					mCheckAddBeginning.isSelected());
-		}
+      box.add(box2);
+    }
 
-		super.clicked(e);
-	}
+    box.add(UI.createVGap(10));
 
-	public boolean getStrict() {
-		return mCheckOneWay.isSelected();
-	}
+    box.add(mCheckAddBeginning);
 
-	public boolean getDrawVenn() {
-		return mCheckVenn.isSelected();
-	}
-	
-	public boolean getAddBeginning() {
-		return mCheckAddBeginning.isSelected();
-	}
-	
-	public int getHeader1() {
-		return mHeader1 != null ? mHeader1.getSelectedIndex() : -1;
-	}
-	
-	public int getHeader2() {
-		return mHeader2 != null ? mHeader2.getSelectedIndex() : -1;
-	}
+    setDialogCardContent(box);
+
+    new ModernButtonGroup(mCheckOneWay, mCheckTwoWay);
+  }
+
+  @Override
+  public void clicked(ModernClickEvent e) {
+    if (e.getMessage().equals(UI.BUTTON_OK)) {
+      // Update whether to add overlap columns at start or end
+      SettingsService.getInstance().update("regions.overlap.annotation.first-columns", mCheckAddBeginning.isSelected());
+    }
+
+    super.clicked(e);
+  }
+
+  public boolean getStrict() {
+    return mCheckOneWay.isSelected();
+  }
+
+  public boolean getDrawVenn() {
+    return mCheckVenn.isSelected();
+  }
+
+  public boolean getAddBeginning() {
+    return mCheckAddBeginning.isSelected();
+  }
+
+  public int getHeader1() {
+    return mHeader1 != null ? mHeader1.getSelectedIndex() : -1;
+  }
+
+  public int getHeader2() {
+    return mHeader2 != null ? mHeader2.getSelectedIndex() : -1;
+  }
 }

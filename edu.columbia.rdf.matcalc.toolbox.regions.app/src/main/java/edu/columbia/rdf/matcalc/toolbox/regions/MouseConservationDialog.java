@@ -14,51 +14,52 @@ import org.jebtk.modern.window.WindowWidgetFocusEvents;
  * @author Antony Holmes Holmes
  *
  */
-public class MouseConservationDialog extends ModernDialogTaskWindow  {
-	private static final long serialVersionUID = 1L;
-	
-	private ModernCheckBox mCheckConservation = 
-			new ModernCheckBox("Conservation", true);
-	
-	private ModernCheckBox mCheckScores = new ModernCheckBox("Scores");
-	
-	public MouseConservationDialog(ModernWindow parent) {
-		super(parent);
-		
-		setTitle("Mouse Conservation");
+public class MouseConservationDialog extends ModernDialogTaskWindow {
+  private static final long serialVersionUID = 1L;
 
-		setup();
+  private ModernCheckBox mCheckConservation = new ModernCheckBox("Conservation", true);
 
-		createUi();
-	}
+  private ModernCheckBox mCheckScores = new ModernCheckBox("Scores");
 
-	private void setup() {
-		addWindowListener(new WindowWidgetFocusEvents(mOkButton));
-		
-		setSize(360, 240);
-		
-		UI.centerWindowToScreen(this);
-	}
+  public MouseConservationDialog(ModernWindow parent) {
+    super(parent);
 
-	private final void createUi() {
-		//this.getContentPane().add(new JLabel("Change " + getProductDetails().getProductName() + " settings", JLabel.LEFT), BorderLayout.PAGE_START);
+    setTitle("Mouse Conservation");
 
-		Box box = Box.createVerticalBox();
-		
-		box.add(mCheckConservation);
-		
-		box.add(UI.createVGap(10));
-		
-		box.add(mCheckScores);
-		
-		setCardContent(box);
-	}
-	
-	public boolean getShowConservation() {
-		return mCheckConservation.isSelected();
-	}
-	
-	public boolean getShowScores() {
-		return mCheckScores.isSelected();
-	}
+    setup();
+
+    createUi();
+  }
+
+  private void setup() {
+    addWindowListener(new WindowWidgetFocusEvents(mOkButton));
+
+    setSize(360, 240);
+
+    UI.centerWindowToScreen(this);
+  }
+
+  private final void createUi() {
+    // this.getContentPane().add(new JLabel("Change " +
+    // getProductDetails().getProductName() + " settings", JLabel.LEFT),
+    // BorderLayout.PAGE_START);
+
+    Box box = Box.createVerticalBox();
+
+    box.add(mCheckConservation);
+
+    box.add(UI.createVGap(10));
+
+    box.add(mCheckScores);
+
+    setCardContent(box);
+  }
+
+  public boolean getShowConservation() {
+    return mCheckConservation.isSelected();
+  }
+
+  public boolean getShowScores() {
+    return mCheckScores.isSelected();
+  }
 }

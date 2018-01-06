@@ -21,78 +21,72 @@ import org.jebtk.modern.window.WindowWidgetFocusEvents;
  *
  */
 public class ExtendDialog extends ModernDialogTaskWindow {
-	private static final long serialVersionUID = 1L;
-	
-	private ModernCompactSpinner mExt5pText = 
-			new ModernCompactSpinner(0, 100000, 500, 1000, false);
-	
-	private ModernCompactSpinner mExt3pText = 
-			new ModernCompactSpinner(0, 100000, 500, 1000, false);
-	
-	public ExtendDialog(ModernWindow parent) {
-		super(parent);
-		
-		setTitle("Extend");
+  private static final long serialVersionUID = 1L;
 
-		setup();
+  private ModernCompactSpinner mExt5pText = new ModernCompactSpinner(0, 100000, 500, 1000, false);
 
-		createUi();
-	}
+  private ModernCompactSpinner mExt3pText = new ModernCompactSpinner(0, 100000, 500, 1000, false);
 
-	private void setup() {
-		addWindowListener(new WindowWidgetFocusEvents(mOkButton));
+  public ExtendDialog(ModernWindow parent) {
+    super(parent);
 
-		setSize(360, 200);
-		
-		UI.centerWindowToScreen(this);
-	}
+    setTitle("Extend");
 
-	private final void createUi() {
-		//this.getContentPane().add(new JLabel("Change " + getProductDetails().getProductName() + " settings", JLabel.LEFT), BorderLayout.PAGE_START);
+    setup();
 
-		Box box = Box.createVerticalBox();
-		
-		box.add(new HExpandBox("5' extension", 
-				mExt5pText,
-				ModernPanel.createHGap(),
-				new ModernAutoSizeLabel("bp")));
-		
-		box.add(UI.createVGap(10));
-		
-		box.add(new HExpandBox("3' extension", 
-				mExt3pText,
-				ModernPanel.createHGap(),
-				new ModernAutoSizeLabel("bp")));
-		
-		setDialogCardContent(box);
-	}
+    createUi();
+  }
 
-	@Override
-	public void clicked(ModernClickEvent e) {
-		if (e.getMessage().equals(UI.BUTTON_OK)) {
-			
-			// validate user input.
-			
-			try {
-				Validation.validateAsInt("5' extension", mExt5pText.getText());
-				Validation.validateAsInt("3' extension", mExt3pText.getText());
-			} catch (ValidationException ex) {
-				ex.printStackTrace();
-				
-				Validation.showValidationError(mParent, ex);
-				
-				return;
-			}
-		}
-		
-		super.clicked(e);
-	}
+  private void setup() {
+    addWindowListener(new WindowWidgetFocusEvents(mOkButton));
 
-	public int getExt5p() {
-		return mExt5pText.getIntValue();
-	}
+    setSize(360, 200);
 
-	public int getExt3p() {
-		return mExt3pText.getIntValue();
-	}
+    UI.centerWindowToScreen(this);
+  }
+
+  private final void createUi() {
+    // this.getContentPane().add(new JLabel("Change " +
+    // getProductDetails().getProductName() + " settings", JLabel.LEFT),
+    // BorderLayout.PAGE_START);
+
+    Box box = Box.createVerticalBox();
+
+    box.add(new HExpandBox("5' extension", mExt5pText, ModernPanel.createHGap(), new ModernAutoSizeLabel("bp")));
+
+    box.add(UI.createVGap(10));
+
+    box.add(new HExpandBox("3' extension", mExt3pText, ModernPanel.createHGap(), new ModernAutoSizeLabel("bp")));
+
+    setDialogCardContent(box);
+  }
+
+  @Override
+  public void clicked(ModernClickEvent e) {
+    if (e.getMessage().equals(UI.BUTTON_OK)) {
+
+      // validate user input.
+
+      try {
+        Validation.validateAsInt("5' extension", mExt5pText.getText());
+        Validation.validateAsInt("3' extension", mExt3pText.getText());
+      } catch (ValidationException ex) {
+        ex.printStackTrace();
+
+        Validation.showValidationError(mParent, ex);
+
+        return;
+      }
+    }
+
+    super.clicked(e);
+  }
+
+  public int getExt5p() {
+    return mExt5pText.getIntValue();
+  }
+
+  public int getExt3p() {
+    return mExt3pText.getIntValue();
+  }
 }

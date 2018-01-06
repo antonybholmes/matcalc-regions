@@ -19,50 +19,47 @@ import org.jebtk.modern.window.WindowWidgetFocusEvents;
  *
  */
 public class SpeciesDialog extends ModernDialogTaskWindow implements ModernClickListener {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	private ModernRadioButton mCheckHuman = 
-			new ModernRadioButton("Human");
-	
-	private ModernRadioButton mCheckMouse = 
-			new ModernRadioButton("Mouse");
+  private ModernRadioButton mCheckHuman = new ModernRadioButton("Human");
 
-	public SpeciesDialog(ModernWindow parent, String name) {
-		super(parent);
+  private ModernRadioButton mCheckMouse = new ModernRadioButton("Mouse");
 
+  public SpeciesDialog(ModernWindow parent, String name) {
+    super(parent);
 
-		setTitle(name);
+    setTitle(name);
 
-		createUi();
-		
-		setup();
-	}
+    createUi();
 
-	private void setup() {
-		new ModernButtonGroup(mCheckHuman, mCheckMouse);
-		
-		mCheckHuman.doClick();
-		
-		addWindowListener(new WindowWidgetFocusEvents(mOkButton));
+    setup();
+  }
 
-		setSize(360, 220);
+  private void setup() {
+    new ModernButtonGroup(mCheckHuman, mCheckMouse);
 
-		UI.centerWindowToScreen(this);
-	}
+    mCheckHuman.doClick();
 
-	private final void createUi() {
-		Box box = VBox.create();
+    addWindowListener(new WindowWidgetFocusEvents(mOkButton));
 
-		box.add(new ModernDialogHeadingLabel("Species"));
-		box.add(UI.createVGap(10));
-		box.add(mCheckHuman);
-		box.add(UI.createVGap(5));
-		box.add(mCheckMouse);
+    setSize(360, 220);
 
-		setCardContent(box);
-	}
+    UI.centerWindowToScreen(this);
+  }
 
-	public boolean getHuman() {
-		return mCheckHuman.isSelected();
-	}
+  private final void createUi() {
+    Box box = VBox.create();
+
+    box.add(new ModernDialogHeadingLabel("Species"));
+    box.add(UI.createVGap(10));
+    box.add(mCheckHuman);
+    box.add(UI.createVGap(5));
+    box.add(mCheckMouse);
+
+    setCardContent(box);
+  }
+
+  public boolean getHuman() {
+    return mCheckHuman.isSelected();
+  }
 }

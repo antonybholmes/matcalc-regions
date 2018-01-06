@@ -27,121 +27,110 @@ import edu.columbia.rdf.matcalc.bio.AnnotationSidePanel;
  *
  */
 public class StitchDialog extends ModernDialogHelpWindow {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	private ModernCompactSpinner mDistanceField = 
-			new ModernCompactSpinner(0, 100000, 2000, SettingsService.getInstance().getAsInt("regions.max-stitch-distance"), false);
+  private ModernCompactSpinner mDistanceField = new ModernCompactSpinner(0, 100000, 2000,
+      SettingsService.getInstance().getAsInt("regions.max-stitch-distance"), false);
 
-	private ModernCompactSpinner mTss5pExt = 
-			new ModernCompactSpinner(0, 100000, 2000, 1000, false);
+  private ModernCompactSpinner mTss5pExt = new ModernCompactSpinner(0, 100000, 2000, 1000, false);
 
-	private ModernCompactSpinner mTss3pExt = 
-			new ModernCompactSpinner(0, 100000, 2000, 1000, false);
+  private ModernCompactSpinner mTss3pExt = new ModernCompactSpinner(0, 100000, 2000, 1000, false);
 
-	private ModernTwoStateWidget mCheckTssExclusion =
-			new ModernCheckSwitch("TSS exclusion", true);
+  private ModernTwoStateWidget mCheckTssExclusion = new ModernCheckSwitch("TSS exclusion", true);
 
-	private AnnotationSidePanel mGenomesPanel = new AnnotationSidePanel();
+  private AnnotationSidePanel mGenomesPanel = new AnnotationSidePanel();
 
-	public StitchDialog(ModernWindow parent) {
-		super(parent, "org.matcalc.toolbox.bio.regions.stitch.help.url");
+  public StitchDialog(ModernWindow parent) {
+    super(parent, "org.matcalc.toolbox.bio.regions.stitch.help.url");
 
-		setTitle("Stitch");
+    setTitle("Stitch");
 
-		createUi();
+    createUi();
 
-		setup();
-	}
+    setup();
+  }
 
-	private void setup() {
-		setResizable(true);
-		
-		addWindowListener(new WindowWidgetFocusEvents(mOkButton));
+  private void setup() {
+    setResizable(true);
 
-		setSize(640, 400);
+    addWindowListener(new WindowWidgetFocusEvents(mOkButton));
 
-		UI.centerWindowToScreen(this);
-	}
+    setSize(640, 400);
 
-	private final void createUi() {
-		//this.getContentPane().add(new JLabel("Change " + getProductDetails().getProductName() + " settings", JLabel.LEFT), BorderLayout.PAGE_START);
-		Box box = VBox.create();
+    UI.centerWindowToScreen(this);
+  }
 
-		
-		sectionHeader("Distance", box);
-		
-		box.add(new HExpandBox("Maximum Distance",
-				mDistanceField,
-				ModernPanel.createHGap(),
-				new ModernAutoSizeLabel("bp")));
+  private final void createUi() {
+    // this.getContentPane().add(new JLabel("Change " +
+    // getProductDetails().getProductName() + " settings", JLabel.LEFT),
+    // BorderLayout.PAGE_START);
+    Box box = VBox.create();
 
-		box.add(UI.createVGap(10));
+    sectionHeader("Distance", box);
 
-		box.add(mCheckTssExclusion);
+    box.add(
+        new HExpandBox("Maximum Distance", mDistanceField, ModernPanel.createHGap(), new ModernAutoSizeLabel("bp")));
 
-		box.add(ModernPanel.createVGap());
+    box.add(UI.createVGap(10));
 
-		Box box2 = VBox.create();
+    box.add(mCheckTssExclusion);
 
-		box2.add(new HExpandBox("5' exclusion",
-				mTss5pExt,
-				ModernPanel.createHGap(),
-				new ModernAutoSizeLabel("bp")));
+    box.add(ModernPanel.createVGap());
 
-		box2.add(ModernPanel.createVGap());
+    Box box2 = VBox.create();
 
-		box2.add(new HExpandBox("3' exclusion",
-				mTss3pExt,
-				ModernPanel.createHGap(),
-				new ModernAutoSizeLabel("bp")));
+    box2.add(new HExpandBox("5' exclusion", mTss5pExt, ModernPanel.createHGap(), new ModernAutoSizeLabel("bp")));
 
-		box.add(box2);
+    box2.add(ModernPanel.createVGap());
 
-		setCard(box);
-		
-		getTabsPane().addLeftTab("Genomes", mGenomesPanel, 200, 100, 400);
-	}
+    box2.add(new HExpandBox("3' exclusion", mTss3pExt, ModernPanel.createHGap(), new ModernAutoSizeLabel("bp")));
 
-	@Override
-	public void clicked(ModernClickEvent e) {
-		if (e.getMessage().equals(UI.BUTTON_OK)) {
+    box.add(box2);
 
-			try {
-				Validation.validateAsInt("Maximum Distance", mDistanceField.getText());
-				Validation.validateAsInt("TSS 5' extension", mTss5pExt.getText());
-				Validation.validateAsInt("TSS 3' extension", mTss3pExt.getText());
-			} catch (ValidationException ex) {
-				ex.printStackTrace();
+    setCard(box);
 
-				Validation.showValidationError(mParent, ex);
+    getTabsPane().addLeftTab("Genomes", mGenomesPanel, 200, 100, 400);
+  }
 
-				return;
-			}
+  @Override
+  public void clicked(ModernClickEvent e) {
+    if (e.getMessage().equals(UI.BUTTON_OK)) {
 
-			SettingsService.getInstance().update("regions.max-stitch-distance", 
-					mDistanceField.getIntValue());
-		}
+      try {
+        Validation.validateAsInt("Maximum Distance", mDistanceField.getText());
+        Validation.validateAsInt("TSS 5' extension", mTss5pExt.getText());
+        Validation.validateAsInt("TSS 3' extension", mTss3pExt.getText());
+      } catch (ValidationException ex) {
+        ex.printStackTrace();
 
-		super.clicked(e);
-	}
+        Validation.showValidationError(mParent, ex);
 
-	public int getDistance() {
-		return mDistanceField.getIntValue();
-	}
+        return;
+      }
 
-	public int getTss5p() {
-		return mTss5pExt.getIntValue();
-	}
+      SettingsService.getInstance().update("regions.max-stitch-distance", mDistanceField.getIntValue());
+    }
 
-	public int getTss3p() {
-		return mTss3pExt.getIntValue();
-	}
+    super.clicked(e);
+  }
 
-	public boolean getTssExclusion() {
-		return mCheckTssExclusion.isSelected();
-	}
+  public int getDistance() {
+    return mDistanceField.getIntValue();
+  }
 
-	public String getGenome() {
-		return mGenomesPanel.getGenome();
-	}
+  public int getTss5p() {
+    return mTss5pExt.getIntValue();
+  }
+
+  public int getTss3p() {
+    return mTss3pExt.getIntValue();
+  }
+
+  public boolean getTssExclusion() {
+    return mCheckTssExclusion.isSelected();
+  }
+
+  public String getGenome() {
+    return mGenomesPanel.getGenome();
+  }
 }
