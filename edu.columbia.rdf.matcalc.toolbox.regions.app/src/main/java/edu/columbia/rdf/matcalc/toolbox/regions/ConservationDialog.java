@@ -17,8 +17,10 @@ import org.jebtk.modern.window.WindowWidgetFocusEvents;
 public class ConservationDialog extends ModernDialogTaskWindow {
   private static final long serialVersionUID = 1L;
 
-  private ModernCheckBox mCheckMean = new ModernCheckBox("Mean Conservation", true);
-  private ModernCheckBox mCheckMedian = new ModernCheckBox("Median Conservation");
+  private ModernCheckBox mCheckMean = new ModernCheckBox("Mean Conservation",
+      true);
+  private ModernCheckBox mCheckMedian = new ModernCheckBox(
+      "Median Conservation");
   private ModernCheckBox mCheckScores = new ModernCheckBox("Scores");
 
   public ConservationDialog(ModernWindow parent) {

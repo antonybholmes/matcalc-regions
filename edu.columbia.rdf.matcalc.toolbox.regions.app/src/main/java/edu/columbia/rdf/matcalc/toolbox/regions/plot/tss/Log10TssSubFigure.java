@@ -23,7 +23,8 @@ public class Log10TssSubFigure extends SubFigure {
 
   private static final long serialVersionUID = 1L;
 
-  public Log10TssSubFigure(String title, String xPrefix, List<HistBin> log10TssHist) {
+  public Log10TssSubFigure(String title, String xPrefix,
+      List<HistBin> log10TssHist) {
     super(title + " Log10 Distance");
 
     Axes axes = currentAxes();
@@ -41,7 +42,8 @@ public class Log10TssSubFigure extends SubFigure {
       m.set(r, 0, hist.getX());
       m.set(r, 1, hist.getCount());
 
-      // System.err.println("r " + r + " " + hist.getX() + " " + hist.getCount());
+      // System.err.println("r " + r + " " + hist.getX() + " " +
+      // hist.getCount());
 
       ++r;
     }

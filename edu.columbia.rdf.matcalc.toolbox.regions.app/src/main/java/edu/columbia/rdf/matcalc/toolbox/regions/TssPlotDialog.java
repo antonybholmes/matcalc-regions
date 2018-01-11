@@ -28,17 +28,21 @@ import edu.columbia.rdf.matcalc.bio.GenomesPanel;
 public class TssPlotDialog extends ModernDialogTaskWindow {
   private static final long serialVersionUID = 1L;
 
-  private ModernCompactSpinner mFieldStart = new ModernCompactSpinner(-100, -1, -4, 1, false);
+  private ModernCompactSpinner mFieldStart = new ModernCompactSpinner(-100, -1,
+      -4, 1, false);
 
-  private ModernCompactSpinner mFieldEnd = new ModernCompactSpinner(1, 100, 4, 1, false);
+  private ModernCompactSpinner mFieldEnd = new ModernCompactSpinner(1, 100, 4,
+      1, false);
 
-  private ModernCompactSpinner mFieldBin = new ModernCompactSpinner(1, 1000, 100, 1, false);
+  private ModernCompactSpinner mFieldBin = new ModernCompactSpinner(1, 1000,
+      100, 1, false);
 
   private ModernComboBox mUnitsCombo = new UnitsComboBox();
 
   private ModernComboBox mBinUnitsCombo = new UnitsComboBox();
 
-  private GenomesPanel mGenomesPanel = new GenomesPanel(ModernCheckTreeMode.RADIO);
+  private GenomesPanel mGenomesPanel = new GenomesPanel(
+      ModernCheckTreeMode.RADIO);
 
   public TssPlotDialog(ModernWindow parent) {
     super(parent);
@@ -69,8 +73,8 @@ public class TssPlotDialog extends ModernDialogTaskWindow {
 
     midSectionHeader("Distance", box);
 
-    box.add(
-        new HExpandBox("Range", new HSpacedBox(mFieldStart, new ModernAutoSizeLabel("to"), mFieldEnd, mUnitsCombo)));
+    box.add(new HExpandBox("Range", new HSpacedBox(mFieldStart,
+        new ModernAutoSizeLabel("to"), mFieldEnd, mUnitsCombo)));
 
     box.add(UI.createVGap(10));
 

@@ -30,7 +30,8 @@ import edu.columbia.rdf.matcalc.bio.Annotation;
 public class EnhancerTreePanel extends ModernWidget {
   private static final long serialVersionUID = 1L;
 
-  private static final List<Integer> NO_ENHANCERS = Collections.unmodifiableList(new ArrayList<Integer>());
+  private static final List<Integer> NO_ENHANCERS = Collections
+      .unmodifiableList(new ArrayList<Integer>());
 
   private ModernTree<Integer> mTree = new ModernTree<Integer>();
 
@@ -103,11 +104,12 @@ public class EnhancerTreePanel extends ModernWidget {
     TreeRootNode<Integer> root = new TreeRootNode<Integer>();
 
     try {
-      SqliteJDBCConnection connection = new SqliteJDBCConnection(EnhancerDialog.SUPER_ENHANCER_DB_FILE);
+      SqliteJDBCConnection connection = new SqliteJDBCConnection(
+          EnhancerDialog.SUPER_ENHANCER_DB_FILE);
 
       try {
-        DatabaseResultsTable table = connection
-            .getTable("SELECT sources.id, sources.name FROM sources ORDER BY sources.name");
+        DatabaseResultsTable table = connection.getTable(
+            "SELECT sources.id, sources.name FROM sources ORDER BY sources.name");
 
         PreparedStatement statement = connection.prepare(
             "SELECT DISTINCT tissue.id, tissue.name FROM tissue, super_enhancers WHERE super_enhancers.tissue_id = tissue.id AND super_enhancers.source_id = ? ORDER BY tissue.name");
@@ -122,7 +124,8 @@ public class EnhancerTreePanel extends ModernWidget {
 
           statement.setInt(1, sid);
 
-          DatabaseResultsTable table2 = SqliteJDBCConnection.getTable(statement);
+          DatabaseResultsTable table2 = SqliteJDBCConnection
+              .getTable(statement);
 
           for (int j = 0; j < table2.getRowCount(); ++j) {
             int id = table2.getInt(j, 0);
@@ -165,7 +168,8 @@ public class EnhancerTreePanel extends ModernWidget {
     mTree.selectNode(i);
   }
 
-  public Map<String, BinaryGapSearch<Annotation>> getGappedSearch() throws IOException {
+  public Map<String, BinaryGapSearch<Annotation>> getGappedSearch()
+      throws IOException {
     /*
      * List<File> files = new ArrayList<File>();
      * 
@@ -176,13 +180,14 @@ public class EnhancerTreePanel extends ModernWidget {
     Map<String, BinaryGapSearch<Annotation>> map = new TreeMap<String, BinaryGapSearch<Annotation>>();
 
     try {
-      SqliteJDBCConnection connection = new SqliteJDBCConnection(EnhancerDialog.SUPER_ENHANCER_DB_FILE);
+      SqliteJDBCConnection connection = new SqliteJDBCConnection(
+          EnhancerDialog.SUPER_ENHANCER_DB_FILE);
 
       PreparedStatement statement = connection.prepare(
           "SELECT super_enhancers.id, super_enhancers.name, super_enhancers.chr, super_enhancers.start, super_enhancers.end, super_enhancers.tissue_id FROM super_enhancers WHERE super_enhancers.tissue_id = ? ORDER BY super_enhancers.chr, super_enhancers.start");
 
-      PreparedStatement statement2 = connection
-          .prepare("SELECT tissue.id, tissue.name FROM tissue WHERE tissue.id = ?");
+      PreparedStatement statement2 = connection.prepare(
+          "SELECT tissue.id, tissue.name FROM tissue WHERE tissue.id = ?");
 
       try {
         for (int id : getSelectedEnhancers()) {
@@ -192,7 +197,8 @@ public class EnhancerTreePanel extends ModernWidget {
 
           for (int i = 0; i < table.getRowCount(); ++i) {
             String name = table.getString(i, 1);
-            Chromosome chr = ChromosomeService.getInstance().parse(table.getString(i, 2));
+            Chromosome chr = ChromosomeService.getInstance()
+                .parse(table.getString(i, 2));
             int start = table.getInt(i, 3);
             int end = table.getInt(i, 4);
             int tid = table.getInt(i, 5);
@@ -203,7 +209,8 @@ public class EnhancerTreePanel extends ModernWidget {
 
             statement2.setInt(1, tid);
 
-            DatabaseResultsTable table2 = SqliteJDBCConnection.getTable(statement2);
+            DatabaseResultsTable table2 = SqliteJDBCConnection
+                .getTable(statement2);
 
             String tissue = table2.getString(0, 1);
 

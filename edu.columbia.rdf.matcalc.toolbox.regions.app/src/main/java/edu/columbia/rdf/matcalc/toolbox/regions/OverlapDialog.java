@@ -31,17 +31,22 @@ import org.jebtk.modern.window.WindowWidgetFocusEvents;
  * @author Antony Holmes Holmes
  *
  */
-public class OverlapDialog extends ModernDialogTaskWindow implements ModernClickListener {
+public class OverlapDialog extends ModernDialogTaskWindow
+    implements ModernClickListener {
   private static final long serialVersionUID = 1L;
 
-  private ModernRadioButton mCheckOneWay = new ModernRadioButton("One way", true);
+  private ModernRadioButton mCheckOneWay = new ModernRadioButton("One way",
+      true);
 
   private ModernRadioButton mCheckTwoWay = new ModernRadioButton("Two way");
 
-  private ModernCheckBox mCheckVenn = new ModernCheckBox("Venn diagram", ModernWidget.LARGE_SIZE);
+  private ModernCheckBox mCheckVenn = new ModernCheckBox("Venn diagram",
+      ModernWidget.LARGE_SIZE);
 
-  private ModernCheckBox mCheckAddBeginning = new ModernCheckBox("Annotation at beginning",
-      SettingsService.getInstance().getAsBool("regions.overlap.annotation.first-columns"),
+  private ModernCheckBox mCheckAddBeginning = new ModernCheckBox(
+      "Annotation at beginning",
+      SettingsService.getInstance()
+          .getAsBool("regions.overlap.annotation.first-columns"),
       ModernWidget.EXTRA_LARGE_SIZE);
 
   private Path mFile1;
@@ -94,10 +99,12 @@ public class OverlapDialog extends ModernDialogTaskWindow implements ModernClick
 
       Box box2 = HBox.create();
 
-      box2.add(new ModernAutoSizeLabel("Input file genomic location", ModernWidget.EXTRA_LARGE_SIZE));
+      box2.add(new ModernAutoSizeLabel("Input file genomic location",
+          ModernWidget.EXTRA_LARGE_SIZE));
 
       try {
-        mHeader1 = new ModernComboBox(Excel.getHeader(mFile1), ModernWidget.EXTRA_LARGE_SIZE);
+        mHeader1 = new ModernComboBox(Excel.getHeader(mFile1),
+            ModernWidget.EXTRA_LARGE_SIZE);
         box2.add(mHeader1);
       } catch (InvalidFormatException e) {
         e.printStackTrace();
@@ -115,10 +122,12 @@ public class OverlapDialog extends ModernDialogTaskWindow implements ModernClick
 
       box2 = HBox.create();
 
-      box2.add(new ModernAutoSizeLabel("Overlap file genomic location", ModernWidget.EXTRA_LARGE_SIZE));
+      box2.add(new ModernAutoSizeLabel("Overlap file genomic location",
+          ModernWidget.EXTRA_LARGE_SIZE));
 
       try {
-        mHeader2 = new ModernComboBox(Excel.getHeader(mFile2), ModernWidget.EXTRA_LARGE_SIZE);
+        mHeader2 = new ModernComboBox(Excel.getHeader(mFile2),
+            ModernWidget.EXTRA_LARGE_SIZE);
 
         box2.add(mHeader2);
       } catch (InvalidFormatException e) {
@@ -143,7 +152,9 @@ public class OverlapDialog extends ModernDialogTaskWindow implements ModernClick
   public void clicked(ModernClickEvent e) {
     if (e.getMessage().equals(UI.BUTTON_OK)) {
       // Update whether to add overlap columns at start or end
-      SettingsService.getInstance().update("regions.overlap.annotation.first-columns", mCheckAddBeginning.isSelected());
+      SettingsService.getInstance().update(
+          "regions.overlap.annotation.first-columns",
+          mCheckAddBeginning.isSelected());
     }
 
     super.clicked(e);

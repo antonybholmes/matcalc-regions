@@ -23,7 +23,9 @@ public abstract class EnhancerSorter extends Sorter<Enhancer> {
     return "Common Properties";
   }
 
-  protected static <T extends Comparable<? super T>> void arrange(ModernTree<Enhancer> tree, Map<T, Set<Enhancer>> map,
+  protected static <T extends Comparable<? super T>> void arrange(
+      ModernTree<Enhancer> tree,
+      Map<T, Set<Enhancer>> map,
       boolean ascending) {
     List<T> sortedNames = CollectionUtils.sortKeys(map, ascending);
 
@@ -34,10 +36,12 @@ public abstract class EnhancerSorter extends Sorter<Enhancer> {
     for (T array : sortedNames) {
       TreeNode<Enhancer> node = new TreeNode<Enhancer>(array.toString());
 
-      List<Enhancer> sortedChipSeqSamples = sortByName(map.get(array), ascending);
+      List<Enhancer> sortedChipSeqSamples = sortByName(map.get(array),
+          ascending);
 
       for (Enhancer ChipSeqSample : sortedChipSeqSamples) {
-        node.addChild(new TreeNode<Enhancer>(ChipSeqSample.getName(), ChipSeqSample));
+        node.addChild(
+            new TreeNode<Enhancer>(ChipSeqSample.getName(), ChipSeqSample));
       }
 
       root.addChild(node);

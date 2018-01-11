@@ -29,17 +29,22 @@ public class EnhancerDialog extends ModernDialogTaskWindow {
 
   private Map<ModernCheckBox, Integer> mFileMap = new HashMap<ModernCheckBox, Integer>();
 
-  private static final File ENHANCER_DIR = new File("res/super_enhancers/human");
+  private static final File ENHANCER_DIR = new File(
+      "res/super_enhancers/human");
 
-  public static final File SUPER_ENHANCER_DB_FILE = new File("res/super_enhancers.db");
+  public static final File SUPER_ENHANCER_DB_FILE = new File(
+      "res/super_enhancers.db");
 
-  private ModernRadioButton mSearchTypeOverlap = new ModernRadioButton("Overlapping", true);
+  private ModernRadioButton mSearchTypeOverlap = new ModernRadioButton(
+      "Overlapping", true);
 
-  private ModernRadioButton mSearchTypeNearest = new ModernRadioButton("Nearest");
+  private ModernRadioButton mSearchTypeNearest = new ModernRadioButton(
+      "Nearest");
 
   // private ModernSearchPanel mSearchPanel = new ModernSearchPanel();
 
-  private EnhancerTreePanel mEnhancersPanel = new EnhancerTreePanel(); // new ModernPanel();
+  private EnhancerTreePanel mEnhancersPanel = new EnhancerTreePanel(); // new
+                                                                       // ModernPanel();
 
   private class CheckAllEvents implements ModernClickListener {
     @Override
@@ -137,7 +142,8 @@ public class EnhancerDialog extends ModernDialogTaskWindow {
      * SqliteJDBCConnection(SUPER_ENHANCER_DB_FILE);
      * 
      * try { DatabaseResultsTable table = connection.
-     * getTable("SELECT tissue.id, tissue.name FROM tissue ORDER BY tissue.name");
+     * getTable("SELECT tissue.id, tissue.name FROM tissue ORDER BY tissue.name"
+     * );
      * 
      * for (int i = 0; i < table.getRowCount(); ++i) { int id =
      * table.getDataAsInt(i, 0); String name = table.getData(i, 1);
@@ -163,7 +169,8 @@ public class EnhancerDialog extends ModernDialogTaskWindow {
      */
   }
 
-  public Map<String, BinaryGapSearch<Annotation>> getGappedSearch() throws IOException {
+  public Map<String, BinaryGapSearch<Annotation>> getGappedSearch()
+      throws IOException {
     return mEnhancersPanel.getGappedSearch();
 
     /*
@@ -206,8 +213,8 @@ public class EnhancerDialog extends ModernDialogTaskWindow {
      * 
      * Annotation annotation = new Annotation(region.getName(), region);
      * 
-     * search.addFeature(region, annotation); } } } finally { connection.close(); }
-     * } catch (Exception e) { e.printStackTrace(); }
+     * search.addFeature(region, annotation); } } } finally {
+     * connection.close(); } } catch (Exception e) { e.printStackTrace(); }
      * 
      * 
      * return map; //Annotation.parseBedEnhancers(files);

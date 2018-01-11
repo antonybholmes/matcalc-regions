@@ -30,7 +30,8 @@ public class ClosestTask extends SwingWorker<Void, Void> {
   private Path mFile2;
   private MainMatCalcWindow mWindow;
 
-  public ClosestTask(MainMatCalcWindow window, BinaryGapSearch<Annotation> gappedSearch, Path file2) {
+  public ClosestTask(MainMatCalcWindow window,
+      BinaryGapSearch<Annotation> gappedSearch, Path file2) {
     mWindow = window;
     mGappedSearch = gappedSearch;
     mFile2 = file2;
@@ -50,7 +51,8 @@ public class ClosestTask extends SwingWorker<Void, Void> {
   @Override
   public void done() {
     if (mNewModel != null) {
-      mWindow.addToHistory("Closest from " + PathUtils.getName(mFile2), mNewModel);
+      mWindow.addToHistory("Closest from " + PathUtils.getName(mFile2),
+          mNewModel);
     }
   }
 
@@ -80,8 +82,10 @@ public class ClosestTask extends SwingWorker<Void, Void> {
       } else if (isThreeColumnGenomicLocation(m, i)) {
         // three column format
 
-        region = new GenomicRegion(ChromosomeService.getInstance().parse(m.getText(i, 0)),
-            TextUtils.parseInt(m.getText(i, 1)), TextUtils.parseInt(m.getText(i, 2)));
+        region = new GenomicRegion(
+            ChromosomeService.getInstance().parse(m.getText(i, 0)),
+            TextUtils.parseInt(m.getText(i, 1)),
+            TextUtils.parseInt(m.getText(i, 2)));
       } else {
         region = null;
       }

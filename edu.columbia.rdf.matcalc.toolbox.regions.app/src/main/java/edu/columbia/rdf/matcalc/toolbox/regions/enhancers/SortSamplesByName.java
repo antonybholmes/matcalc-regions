@@ -11,7 +11,9 @@ import org.jebtk.modern.search.FilterModel;
 import org.jebtk.modern.tree.ModernTree;
 
 public class SortSamplesByName extends EnhancerSorter {
-  public void arrange(Collection<Enhancer> enhancers, ModernTree<Enhancer> tree, boolean ascending,
+  public void arrange(Collection<Enhancer> enhancers,
+      ModernTree<Enhancer> tree,
+      boolean ascending,
       FilterModel filterModel) {
     List<Enhancer> sortedSamples = sortByName(enhancers, ascending);
 
@@ -24,7 +26,8 @@ public class SortSamplesByName extends EnhancerSorter {
         continue;
       }
 
-      TreeNode<Enhancer> node = new TreeNode<Enhancer>(enhancer.getName(), enhancer);
+      TreeNode<Enhancer> node = new TreeNode<Enhancer>(enhancer.getName(),
+          enhancer);
 
       root.addChild(node);
     }

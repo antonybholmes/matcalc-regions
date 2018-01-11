@@ -48,8 +48,8 @@ public class NWayOverlapTask extends SwingWorker<Void, Void> {
 
   private boolean mVenn;
 
-  public NWayOverlapTask(MainMatCalcWindow window, List<Path> files, boolean venn)
-      throws InvalidFormatException, IOException {
+  public NWayOverlapTask(MainMatCalcWindow window, List<Path> files,
+      boolean venn) throws InvalidFormatException, IOException {
     mWindow = window;
     mFiles = files;
     // Venn diagram is drawn only when there are two files involved
@@ -76,8 +76,10 @@ public class NWayOverlapTask extends SwingWorker<Void, Void> {
     // First get all the regions to search into one sorted map
 
     Map<Chromosome, IterMap<GenomicRegion, IterMap<Path, Set<GenomicRegion>>>> locationCoreMap = DefaultTreeMap
-        .create(new DefaultTreeMapCreator<GenomicRegion, IterMap<Path, Set<GenomicRegion>>>(
-            new DefaultTreeMapCreator<Path, Set<GenomicRegion>>(new TreeSetCreator<GenomicRegion>())));
+        .create(
+            new DefaultTreeMapCreator<GenomicRegion, IterMap<Path, Set<GenomicRegion>>>(
+                new DefaultTreeMapCreator<Path, Set<GenomicRegion>>(
+                    new TreeSetCreator<GenomicRegion>())));
 
     // Set<GenomicRegion> allocatedRegions = new HashSet<GenomicRegion>();
 
@@ -97,21 +99,25 @@ public class NWayOverlapTask extends SwingWorker<Void, Void> {
           boolean allocated = false;
 
           while (!exhausted) {
-            Map<Path, Set<GenomicRegion>> overlaps = DefaultTreeMap.create(new TreeSetCreator<GenomicRegion>());
+            Map<Path, Set<GenomicRegion>> overlaps = DefaultTreeMap
+                .create(new TreeSetCreator<GenomicRegion>());
 
             overlaps.get(file).add(region);
 
             // int start = region.getStart();
             // int end = region.getEnd();
 
-            GenomicRegion consensusRegion = region; // GenomicRegion.create(chr, region.getStart(), region.getEnd())
+            GenomicRegion consensusRegion = region; // GenomicRegion.create(chr,
+                                                    // region.getStart(),
+                                                    // region.getEnd())
 
             // Test all files to see if we can find overlaps
             for (int j = 0; j < mAnnotations.size(); ++j) {
               FixedGapSearch<Annotation> gs2 = mAnnotations.get(j);
               Path file2 = mFiles.get(j);
 
-              for (GappedSearchFeatures<Annotation> gsf2 : gs2.getFeatures(consensusRegion)) {
+              for (GappedSearchFeatures<Annotation> gsf2 : gs2
+                  .getFeatures(consensusRegion)) {
                 for (GenomicRegion r : gsf2) {
                   for (Annotation an2 : gsf2.getValues(r)) {
 
@@ -130,7 +136,8 @@ public class NWayOverlapTask extends SwingWorker<Void, Void> {
                       continue;
                     }
 
-                    GenomicRegion newConsensus = GenomicRegion.overlap(consensusRegion, testRegion);
+                    GenomicRegion newConsensus = GenomicRegion
+                        .overlap(consensusRegion, testRegion);
 
                     if (newConsensus != null) {
                       // Adjust the size of the overlap
@@ -181,7 +188,8 @@ public class NWayOverlapTask extends SwingWorker<Void, Void> {
       rowCount += locationCoreMap.get(chr).size();
     }
 
-    DataFrame matrix = DataFrame.createDataFrame(rowCount, 3 + 3 * mFiles.size());
+    DataFrame matrix = DataFrame.createDataFrame(rowCount,
+        3 + 3 * mFiles.size());
 
     int c = 0;
 
@@ -248,7 +256,8 @@ public class NWayOverlapTask extends SwingWorker<Void, Void> {
 
             // Locations
 
-            List<GenomicRegion> locations = CollectionUtils.sort(locationCoreMap.get(chr).get(overlapRegion).get(file));
+            List<GenomicRegion> locations = CollectionUtils
+                .sort(locationCoreMap.get(chr).get(overlapRegion).get(file));
 
             List<String> items = new ArrayList<String>();
 
@@ -273,7 +282,8 @@ public class NWayOverlapTask extends SwingWorker<Void, Void> {
             items.clear();
 
             for (GenomicRegion region : locations) {
-              double p = 100.0 * Math.min(1.0, GenomicRegion.p(overlapRegion, region));
+              double p = 100.0
+                  * Math.min(1.0, GenomicRegion.p(overlapRegion, region));
 
               items.add(Double.toString(Mathematics.round(p, 2)));
             }
@@ -295,11 +305,13 @@ public class NWayOverlapTask extends SwingWorker<Void, Void> {
 
     if (mVenn) {
       if (mFiles.size() == 2) {
-        MainVennWindow vennWindow = new MainVennWindow(group1, group2, CircleStyle.UNIFORM);
+        MainVennWindow vennWindow = new MainVennWindow(group1, group2,
+            CircleStyle.UNIFORM);
 
         vennWindow.setVisible(true);
       } else if (mFiles.size() == 3) {
-        MainVennWindow vennWindow = new MainVennWindow(group1, group2, group3, CircleStyle.UNIFORM);
+        MainVennWindow vennWindow = new MainVennWindow(group1, group2, group3,
+            CircleStyle.UNIFORM);
 
         vennWindow.setVisible(true);
       } else {

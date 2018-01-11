@@ -22,8 +22,8 @@ public class TssMultiPlotSubFigure extends SubFigure {
 
   private static final long serialVersionUID = 1L;
 
-  public TssMultiPlotSubFigure(String title, String xPrefix, List<List<HistBin>> tssHists, double start, double end,
-      double step) {
+  public TssMultiPlotSubFigure(String title, String xPrefix,
+      List<List<HistBin>> tssHists, double start, double end, double step) {
     super(title + " Distance");
 
     // set the graph limits

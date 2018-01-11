@@ -42,7 +42,8 @@ public class TssPlotTask extends SwingWorker<Void, Void> {
   private int mBinUnits;
   private MainMatCalcWindow mWindow;
 
-  public TssPlotTask(MainMatCalcWindow window, BinarySearch<AnnotationGene> tssSearch, double start, double end,
+  public TssPlotTask(MainMatCalcWindow window,
+      BinarySearch<AnnotationGene> tssSearch, double start, double end,
       int units, double binSize, int binUnits) {
     mWindow = window;
     mTssSearch = tssSearch;
@@ -81,8 +82,10 @@ public class TssPlotTask extends SwingWorker<Void, Void> {
       } else {
         // three column format
 
-        region = new GenomicRegion(ChromosomeService.getInstance().parse(matrix.getText(i, 0)),
-            TextUtils.parseInt(matrix.getText(i, 1)), TextUtils.parseInt(matrix.getText(i, 2)));
+        region = new GenomicRegion(
+            ChromosomeService.getInstance().parse(matrix.getText(i, 0)),
+            TextUtils.parseInt(matrix.getText(i, 1)),
+            TextUtils.parseInt(matrix.getText(i, 2)));
       }
 
       // System.err.println("region: " + region);
@@ -96,7 +99,8 @@ public class TssPlotTask extends SwingWorker<Void, Void> {
         double tss = Double.MAX_VALUE;
 
         for (AnnotationGene gene : results) {
-          tss = Math.min(tss, AnnotationGene.getTssMidDist(gene, midPoint.getStart()));
+          tss = Math.min(tss,
+              AnnotationGene.getTssMidDist(gene, midPoint.getStart()));
         }
 
         tssPoints.add(tss);
@@ -106,8 +110,13 @@ public class TssPlotTask extends SwingWorker<Void, Void> {
     plot(mWindow, tssPoints, mStart, mEnd, mUnits, mBinSize, mBinUnits);
   }
 
-  public static void plot(MainMatCalcWindow window, List<Double> tssPoints, double start, double end, int units,
-      double binSize, int binUnits) {
+  public static void plot(MainMatCalcWindow window,
+      List<Double> tssPoints,
+      double start,
+      double end,
+      int units,
+      double binSize,
+      int binUnits) {
 
     // Nearest plot
 
@@ -127,7 +136,8 @@ public class TssPlotTask extends SwingWorker<Void, Void> {
     }
 
     // Convert to histograms
-    List<HistBin> tssHist = Statistics.histogram(plotTssPoints, start, end, binSize * binUnits / units);
+    List<HistBin> tssHist = Statistics
+        .histogram(plotTssPoints, start, end, binSize * binUnits / units);
 
     TssSubFigure tssCanvas = new TssSubFigure("TSS", "TSS", tssHist, start, end,
         Math.pow(10, Math.floor(Math.log10(Math.abs(start)))));
@@ -142,11 +152,14 @@ public class TssPlotTask extends SwingWorker<Void, Void> {
       }
     }
 
-    List<HistBin> log10TssHist = Statistics.histogram(log10TssPoints, 0, 8, 0.1);
+    List<HistBin> log10TssHist = Statistics
+        .histogram(log10TssPoints, 0, 8, 0.1);
 
-    Log10TssSubFigure tssLogCanvas = new Log10TssSubFigure("TSS", "TSS", log10TssHist);
+    Log10TssSubFigure tssLogCanvas = new Log10TssSubFigure("TSS", "TSS",
+        log10TssHist);
 
-    Figure figure = new Figure("TSS Figure", new PlotBoxGridStorage(1, 2), new PlotBoxGridLayout(1, 2));
+    Figure figure = new Figure("TSS Figure", new PlotBoxGridStorage(1, 2),
+        new PlotBoxGridLayout(1, 2));
     figure.addChild(tssCanvas, 0, 0);
     figure.addChild(tssLogCanvas, 0, 1);
 

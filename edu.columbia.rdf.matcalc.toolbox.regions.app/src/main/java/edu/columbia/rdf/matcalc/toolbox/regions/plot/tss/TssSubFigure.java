@@ -20,7 +20,8 @@ public class TssSubFigure extends SubFigure {
 
   private static final long serialVersionUID = 1L;
 
-  public TssSubFigure(String title, String xPrefix, List<HistBin> tssHist, double start, double end, double step) {
+  public TssSubFigure(String title, String xPrefix, List<HistBin> tssHist,
+      double start, double end, double step) {
     super(title);
 
     // set the graph limits
@@ -40,7 +41,8 @@ public class TssSubFigure extends SubFigure {
       m.set(r, 0, hist.getX());
       m.set(r, 1, hist.getCount());
 
-      // System.err.println("r " + r + " " + hist.getX() + " " + hist.getCount());
+      // System.err.println("r " + r + " " + hist.getX() + " " +
+      // hist.getCount());
 
       ++r;
     }
