@@ -55,10 +55,11 @@ import org.jebtk.modern.io.FileDialog;
 import org.jebtk.modern.io.RecentFilesService;
 import org.jebtk.modern.io.TxtGuiFileFilter;
 import org.jebtk.modern.menu.ModernPopupMenu;
+import org.jebtk.modern.menu.ModernPopupMenu2;
 import org.jebtk.modern.menu.ModernTwoLineMenuItem;
 import org.jebtk.modern.ribbon.Ribbon;
 import org.jebtk.modern.ribbon.RibbonLargeButton;
-import org.jebtk.modern.ribbon.RibbonLargeDropDownButton;
+import org.jebtk.modern.ribbon.RibbonLargeDropDownButton2;
 import org.jebtk.modern.widget.ModernClickWidget;
 import org.jebtk.modern.widget.tooltip.ModernToolTip;
 
@@ -1363,8 +1364,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
         UIService.getInstance().loadIcon("common_regions", 24));
     button.setToolTip(
         new ModernToolTip("Overlap",
-            "Find common regions between two sets of coordinates."),
-        ribbon.getToolTipModel());
+            "Find common regions between two sets of coordinates."));
     button.addClickListener(this);
     ribbon.getToolbar("Genomic").getSection("Regions").add(button);
 
@@ -1381,24 +1381,21 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
         UIService.getInstance().loadIcon("closest", 24));
     button.setToolTip(
         new ModernToolTip("Closest",
-            "Find the closest feature in another list of features."),
-        ribbon.getToolTipModel());
+            "Find the closest feature in another list of features."));
     // Ui.setSize(button, new Dimension(60, getRibbon().LARGE_BUTTON_HEIGHT));
     button.addClickListener(this);
     ribbon.getToolbar("Genomic").getSection("Regions").add(button);
 
     button = new RibbonLargeButton("Stitch",
         UIService.getInstance().loadIcon("stitch", 24));
-    button.setToolTip(new ModernToolTip("Stitch", "Stitch regions together."),
-        ribbon.getToolTipModel());
+    button.setToolTip(new ModernToolTip("Stitch", "Stitch regions together."));
     // Ui.setSize(button, new Dimension(60, getRibbon().LARGE_BUTTON_HEIGHT));
     button.addClickListener(this);
     ribbon.getToolbar("Genomic").getSection("Regions").add(button);
 
     button = new RibbonLargeButton("Extend",
         UIService.getInstance().loadIcon("extend", 24));
-    button.setToolTip(new ModernToolTip("Extend", "Extend regions."),
-        ribbon.getToolTipModel());
+    button.setToolTip(new ModernToolTip("Extend", "Extend regions."));
     // Ui.setSize(button, new Dimension(60, getRibbon().LARGE_BUTTON_HEIGHT));
     button.addClickListener(this);
     ribbon.getToolbar("Genomic").getSection("Regions").add(button);
@@ -1408,8 +1405,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     button = new RibbonLargeButton("Super", "Enhancers",
         UIService.getInstance().loadIcon("enhancers", 24));
     button.setToolTip(
-        new ModernToolTip("Super Enhancers", "Annotate peaks with enhancers."),
-        ribbon.getToolTipModel());
+        new ModernToolTip("Super Enhancers", "Annotate peaks with enhancers."));
     // Ui.setSize(button, new Dimension(60, getRibbon().LARGE_BUTTON_HEIGHT));
     button.addClickListener(this);
     ribbon.getToolbar("Genomic").getSection("Regions").add(button);
@@ -1418,7 +1414,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     // Tss plots
     //
 
-    ModernPopupMenu popup;
+    ModernPopupMenu2 popup;
 
     /*
      * ModernPopupMenu popup = new ModernPopupMenu();
@@ -1442,7 +1438,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
      * button = new RibbonLargeButton("46-way Cons",
      * UIService.getInstance().loadIcon("conservation", 24));
      * button.setToolTip(new ModernToolTip("46-way Conservation",
-     * "Add 46-way conservation."), ribbon.getToolTipModel());
+     * "Add 46-way conservation."));
      * //Ui.setSize(button, new Dimension(80, getRibbon().LARGE_BUTTON_HEIGHT));
      * button.addClickListener(this);
      * ribbon.getToolbar("Genomic").getSection("Conservation").add(button);
@@ -1450,7 +1446,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
      * button = new RibbonLargeButton("Mouse Cons",
      * UIService.getInstance().loadIcon("conservation", 24));
      * button.setToolTip(new ModernToolTip("Mouse Only Conservation",
-     * "Add conservation in mouse."), ribbon.getToolTipModel());
+     * "Add conservation in mouse."));
      * //Ui.setSize(button, new Dimension(80, getRibbon().LARGE_BUTTON_HEIGHT));
      * button.addClickListener(this);
      * ribbon.getToolbar("Genomic").getSection("Conservation").add(button);
@@ -1462,7 +1458,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 
     ribbon.getToolbar("Genomic").getSection("Regions").addSeparator();
 
-    popup = new ModernPopupMenu();
+    popup = new ModernPopupMenu2();
 
     popup.addMenuItem(new ModernTwoLineMenuItem("TSS Plot",
         "Plot the distance between regions and gene TSS.",
@@ -1478,7 +1474,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     // matrix...",
     // "matcalc.split.help.url").setTextOffset(48));
 
-    button = new RibbonLargeDropDownButton(
+    button = new RibbonLargeDropDownButton2(
         UIService.getInstance().loadIcon("graph", 24), popup);
     button.setToolTip("Distance Plot", "Plot the distance between regions.");
 

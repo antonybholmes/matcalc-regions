@@ -66,7 +66,7 @@ public class StitchDialog extends ModernDialogHelpWindow {
   }
 
   private final void createUi() {
-    // this.getContentPane().add(new JLabel("Change " +
+    // this.getWindowContentPanel().add(new JLabel("Change " +
     // getProductDetails().getProductName() + " settings", JLabel.LEFT),
     // BorderLayout.PAGE_START);
     Box box = VBox.create();
