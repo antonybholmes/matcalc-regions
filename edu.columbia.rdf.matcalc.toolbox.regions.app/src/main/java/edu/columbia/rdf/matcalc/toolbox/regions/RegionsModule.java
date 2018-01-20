@@ -60,8 +60,8 @@ import org.jebtk.modern.menu.ModernTwoLineMenuItem;
 import org.jebtk.modern.ribbon.Ribbon;
 import org.jebtk.modern.ribbon.RibbonLargeButton;
 import org.jebtk.modern.ribbon.RibbonLargeDropDownButton2;
+import org.jebtk.modern.tooltip.ModernToolTip;
 import org.jebtk.modern.widget.ModernClickWidget;
-import org.jebtk.modern.widget.tooltip.ModernToolTip;
 
 import edu.columbia.rdf.matcalc.MainMatCalcWindow;
 import edu.columbia.rdf.matcalc.bio.Annotation;
