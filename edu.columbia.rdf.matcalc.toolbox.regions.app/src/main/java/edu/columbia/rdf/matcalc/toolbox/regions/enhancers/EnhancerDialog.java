@@ -206,7 +206,7 @@ public class EnhancerDialog extends ModernDialogTaskWindow {
      * 
      * for (int i = 0; i < table.getRowCount(); ++i) { String name =
      * table.getData(i, 1); Chromosome chr =
-     * ChromosomeService.getInstance().parse(table.getData(i, 2)); int start =
+     * GenomeService.getInstance().parse(table.getData(i, 2)); int start =
      * table.getDataAsInt(i, 3); int end = table.getDataAsInt(i, 4);
      * 
      * BedRegion region = new BedRegion(chr, start, end, name);

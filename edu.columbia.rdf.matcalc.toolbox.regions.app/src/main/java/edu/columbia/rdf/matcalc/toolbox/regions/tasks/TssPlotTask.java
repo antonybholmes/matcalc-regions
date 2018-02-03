@@ -7,7 +7,7 @@ import java.util.List;
 import javax.swing.SwingWorker;
 
 import org.jebtk.bioinformatics.gapsearch.BinarySearch;
-import org.jebtk.bioinformatics.genomic.ChromosomeService;
+import org.jebtk.bioinformatics.genomic.GenomeService;
 import org.jebtk.bioinformatics.genomic.GenomicRegion;
 import org.jebtk.core.Mathematics;
 import org.jebtk.core.io.Io;
@@ -83,7 +83,7 @@ public class TssPlotTask extends SwingWorker<Void, Void> {
         // three column format
 
         region = new GenomicRegion(
-            ChromosomeService.getInstance().parse(matrix.getText(i, 0)),
+            GenomeService.getInstance().human(matrix.getText(i, 0)),
             TextUtils.parseInt(matrix.getText(i, 1)),
             TextUtils.parseInt(matrix.getText(i, 2)));
       }

@@ -11,7 +11,7 @@ import java.util.TreeMap;
 import org.jebtk.bioinformatics.ext.ucsc.BedRegion;
 import org.jebtk.bioinformatics.gapsearch.BinaryGapSearch;
 import org.jebtk.bioinformatics.genomic.Chromosome;
-import org.jebtk.bioinformatics.genomic.ChromosomeService;
+import org.jebtk.bioinformatics.genomic.GenomeService;
 import org.jebtk.core.tree.TreeNode;
 import org.jebtk.core.tree.TreeRootNode;
 import org.jebtk.database.DatabaseResultsTable;
@@ -197,8 +197,8 @@ public class EnhancerTreePanel extends ModernWidget {
 
           for (int i = 0; i < table.getRowCount(); ++i) {
             String name = table.getString(i, 1);
-            Chromosome chr = ChromosomeService.getInstance()
-                .parse(table.getString(i, 2));
+            Chromosome chr = GenomeService.getInstance()
+                .parseJson(table.getString(i, 2));
             int start = table.getInt(i, 3);
             int end = table.getInt(i, 4);
             int tid = table.getInt(i, 5);
