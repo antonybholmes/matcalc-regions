@@ -762,9 +762,12 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     private boolean mShowScores;
     private boolean mShowMedian;
     private boolean mShowMean;
+    private String mGenome;
 
-    public ConservationTask(boolean showMean, boolean showMedian,
+    public ConservationTask(String genome,
+        boolean showMean, boolean showMedian,
         boolean showScores) {
+      mGenome = genome;
       mShowMean = showMean;
       mShowMedian = showMedian;
       mShowScores = showScores;
@@ -838,12 +841,12 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
         } else if (model.getText(i, 0).contains(TextUtils.NA)) {
           continue;
         } else if (GenomicRegion.isGenomicRegion(model.getText(i, 0))) {
-          region = GenomicRegion.parse(model.getText(i, 0));
+          region = GenomicRegion.parse(mGenome, model.getText(i, 0));
         } else {
           // three column format
 
           region = new GenomicRegion(
-              GenomeService.getInstance().human(model.getText(i, 0)),
+              GenomeService.getInstance().chr(mGenome, model.getText(i, 0)),
               TextUtils.parseInt(model.getText(i, 1)),
               TextUtils.parseInt(model.getText(i, 2)));
         }
@@ -875,9 +878,12 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     private MessageDialogTaskGlassPane mSearchScreen;
     private boolean mShowScores;
     private boolean mShowConservation;
+    private String mGenome;
 
-    public ConservationMouseOnlyTask(boolean showConservation,
+    public ConservationMouseOnlyTask(String genome,
+        boolean showConservation,
         boolean showScores) {
+      mGenome = genome;
       mShowConservation = showConservation;
       mShowScores = showScores;
     }
@@ -942,12 +948,12 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
         } else if (model.getText(i, 0).contains(TextUtils.NA)) {
           continue;
         } else if (GenomicRegion.isGenomicRegion(model.getText(i, 0))) {
-          region = GenomicRegion.parse(model.getText(i, 0));
+          region = GenomicRegion.parse(mGenome, model.getText(i, 0));
         } else {
           // three column format
 
           region = new GenomicRegion(
-              GenomeService.getInstance().human(model.getText(i, 0)),
+              GenomeService.getInstance().chr(mGenome, model.getText(i, 0)),
               TextUtils.parseInt(model.getText(i, 1)),
               TextUtils.parseInt(model.getText(i, 2)));
         }
@@ -977,9 +983,12 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     private int mExt5p;
     private int mExt3p;
     private BinarySearch<AnnotationGene> mTssSearch;
+    private String mGenome;
 
-    public StitchTask(BinarySearch<AnnotationGene> tssSearch, int distance,
+    public StitchTask(String genome,
+        BinarySearch<AnnotationGene> tssSearch, int distance,
         boolean tssExclusion, int ext5p, int ext3p) {
+      mGenome = genome;
       mTssSearch = tssSearch;
       mDistance = distance;
       mTssExclusion = tssExclusion;
@@ -1018,7 +1027,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 
       // sort regions by start
       Map<Chromosome, List<GenomicRegion>> sortedRegions = GenomicRegion
-          .sortByStart(getRegions(model));
+          .sortByStart(getRegions(mGenome, model));
 
       int stitchCount = 0;
 
@@ -1240,8 +1249,10 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     private MessageDialogTaskGlassPane mSearchScreen;
     private int mExt3p;
     private int mExt5p;
+    private String mGenome;
 
-    public ExtendTask(int ext5p, int ext3p) {
+    public ExtendTask(String genome, int ext5p, int ext3p) {
+      mGenome = genome;
       mExt5p = ext5p;
       mExt3p = ext3p;
     }
@@ -1271,7 +1282,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     private DataFrame extend() throws IOException, ParseException {
       DataFrame model = getCurrentModel();
 
-      List<GenomicRegion> regions = getRegions(model);
+      List<GenomicRegion> regions = getRegions(mGenome, model);
 
       List<GenomicRegion> extendedRegions = GenomicRegion
           .extend(regions, mExt5p, mExt3p);
@@ -1336,12 +1347,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
       e.printStackTrace();
     }
   }
-
-  @Override
-  public void run(String... args) {
-    // Do nothing
-  }
-
+  
   @Override
   public String getName() {
     return "Regions";
@@ -1555,14 +1561,14 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     }
   }
 
-  private void exportBed() throws IOException {
+  private void exportBed(String genome) throws IOException {
     DataFrame m = mWindow.getCurrentMatrix();
 
     if (m == null) {
       return;
     }
 
-    List<GenomicRegion> regions = getRegions(m);
+    List<GenomicRegion> regions = getRegions(genome, m);
 
     Path file = BioInfDialog.saveBedFile(mWindow,
         RecentFilesService.getInstance().getPwd());
@@ -1647,7 +1653,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     }
   }
 
-  private void closest() throws IOException, InvalidFormatException {
+  private void closest(String genome) throws IOException, InvalidFormatException {
     if (mWindow.getInputFile() == null) {
       return;
     }
@@ -1672,7 +1678,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
           0,
           TextUtils.TAB_DELIMITER);
 
-      gappedSearch = Annotation.parsePeaks(model);
+      gappedSearch = Annotation.parsePeaks(genome, model);
     }
 
     // SpeciesDialog dialog = new SpeciesDialog(mWindow, "Closest");
@@ -1713,7 +1719,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     BinarySearch<AnnotationGene> tssSearch = AnnotationService.getInstance()
         .getBinarySearch(genome);
 
-    StitchTask task = new StitchTask(tssSearch, dialog.getDistance(),
+    StitchTask task = new StitchTask(genome, tssSearch, dialog.getDistance(),
         dialog.getTssExclusion(), dialog.getTss5p(), dialog.getTss3p());
 
     task.execute();
@@ -1733,7 +1739,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
       return;
     }
 
-    ExtendTask task = new ExtendTask(dialog.getExt5p(), dialog.getExt3p());
+    ExtendTask task = new ExtendTask(dialog.getGenome(), dialog.getExt5p(), dialog.getExt3p());
 
     task.execute();
   }
@@ -1751,7 +1757,8 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
       return;
     }
 
-    ConservationTask task = new ConservationTask(dialog.getShowMean(),
+    ConservationTask task = new ConservationTask(dialog.getGenome(),
+        dialog.getShowMean(),
         dialog.getShowMedian(), dialog.getShowScores());
 
     task.execute();
@@ -1772,7 +1779,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     }
 
     ConservationMouseOnlyTask task = new ConservationMouseOnlyTask(
-        dialog.getShowConservation(), dialog.getShowScores());
+        dialog.getGenome(), dialog.getShowConservation(), dialog.getShowScores());
 
     task.execute();
   }
@@ -1864,7 +1871,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
         new BedGraphGuiFileFilter());
   }
 
-  private static List<GenomicRegion> getRegions(DataFrame model) {
+  private static List<GenomicRegion> getRegions(String genome, DataFrame model) {
 
     List<GenomicRegion> regions = new ArrayList<GenomicRegion>();
 
@@ -1876,12 +1883,12 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
       } else if (model.getText(i, 0).contains(TextUtils.NA)) {
         continue;
       } else if (GenomicRegion.isGenomicRegion(model.getText(i, 0))) {
-        region = GenomicRegion.parse(model.getText(i, 0));
+        region = GenomicRegion.parse(genome, model.getText(i, 0));
       } else {
         // three column format
 
         region = new GenomicRegion(
-            GenomeService.getInstance().human(model.getText(i, 0)),
+            GenomeService.getInstance().chr(genome, model.getText(i, 0)),
             Integer.parseInt(model.getText(i, 1)),
             Integer.parseInt(model.getText(i, 2)));
       }

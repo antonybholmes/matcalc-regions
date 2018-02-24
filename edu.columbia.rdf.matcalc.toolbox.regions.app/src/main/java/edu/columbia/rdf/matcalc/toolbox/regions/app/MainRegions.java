@@ -11,7 +11,7 @@ import org.jebtk.modern.theme.ThemeService;
 import org.xml.sax.SAXException;
 
 import edu.columbia.rdf.matcalc.MainMatCalc;
-import edu.columbia.rdf.matcalc.ModuleLoader;
+import edu.columbia.rdf.matcalc.BasicModuleLoader;
 import edu.columbia.rdf.matcalc.bio.BioModuleLoader;
 import edu.columbia.rdf.matcalc.toolbox.regions.RegionsModule;
 
@@ -24,7 +24,7 @@ public class MainRegions {
 
     ThemeService.getInstance().setTheme();
 
-    ModuleLoader ml = new BioModuleLoader().addModule(RegionsModule.class);
+    BasicModuleLoader ml = new BioModuleLoader().addModule(RegionsModule.class);
 
     MainMatCalc.main(new RegionsInfo(), ml);
   }
