@@ -24,11 +24,14 @@ public class DistancePlotTask extends SwingWorker<Void, Void> {
   private double mBinSize;
   private int mBinUnits;
   private MainMatCalcWindow mWindow;
+  private String mGenome;
 
   public DistancePlotTask(MainMatCalcWindow window,
+      String genome,
       BinaryGapSearch<Annotation> gappedSearch, double start, double end,
       int units, double binSize, int binUnits) {
     mWindow = window;
+    mGenome = genome;
     mSearch = gappedSearch;
 
     mStart = start;
@@ -62,12 +65,12 @@ public class DistancePlotTask extends SwingWorker<Void, Void> {
       }
 
       if (GenomicRegion.isGenomicRegion(model.getText(i, 0))) {
-        region = GenomicRegion.parse(model.getText(i, 0));
+        region = GenomicRegion.parse(mGenome, model.getText(i, 0));
       } else {
         // three column format
 
         region = new GenomicRegion(
-            GenomeService.getInstance().human(model.getText(i, 0)),
+            GenomeService.instance().chr(mGenome, model.getText(i, 0)),
             Integer.parseInt(model.getText(i, 1)),
             Integer.parseInt(model.getText(i, 2)));
       }

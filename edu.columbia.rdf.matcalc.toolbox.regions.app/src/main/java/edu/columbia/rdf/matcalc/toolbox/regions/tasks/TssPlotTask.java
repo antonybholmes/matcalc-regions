@@ -41,11 +41,14 @@ public class TssPlotTask extends SwingWorker<Void, Void> {
   private double mBinSize;
   private int mBinUnits;
   private MainMatCalcWindow mWindow;
+  private String mGenome;
 
   public TssPlotTask(MainMatCalcWindow window,
+      String genome,
       BinarySearch<AnnotationGene> tssSearch, double start, double end,
       int units, double binSize, int binUnits) {
     mWindow = window;
+    mGenome = genome;
     mTssSearch = tssSearch;
     mStart = start;
     mEnd = end;
@@ -78,12 +81,12 @@ public class TssPlotTask extends SwingWorker<Void, Void> {
       } else if (matrix.getText(i, 0).contains(TextUtils.NA)) {
         continue;
       } else if (GenomicRegion.isGenomicRegion(matrix.getText(i, 0))) {
-        region = GenomicRegion.parse(matrix.getText(i, 0));
+        region = GenomicRegion.parse(mGenome, matrix.getText(i, 0));
       } else {
         // three column format
 
         region = new GenomicRegion(
-            GenomeService.getInstance().human(matrix.getText(i, 0)),
+            GenomeService.instance().chr(mGenome, matrix.getText(i, 0)),
             TextUtils.parseInt(matrix.getText(i, 1)),
             TextUtils.parseInt(matrix.getText(i, 2)));
       }

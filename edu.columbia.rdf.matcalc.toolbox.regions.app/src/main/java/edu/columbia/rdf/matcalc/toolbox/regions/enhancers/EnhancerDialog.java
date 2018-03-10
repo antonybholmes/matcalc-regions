@@ -169,9 +169,9 @@ public class EnhancerDialog extends ModernDialogTaskWindow {
      */
   }
 
-  public Map<String, BinaryGapSearch<Annotation>> getGappedSearch()
+  public Map<String, BinaryGapSearch<Annotation>> getGappedSearch(String genome)
       throws IOException {
-    return mEnhancersPanel.getGappedSearch();
+    return mEnhancersPanel.getGappedSearch(genome);
 
     /*
      * List<File> files = new ArrayList<File>();

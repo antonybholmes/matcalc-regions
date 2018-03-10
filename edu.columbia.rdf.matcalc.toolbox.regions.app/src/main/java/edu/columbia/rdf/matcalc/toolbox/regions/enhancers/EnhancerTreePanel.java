@@ -168,7 +168,7 @@ public class EnhancerTreePanel extends ModernWidget {
     mTree.selectNode(i);
   }
 
-  public Map<String, BinaryGapSearch<Annotation>> getGappedSearch()
+  public Map<String, BinaryGapSearch<Annotation>> getGappedSearch(String genome)
       throws IOException {
     /*
      * List<File> files = new ArrayList<File>();
@@ -197,8 +197,8 @@ public class EnhancerTreePanel extends ModernWidget {
 
           for (int i = 0; i < table.getRowCount(); ++i) {
             String name = table.getString(i, 1);
-            Chromosome chr = GenomeService.getInstance()
-                .parseJson(table.getString(i, 2));
+            Chromosome chr = GenomeService.instance()
+                .chr(genome, table.getString(i, 2));
             int start = table.getInt(i, 3);
             int end = table.getInt(i, 4);
             int tid = table.getInt(i, 5);

@@ -2,6 +2,7 @@ package edu.columbia.rdf.matcalc.toolbox.regions;
 
 import javax.swing.Box;
 
+import org.jebtk.bioinformatics.genomic.Genome;
 import org.jebtk.modern.UI;
 import org.jebtk.modern.button.ModernCheckBox;
 import org.jebtk.modern.dialog.ModernDialogTaskWindow;
@@ -62,5 +63,9 @@ public class MouseConservationDialog extends ModernDialogTaskWindow {
 
   public boolean getShowScores() {
     return mCheckScores.isSelected();
+  }
+
+  public String getGenome() {
+    return Genome.HG19;
   }
 }

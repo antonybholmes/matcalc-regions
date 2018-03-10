@@ -2,6 +2,7 @@ package edu.columbia.rdf.matcalc.toolbox.regions;
 
 import javax.swing.Box;
 
+import org.jebtk.bioinformatics.genomic.Genome;
 import org.jebtk.modern.UI;
 import org.jebtk.modern.Validation;
 import org.jebtk.modern.ValidationException;
@@ -92,5 +93,9 @@ public class ExtendDialog extends ModernDialogTaskWindow {
 
   public int getExt3p() {
     return mExt3pText.getIntValue();
+  }
+
+  public String getGenome() {
+    return Genome.HG19;
   }
 }

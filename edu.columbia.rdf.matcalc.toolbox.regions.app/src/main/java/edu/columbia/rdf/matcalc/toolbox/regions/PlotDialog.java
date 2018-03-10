@@ -2,6 +2,7 @@ package edu.columbia.rdf.matcalc.toolbox.regions;
 
 import javax.swing.Box;
 
+import org.jebtk.bioinformatics.genomic.Genome;
 import org.jebtk.modern.UI;
 import org.jebtk.modern.combobox.ModernComboBox;
 import org.jebtk.modern.dialog.ModernDialogTaskWindow;
@@ -104,5 +105,9 @@ public class PlotDialog extends ModernDialogTaskWindow {
     default:
       return 1;
     }
+  }
+
+  public String getGenome() {
+    return Genome.HG19;
   }
 }

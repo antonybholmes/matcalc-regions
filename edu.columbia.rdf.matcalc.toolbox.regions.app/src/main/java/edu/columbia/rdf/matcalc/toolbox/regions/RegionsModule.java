@@ -27,6 +27,7 @@ import org.jebtk.bioinformatics.gapsearch.BinarySearch;
 import org.jebtk.bioinformatics.gapsearch.FixedGapSearch;
 import org.jebtk.bioinformatics.gapsearch.GappedSearchFeatures;
 import org.jebtk.bioinformatics.genomic.Chromosome;
+import org.jebtk.bioinformatics.genomic.Genome;
 import org.jebtk.bioinformatics.genomic.GenomeService;
 import org.jebtk.bioinformatics.genomic.GenomicRegion;
 import org.jebtk.bioinformatics.ui.BioInfDialog;
@@ -54,7 +55,6 @@ import org.jebtk.modern.help.GuiAppInfo;
 import org.jebtk.modern.io.FileDialog;
 import org.jebtk.modern.io.RecentFilesService;
 import org.jebtk.modern.io.TxtGuiFileFilter;
-import org.jebtk.modern.menu.ModernPopupMenu;
 import org.jebtk.modern.menu.ModernPopupMenu2;
 import org.jebtk.modern.menu.ModernTwoLineMenuItem;
 import org.jebtk.modern.ribbon.Ribbon;
@@ -104,7 +104,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
       mSearchScreen = mWindow.createTaskDialog("Overlapping...");
 
       try {
-        mNewModel = enhancers();
+        mNewModel = enhancers(Genome.HG19);
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -121,7 +121,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
       mSearchScreen.close();
     }
 
-    private DataFrame enhancers() throws IOException, ParseException {
+    private DataFrame enhancers(String genome) throws IOException {
       DataFrame model = getCurrentModel();
 
       List<String> annotations = CollectionUtils.sortKeys(mGappedSearch);
@@ -151,12 +151,12 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
         } else if (model.getText(i, 0).contains(TextUtils.NA)) {
           region = null;
         } else if (GenomicRegion.isGenomicRegion(model.getText(i, 0))) {
-          region = GenomicRegion.parse(model.getText(i, 0));
+          region = GenomicRegion.parse(genome, model.getText(i, 0));
         } else {
           // three column format
 
           region = new GenomicRegion(
-              GenomeService.getInstance().human(model.getText(i, 0)),
+              GenomeService.instance().chr(genome, model.getText(i, 0)),
               Integer.parseInt(model.getText(i, 1)),
               Integer.parseInt(model.getText(i, 2)));
         }
@@ -846,7 +846,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
           // three column format
 
           region = new GenomicRegion(
-              GenomeService.getInstance().chr(mGenome, model.getText(i, 0)),
+              GenomeService.instance().chr(mGenome, model.getText(i, 0)),
               TextUtils.parseInt(model.getText(i, 1)),
               TextUtils.parseInt(model.getText(i, 2)));
         }
@@ -953,7 +953,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
           // three column format
 
           region = new GenomicRegion(
-              GenomeService.getInstance().chr(mGenome, model.getText(i, 0)),
+              GenomeService.instance().chr(mGenome, model.getText(i, 0)),
               TextUtils.parseInt(model.getText(i, 1)),
               TextUtils.parseInt(model.getText(i, 2)));
         }
@@ -1501,20 +1501,20 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
   public void clicked(ModernClickEvent e) {
     if (e.getMessage().equals("Super Enhancers")) {
       try {
-        enhancers();
+        enhancers(Genome.HG19);
       } catch (IOException e1) {
         e1.printStackTrace();
       }
     } else if (e.getMessage().equals("Overlap")
         || e.getMessage().equals("N-way Overlap")) {
       try {
-        nWayOverlap();
+        nWayOverlap(Genome.HG19);
       } catch (IOException | InvalidFormatException e1) {
         e1.printStackTrace();
       }
     } else if (e.getMessage().equals("Closest")) {
       try {
-        closest();
+        closest(Genome.HG19);
       } catch (IOException | InvalidFormatException e1) {
         e1.printStackTrace();
       }
@@ -1546,13 +1546,13 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
       }
     } else if (e.getMessage().equals("Distance Plot")) {
       try {
-        distancePlot();
+        distancePlot(Genome.HG19);
       } catch (IOException | InvalidFormatException e1) {
         e1.printStackTrace();
       }
     } else if (e.getMessage().equals("Export BED")) {
       try {
-        exportBed();
+        exportBed(Genome.HG19);
       } catch (IOException e1) {
         e1.printStackTrace();
       }
@@ -1580,7 +1580,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     ModernMessageDialog.createFileSavedDialog(mWindow, file);
   }
 
-  private void enhancers() throws IOException {
+  private void enhancers(String genome) throws IOException {
     EnhancerDialog dialog = new EnhancerDialog(mWindow);
 
     dialog.setVisible(true);
@@ -1590,7 +1590,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     }
 
     Map<String, BinaryGapSearch<Annotation>> gappedSearch = dialog
-        .getGappedSearch();
+        .getGappedSearch(genome);
 
     EnhancerTask task = new EnhancerTask(gappedSearch, dialog.getOverlapMode());
 
@@ -1625,7 +1625,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
    * task.execute(); } }
    */
 
-  private void nWayOverlap() throws InvalidFormatException, IOException {
+  private void nWayOverlap(String genome) throws InvalidFormatException, IOException {
     NWayOverlapDialog dialog = new NWayOverlapDialog(mWindow);
 
     dialog.setVisible(true);
@@ -1641,7 +1641,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     }
 
     if (dialog.getOneWay()) {
-      OneWayOverlapTask task = new OneWayOverlapTask(mWindow, files,
+      OneWayOverlapTask task = new OneWayOverlapTask(mWindow, genome, files,
           dialog.getAtBeginning(), true);
 
       task.doInBackground();
@@ -1689,7 +1689,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     // return;
     // }
 
-    ClosestTask task = new ClosestTask(mWindow, gappedSearch, file);
+    ClosestTask task = new ClosestTask(mWindow, genome, gappedSearch, file);
 
     // task.execute();
 
@@ -1806,14 +1806,14 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     BinarySearch<AnnotationGene> tssSearch = AnnotationService.getInstance()
         .getBinarySearch(genome);
 
-    TssPlotTask task = new TssPlotTask(mWindow, tssSearch, dialog.getStart(),
+    TssPlotTask task = new TssPlotTask(mWindow, genome, tssSearch, dialog.getStart(),
         dialog.getEnd(), dialog.getUnits(), dialog.getBinSize(),
         dialog.getBinUnits());
 
     task.plot();
   }
 
-  private void distancePlot() throws IOException, InvalidFormatException {
+  private void distancePlot(String genome) throws IOException, InvalidFormatException {
     if (mWindow.getInputFile() == null) {
       return;
     }
@@ -1846,10 +1846,10 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
           0,
           TextUtils.TAB_DELIMITER);
 
-      gappedSearch = Annotation.parsePeaks(model);
+      gappedSearch = Annotation.parsePeaks(plotDialog.getGenome(), model);
     }
 
-    DistancePlotTask task = new DistancePlotTask(mWindow, gappedSearch,
+    DistancePlotTask task = new DistancePlotTask(mWindow, genome, gappedSearch,
         plotDialog.getStart(), plotDialog.getEnd(), plotDialog.getUnits(),
         plotDialog.getBinSize(), plotDialog.getBinUnits());
 
@@ -1888,7 +1888,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
         // three column format
 
         region = new GenomicRegion(
-            GenomeService.getInstance().chr(genome, model.getText(i, 0)),
+            GenomeService.instance().chr(genome, model.getText(i, 0)),
             Integer.parseInt(model.getText(i, 1)),
             Integer.parseInt(model.getText(i, 2)));
       }

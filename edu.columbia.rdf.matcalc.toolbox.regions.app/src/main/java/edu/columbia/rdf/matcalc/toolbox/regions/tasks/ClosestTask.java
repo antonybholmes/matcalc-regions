@@ -29,10 +29,13 @@ public class ClosestTask extends SwingWorker<Void, Void> {
   private DataFrame mNewModel;
   private Path mFile2;
   private MainMatCalcWindow mWindow;
+  private String mGenome;
 
   public ClosestTask(MainMatCalcWindow window,
+      String genome,
       BinaryGapSearch<Annotation> gappedSearch, Path file2) {
     mWindow = window;
+    mGenome = genome;
     mGappedSearch = gappedSearch;
     mFile2 = file2;
   }
@@ -78,12 +81,12 @@ public class ClosestTask extends SwingWorker<Void, Void> {
       } else if (m.getText(i, 0).contains(TextUtils.NA)) {
         region = null;
       } else if (GenomicRegion.isGenomicRegion(m.getText(i, 0))) {
-        region = GenomicRegion.parse(m.getText(i, 0));
+        region = GenomicRegion.parse(mGenome, m.getText(i, 0));
       } else if (isThreeColumnGenomicLocation(m, i)) {
         // three column format
 
         region = new GenomicRegion(
-            GenomeService.getInstance().human(m.getText(i, 0)),
+            GenomeService.instance().chr(mGenome, m.getText(i, 0)),
             TextUtils.parseInt(m.getText(i, 1)),
             TextUtils.parseInt(m.getText(i, 2)));
       } else {

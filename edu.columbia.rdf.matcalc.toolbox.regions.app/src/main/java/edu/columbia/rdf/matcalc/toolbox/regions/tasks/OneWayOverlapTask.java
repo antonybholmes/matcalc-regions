@@ -62,6 +62,8 @@ public class OneWayOverlapTask extends SwingWorker<Void, Void> {
 
   private boolean mSimpleMode;
 
+  private String mGenome;
+
   /**
    * Instantiates a new one way overlap task.
    *
@@ -72,10 +74,12 @@ public class OneWayOverlapTask extends SwingWorker<Void, Void> {
    * @throws ParseException the parse exception
    * @throws IOException Signals that an I/O exception has occurred.
    */
-  public OneWayOverlapTask(MainMatCalcWindow window, List<Path> files,
+  public OneWayOverlapTask(MainMatCalcWindow window, String genome,
+      List<Path> files,
       boolean addBeginning, boolean simpleMode)
       throws InvalidFormatException, IOException {
     mWindow = window;
+    mGenome = genome;
     mAddBeginning = addBeginning;
     mFiles = files;
     mSimpleMode = simpleMode;
@@ -165,12 +169,12 @@ public class OneWayOverlapTask extends SwingWorker<Void, Void> {
       } else if (matrix.getText(i, 0).contains(TextUtils.NA)) {
         region = null;
       } else if (GenomicRegion.isGenomicRegion(matrix.getText(i, 0))) {
-        region = GenomicRegion.parse(matrix.getText(i, 0));
+        region = GenomicRegion.parse(mGenome, matrix.getText(i, 0));
       } else {
         // three column format
 
         region = new GenomicRegion(
-            GenomeService.getInstance().human(matrix.getText(i, 0)),
+            GenomeService.instance().chr(mGenome, matrix.getText(i, 0)),
             TextUtils.parseInt(matrix.getText(i, 1)),
             TextUtils.parseInt(matrix.getText(i, 2)));
       }
