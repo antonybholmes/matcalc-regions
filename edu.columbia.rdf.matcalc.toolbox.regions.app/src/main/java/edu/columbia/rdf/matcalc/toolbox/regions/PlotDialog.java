@@ -65,7 +65,7 @@ public class PlotDialog extends ModernDialogTaskWindow {
 
     box.add(new HExpandBox("Bins", new HSpacedBox(mFieldBin, mBinUnitsCombo)));
 
-    setDialogCardContent(box);
+    setCard(box);
 
     mUnitsCombo.setSelectedIndex(1);
 

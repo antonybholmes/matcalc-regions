@@ -63,7 +63,7 @@ public class ExtendDialog extends ModernDialogTaskWindow {
     box.add(new HExpandBox("3' extension", mExt3pText, ModernPanel.createHGap(),
         new ModernAutoSizeLabel("bp")));
 
-    setDialogCardContent(box);
+    setCard(box);
   }
 
   @Override

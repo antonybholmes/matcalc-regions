@@ -143,7 +143,7 @@ public class OverlapDialog extends ModernDialogTaskWindow
 
     box.add(mCheckAddBeginning);
 
-    setDialogCardContent(box);
+    setCard(box);
 
     new ModernButtonGroup(mCheckOneWay, mCheckTwoWay);
   }

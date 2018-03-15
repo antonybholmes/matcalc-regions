@@ -57,7 +57,7 @@ public class SpeciesDialog extends ModernDialogTaskWindow
     box.add(UI.createVGap(5));
     box.add(mCheckMouse);
 
-    setCardContent(box);
+    setCard(box);
   }
 
   public boolean getHuman() {

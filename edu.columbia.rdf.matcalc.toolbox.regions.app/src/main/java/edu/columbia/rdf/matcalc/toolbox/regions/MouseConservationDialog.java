@@ -54,7 +54,7 @@ public class MouseConservationDialog extends ModernDialogTaskWindow {
 
     box.add(mCheckScores);
 
-    setCardContent(box);
+    setCard(box);
   }
 
   public boolean getShowConservation() {

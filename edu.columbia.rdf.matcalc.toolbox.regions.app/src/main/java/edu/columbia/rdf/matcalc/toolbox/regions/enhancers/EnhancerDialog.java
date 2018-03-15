@@ -108,7 +108,7 @@ public class EnhancerDialog extends ModernDialogTaskWindow {
 
     mPanel.setFooter(box2);
 
-    setDialogCardContent(mPanel);
+    setCard(mPanel);
   }
 
   private void search() {

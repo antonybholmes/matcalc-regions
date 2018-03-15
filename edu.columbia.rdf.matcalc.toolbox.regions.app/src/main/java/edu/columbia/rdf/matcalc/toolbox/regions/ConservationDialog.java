@@ -59,7 +59,7 @@ public class ConservationDialog extends ModernDialogTaskWindow {
 
     box.add(mCheckScores);
 
-    setCardContent(box);
+    setCard(box);
   }
 
   public boolean getShowMean() {

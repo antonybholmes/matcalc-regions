@@ -104,7 +104,7 @@ public class NWayOverlapDialog extends ModernDialogHelpWindow
 
     content.setBody(mChooseFilesPanel);
 
-    setDialogCardContent(content);
+    setCard(content);
   }
 
   @Override
