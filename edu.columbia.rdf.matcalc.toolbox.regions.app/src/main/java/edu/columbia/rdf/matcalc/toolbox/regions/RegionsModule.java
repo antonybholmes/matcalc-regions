@@ -1759,7 +1759,8 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 
     ConservationTask task = new ConservationTask(dialog.getGenome(),
         dialog.getShowMean(),
-        dialog.getShowMedian(), dialog.getShowScores());
+        dialog.getShowMedian(), 
+        dialog.getShowScores());
 
     task.execute();
   }
