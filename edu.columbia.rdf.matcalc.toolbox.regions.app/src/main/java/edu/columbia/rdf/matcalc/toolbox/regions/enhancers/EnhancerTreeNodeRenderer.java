@@ -27,7 +27,7 @@ public class EnhancerTreeNodeRenderer extends ModernTreeNodeRenderer {
   // private static final int LINE_HEIGHT = Resources.ICON_SIZE_24;
 
   private static final Color FILL_COLOR = ThemeService.getInstance().colors()
-      .getHighlight(2);
+      .getGray(2);
 
   private String text1 = null;
   private String text2 = null;
