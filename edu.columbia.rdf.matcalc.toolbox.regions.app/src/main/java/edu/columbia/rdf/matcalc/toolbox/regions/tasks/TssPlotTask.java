@@ -86,7 +86,7 @@ public class TssPlotTask extends SwingWorker<Void, Void> {
         // three column format
 
         region = new GenomicRegion(
-            GenomeService.instance().chr(mGenome, matrix.getText(i, 0)),
+            GenomeService.getInstance().chr(mGenome, matrix.getText(i, 0)),
             TextUtils.parseInt(matrix.getText(i, 1)),
             TextUtils.parseInt(matrix.getText(i, 2)));
       }

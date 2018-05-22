@@ -86,7 +86,7 @@ public class ClosestTask extends SwingWorker<Void, Void> {
         // three column format
 
         region = new GenomicRegion(
-            GenomeService.instance().chr(mGenome, m.getText(i, 0)),
+            GenomeService.getInstance().chr(mGenome, m.getText(i, 0)),
             TextUtils.parseInt(m.getText(i, 1)),
             TextUtils.parseInt(m.getText(i, 2)));
       } else {

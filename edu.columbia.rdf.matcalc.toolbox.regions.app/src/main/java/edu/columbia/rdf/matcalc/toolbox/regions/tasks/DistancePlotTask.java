@@ -70,7 +70,7 @@ public class DistancePlotTask extends SwingWorker<Void, Void> {
         // three column format
 
         region = new GenomicRegion(
-            GenomeService.instance().chr(mGenome, model.getText(i, 0)),
+            GenomeService.getInstance().chr(mGenome, model.getText(i, 0)),
             Integer.parseInt(model.getText(i, 1)),
             Integer.parseInt(model.getText(i, 2)));
       }

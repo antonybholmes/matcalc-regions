@@ -44,7 +44,7 @@ import org.jebtk.core.text.TextUtils;
 import org.jebtk.math.matrix.DataFrame;
 import org.jebtk.math.statistics.Statistics;
 import org.jebtk.math.ui.external.microsoft.XlsxGuiFileFilter;
-import org.jebtk.modern.UIService;
+import org.jebtk.modern.AssetService;
 import org.jebtk.modern.dataview.ModernDataModel;
 import org.jebtk.modern.dialog.MessageDialogTaskGlassPane;
 import org.jebtk.modern.dialog.ModernDialogStatus;
@@ -156,7 +156,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
           // three column format
 
           region = new GenomicRegion(
-              GenomeService.instance().chr(genome, model.getText(i, 0)),
+              GenomeService.getInstance().chr(genome, model.getText(i, 0)),
               Integer.parseInt(model.getText(i, 1)),
               Integer.parseInt(model.getText(i, 2)));
         }
@@ -846,7 +846,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
           // three column format
 
           region = new GenomicRegion(
-              GenomeService.instance().chr(mGenome, model.getText(i, 0)),
+              GenomeService.getInstance().chr(mGenome, model.getText(i, 0)),
               TextUtils.parseInt(model.getText(i, 1)),
               TextUtils.parseInt(model.getText(i, 2)));
         }
@@ -953,7 +953,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
           // three column format
 
           region = new GenomicRegion(
-              GenomeService.instance().chr(mGenome, model.getText(i, 0)),
+              GenomeService.getInstance().chr(mGenome, model.getText(i, 0)),
               TextUtils.parseInt(model.getText(i, 1)),
               TextUtils.parseInt(model.getText(i, 2)));
         }
@@ -1330,7 +1330,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     try {
       mConservationAssembly = new ConservationAssemblyWeb(
           new URL(SettingsService.getInstance()
-              .getAsString("regions.conservation.remote-url")));
+              .getString("regions.conservation.remote-url")));
     } catch (MalformedURLException e) {
       e.printStackTrace();
     } catch (IOException e) {
@@ -1340,7 +1340,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     try {
       mMouseConservationAssembly = new ConservationAssemblyWeb(
           new URL(SettingsService.getInstance()
-              .getAsString("regions.mouse.conservation.remote-url")));
+              .getString("regions.mouse.conservation.remote-url")));
     } catch (MalformedURLException e) {
       e.printStackTrace();
     } catch (IOException e) {
@@ -1367,7 +1367,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     ModernClickWidget button;
 
     button = new RibbonLargeButton("Overlap",
-        UIService.getInstance().loadIcon("common_regions", 24));
+        AssetService.getInstance().loadIcon("common_regions", 24));
     button.setToolTip(
         new ModernToolTip("Overlap",
             "Find common regions between two sets of coordinates."));
@@ -1384,7 +1384,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
      */
 
     button = new RibbonLargeButton("Closest",
-        UIService.getInstance().loadIcon("closest", 24));
+        AssetService.getInstance().loadIcon("closest", 24));
     button.setToolTip(
         new ModernToolTip("Closest",
             "Find the closest feature in another list of features."));
@@ -1393,14 +1393,14 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     ribbon.getToolbar("Genomic").getSection("Regions").add(button);
 
     button = new RibbonLargeButton("Stitch",
-        UIService.getInstance().loadIcon("stitch", 24));
+        AssetService.getInstance().loadIcon("stitch", 24));
     button.setToolTip(new ModernToolTip("Stitch", "Stitch regions together."));
     // Ui.setSize(button, new Dimension(60, getRibbon().LARGE_BUTTON_HEIGHT));
     button.addClickListener(this);
     ribbon.getToolbar("Genomic").getSection("Regions").add(button);
 
     button = new RibbonLargeButton("Extend",
-        UIService.getInstance().loadIcon("extend", 24));
+        AssetService.getInstance().loadIcon("extend", 24));
     button.setToolTip(new ModernToolTip("Extend", "Extend regions."));
     // Ui.setSize(button, new Dimension(60, getRibbon().LARGE_BUTTON_HEIGHT));
     button.addClickListener(this);
@@ -1409,7 +1409,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     ribbon.getToolbar("Genomic").getSection("Regions").addSeparator();
 
     button = new RibbonLargeButton("Super", "Enhancers",
-        UIService.getInstance().loadIcon("enhancers", 24));
+        AssetService.getInstance().loadIcon("enhancers", 24));
     button.setToolTip(
         new ModernToolTip("Super Enhancers", "Annotate peaks with enhancers."));
     // Ui.setSize(button, new Dimension(60, getRibbon().LARGE_BUTTON_HEIGHT));
@@ -1468,11 +1468,11 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
 
     popup.addMenuItem(new ModernTwoLineMenuItem("TSS Plot",
         "Plot the distance between regions and gene TSS.",
-        UIService.getInstance().loadIcon("graph", 24)));
+        AssetService.getInstance().loadIcon("graph", 24)));
 
     popup.addMenuItem(new ModernTwoLineMenuItem("Distance Plot",
         "Plot distances between two sets of regions.",
-        UIService.getInstance().loadIcon("graph", 24)));
+        AssetService.getInstance().loadIcon("graph", 24)));
 
     // popup.addMenuItem(new ModernMenuSeparator());
 
@@ -1481,7 +1481,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     // "matcalc.split.help.url").setTextOffset(48));
 
     button = new RibbonLargeDropDownButton2(
-        UIService.getInstance().loadIcon("graph", 24), popup);
+        AssetService.getInstance().loadIcon("graph", 24), popup);
     button.setToolTip("Distance Plot", "Plot the distance between regions.");
 
     mWindow.getRibbon().getToolbar("Genomic").getSection("Regions").add(button);
@@ -1889,7 +1889,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
         // three column format
 
         region = new GenomicRegion(
-            GenomeService.instance().chr(genome, model.getText(i, 0)),
+            GenomeService.getInstance().chr(genome, model.getText(i, 0)),
             Integer.parseInt(model.getText(i, 1)),
             Integer.parseInt(model.getText(i, 2)));
       }

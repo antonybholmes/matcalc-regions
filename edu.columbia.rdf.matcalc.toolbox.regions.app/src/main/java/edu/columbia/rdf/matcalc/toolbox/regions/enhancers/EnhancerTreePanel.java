@@ -197,7 +197,7 @@ public class EnhancerTreePanel extends ModernWidget {
 
           for (int i = 0; i < table.getRowCount(); ++i) {
             String name = table.getString(i, 1);
-            Chromosome chr = GenomeService.instance()
+            Chromosome chr = GenomeService.getInstance()
                 .chr(genome, table.getString(i, 2));
             int start = table.getInt(i, 3);
             int end = table.getInt(i, 4);

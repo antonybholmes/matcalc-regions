@@ -46,7 +46,7 @@ public class OverlapDialog extends ModernDialogTaskWindow
   private ModernCheckBox mCheckAddBeginning = new ModernCheckBox(
       "Annotation at beginning",
       SettingsService.getInstance()
-          .getAsBool("regions.overlap.annotation.first-columns"),
+          .getBool("regions.overlap.annotation.first-columns"),
       ModernWidget.EXTRA_LARGE_SIZE);
 
   private Path mFile1;

@@ -77,7 +77,7 @@ public class NWayOverlapDialog extends ModernDialogHelpWindow
     new ModernButtonGroup(mCheckOneWay, mCheckTwoWay);
 
     if (SettingsService.getInstance()
-        .getAsBool("org.matcalc.toolbox.bio.regions.nway.one-way", true)) {
+        .getBool("org.matcalc.toolbox.bio.regions.nway.one-way", true)) {
       mCheckOneWay.doClick();
     } else {
       mCheckTwoWay.doClick();

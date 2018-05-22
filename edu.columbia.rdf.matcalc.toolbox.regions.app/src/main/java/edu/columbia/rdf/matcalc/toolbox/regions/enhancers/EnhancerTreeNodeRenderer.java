@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import org.jebtk.core.tree.TreeNode;
-import org.jebtk.modern.UIService;
+import org.jebtk.modern.AssetService;
 import org.jebtk.modern.theme.ThemeService;
 import org.jebtk.modern.tree.ModernTreeNodeRenderer;
 import org.jebtk.modern.tree.Tree;
@@ -26,7 +26,7 @@ public class EnhancerTreeNodeRenderer extends ModernTreeNodeRenderer {
   private static final int HEIGHT = 50;
   // private static final int LINE_HEIGHT = Resources.ICON_SIZE_24;
 
-  private static final Color FILL_COLOR = ThemeService.getInstance().colors()
+  private static final Color FILL_COLOR = ThemeService.getInstance().getColors()
       .getGray(2);
 
   private String text1 = null;
@@ -60,7 +60,7 @@ public class EnhancerTreeNodeRenderer extends ModernTreeNodeRenderer {
     // it interferes with the highlighting rectangle
 
     if (mNode.isParent()) {
-      y = (HEADER_HEIGHT - UIService.ICON_SIZE_16) / 2;
+      y = (HEADER_HEIGHT - AssetService.ICON_SIZE_16) / 2;
 
       if (mNode.isExpanded()) {
         TreeIconNodeCountRenderer.BRANCH_CLOSED_ICON.drawIcon(g2, x, y, 16);

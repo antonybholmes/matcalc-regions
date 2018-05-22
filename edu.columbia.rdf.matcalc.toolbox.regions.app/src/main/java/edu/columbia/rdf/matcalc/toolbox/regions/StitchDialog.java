@@ -31,7 +31,7 @@ public class StitchDialog extends ModernDialogHelpWindow {
 
   private ModernCompactSpinner mDistanceField = new ModernCompactSpinner(0,
       100000, 2000,
-      SettingsService.getInstance().getAsInt("regions.max-stitch-distance"),
+      SettingsService.getInstance().getInt("regions.max-stitch-distance"),
       false);
 
   private ModernCompactSpinner mTss5pExt = new ModernCompactSpinner(0, 100000,
