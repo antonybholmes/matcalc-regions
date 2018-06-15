@@ -67,6 +67,7 @@ import edu.columbia.rdf.matcalc.MainMatCalcWindow;
 import edu.columbia.rdf.matcalc.bio.Annotation;
 import edu.columbia.rdf.matcalc.bio.AnnotationGene;
 import edu.columbia.rdf.matcalc.bio.AnnotationService;
+import edu.columbia.rdf.matcalc.bio.GenomeDatabase;
 import edu.columbia.rdf.matcalc.toolbox.CalcModule;
 import edu.columbia.rdf.matcalc.toolbox.core.venn.CircleStyle;
 import edu.columbia.rdf.matcalc.toolbox.core.venn.MainVennWindow;
@@ -1710,16 +1711,12 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
       return;
     }
 
-    String genome = dialog.getGenome();
-
-    if (genome == null) {
-      return;
-    }
+    GenomeDatabase genome = dialog.getGenome();
 
     BinarySearch<AnnotationGene> tssSearch = AnnotationService.getInstance()
         .getBinarySearch(genome);
 
-    StitchTask task = new StitchTask(genome, tssSearch, dialog.getDistance(),
+    StitchTask task = new StitchTask(genome.getGenome(), tssSearch, dialog.getDistance(),
         dialog.getTssExclusion(), dialog.getTss5p(), dialog.getTss3p());
 
     task.execute();
@@ -1798,7 +1795,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
       return;
     }
 
-    String genome = dialog.getGenome();
+    GenomeDatabase genome = dialog.getGenome();
 
     if (genome == null) {
       return;
@@ -1807,7 +1804,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     BinarySearch<AnnotationGene> tssSearch = AnnotationService.getInstance()
         .getBinarySearch(genome);
 
-    TssPlotTask task = new TssPlotTask(mWindow, genome, tssSearch, dialog.getStart(),
+    TssPlotTask task = new TssPlotTask(mWindow, genome.getGenome(), tssSearch, dialog.getStart(),
         dialog.getEnd(), dialog.getUnits(), dialog.getBinSize(),
         dialog.getBinUnits());
 

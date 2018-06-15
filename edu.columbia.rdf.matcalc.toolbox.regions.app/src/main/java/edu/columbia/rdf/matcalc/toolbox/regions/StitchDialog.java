@@ -19,6 +19,7 @@ import org.jebtk.modern.window.ModernWindow;
 import org.jebtk.modern.window.WindowWidgetFocusEvents;
 
 import edu.columbia.rdf.matcalc.bio.AnnotationSidePanel;
+import edu.columbia.rdf.matcalc.bio.GenomeDatabase;
 
 /**
  * Control which conservation scores are shown.
@@ -138,7 +139,7 @@ public class StitchDialog extends ModernDialogHelpWindow {
     return mCheckTssExclusion.isSelected();
   }
 
-  public String getGenome() {
+  public GenomeDatabase getGenome() {
     return mGenomesPanel.getGenome();
   }
 }

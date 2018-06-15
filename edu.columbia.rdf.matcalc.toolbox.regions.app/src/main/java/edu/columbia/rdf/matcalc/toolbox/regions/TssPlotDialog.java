@@ -12,12 +12,12 @@ import org.jebtk.modern.panel.HSpacedBox;
 import org.jebtk.modern.panel.VBox;
 import org.jebtk.modern.spinner.ModernCompactSpinner;
 import org.jebtk.modern.text.ModernAutoSizeLabel;
-import org.jebtk.modern.tree.ModernCheckTreeMode;
 import org.jebtk.modern.widget.ModernWidget;
 import org.jebtk.modern.window.ModernWindow;
 import org.jebtk.modern.window.WindowWidgetFocusEvents;
 
-import edu.columbia.rdf.matcalc.bio.GenomesPanel;
+import edu.columbia.rdf.matcalc.bio.GenomeDatabase;
+import edu.columbia.rdf.matcalc.bio.GenomeSidePanel;
 
 /**
  * Control which conservation scores are shown.
@@ -41,8 +41,7 @@ public class TssPlotDialog extends ModernDialogTaskWindow {
 
   private ModernComboBox mBinUnitsCombo = new UnitsComboBox();
 
-  private GenomesPanel mGenomesPanel = new GenomesPanel(
-      ModernCheckTreeMode.RADIO);
+  private GenomeSidePanel mGenomesPanel = new GenomeSidePanel();
 
   public TssPlotDialog(ModernWindow parent) {
     super(parent);
@@ -122,7 +121,7 @@ public class TssPlotDialog extends ModernDialogTaskWindow {
     }
   }
 
-  public String getGenome() {
+  public GenomeDatabase getGenome() {
     return mGenomesPanel.getGenome();
   }
 }
