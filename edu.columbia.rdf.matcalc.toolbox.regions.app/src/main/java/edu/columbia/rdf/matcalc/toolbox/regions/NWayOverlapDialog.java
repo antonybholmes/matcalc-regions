@@ -44,7 +44,7 @@ public class NWayOverlapDialog extends ModernDialogHelpWindow
   private ModernRadioButton mCheckTwoWay = new ModernRadioButton("Two way");
 
   private ModernTwoStateWidget mCheckVenn = new ModernCheckSwitch(
-      "Create Venn diagram");
+      "Show Venn diagram");
 
   private ModernTwoStateWidget mCheckBeginning = new ModernCheckSwitch(
       "At beginning", true);
