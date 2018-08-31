@@ -1674,7 +1674,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
       gappedSearch = Annotation.parseBed(file);
     } else {
       ModernDataModel model = Bioinformatics.getModel(file,
-          true,
+          1,
           TextUtils.emptyList(),
           0,
           TextUtils.TAB_DELIMITER);
@@ -1839,7 +1839,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
       gappedSearch = Annotation.parseBed(file);
     } else {
       ModernDataModel model = Bioinformatics.getModel(file,
-          true,
+          1,
           TextUtils.emptyList(),
           0,
           TextUtils.TAB_DELIMITER);
