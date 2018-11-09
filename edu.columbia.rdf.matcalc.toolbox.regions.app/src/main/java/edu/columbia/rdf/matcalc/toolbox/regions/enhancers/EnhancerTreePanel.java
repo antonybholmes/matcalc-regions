@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.jebtk.bioinformatics.ext.ucsc.BedRegion;
+import org.jebtk.bioinformatics.ext.ucsc.BedElement;
 import org.jebtk.bioinformatics.gapsearch.BinaryGapSearch;
 import org.jebtk.bioinformatics.genomic.Chromosome;
 import org.jebtk.bioinformatics.genomic.GenomeService;
@@ -203,7 +203,7 @@ public class EnhancerTreePanel extends ModernWidget {
             int end = table.getInt(i, 4);
             int tid = table.getInt(i, 5);
 
-            BedRegion region = new BedRegion(chr, start, end, name);
+            BedElement region = new BedElement(chr, start, end, name);
 
             Annotation annotation = new Annotation(region.getName(), region);
 
