@@ -300,8 +300,8 @@ public class NWayOverlapTask extends SwingWorker<Void, Void> {
       }
     }
 
-    // mWindow.addToHistory("Overlap", matrix);
-    mWindow.openMatrix(matrix.setName(mFiles.size() + " Way Overlap"));
+    // mWindow.history().addToHistory("Overlap", matrix);
+    mWindow.openMatrices().open(matrix.setName(mFiles.size() + " Way Overlap"));
 
     if (mVenn) {
       if (mFiles.size() == 2) {

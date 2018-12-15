@@ -7,6 +7,7 @@ import java.util.List;
 import javax.swing.SwingWorker;
 
 import org.jebtk.bioinformatics.gapsearch.BinarySearch;
+import org.jebtk.bioinformatics.genomic.Genome;
 import org.jebtk.bioinformatics.genomic.GenomeService;
 import org.jebtk.bioinformatics.genomic.GenomicRegion;
 import org.jebtk.core.Mathematics;
@@ -41,10 +42,10 @@ public class TssPlotTask extends SwingWorker<Void, Void> {
   private double mBinSize;
   private int mBinUnits;
   private MainMatCalcWindow mWindow;
-  private String mGenome;
+  private Genome mGenome;
 
   public TssPlotTask(MainMatCalcWindow window,
-      String genome,
+      Genome genome,
       BinarySearch<AnnotationGene> tssSearch, double start, double end,
       int units, double binSize, int binUnits) {
     mWindow = window;

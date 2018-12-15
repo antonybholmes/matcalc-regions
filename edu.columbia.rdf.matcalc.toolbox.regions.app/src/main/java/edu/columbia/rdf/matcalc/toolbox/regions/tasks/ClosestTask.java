@@ -7,6 +7,7 @@ import java.util.List;
 import javax.swing.SwingWorker;
 
 import org.jebtk.bioinformatics.gapsearch.BinaryGapSearch;
+import org.jebtk.bioinformatics.genomic.Genome;
 import org.jebtk.bioinformatics.genomic.GenomeService;
 import org.jebtk.bioinformatics.genomic.GenomicRegion;
 import org.jebtk.core.io.Io;
@@ -29,10 +30,10 @@ public class ClosestTask extends SwingWorker<Void, Void> {
   private DataFrame mNewModel;
   private Path mFile2;
   private MainMatCalcWindow mWindow;
-  private String mGenome;
+  private Genome mGenome;
 
   public ClosestTask(MainMatCalcWindow window,
-      String genome,
+      Genome genome,
       BinaryGapSearch<Annotation> gappedSearch, Path file2) {
     mWindow = window;
     mGenome = genome;
@@ -54,7 +55,7 @@ public class ClosestTask extends SwingWorker<Void, Void> {
   @Override
   public void done() {
     if (mNewModel != null) {
-      mWindow.addToHistory("Closest from " + PathUtils.getName(mFile2),
+      mWindow.history().addToHistory("Closest from " + PathUtils.getName(mFile2),
           mNewModel);
     }
   }

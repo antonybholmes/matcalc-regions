@@ -11,7 +11,9 @@ import java.util.TreeMap;
 import org.jebtk.bioinformatics.ext.ucsc.BedElement;
 import org.jebtk.bioinformatics.gapsearch.BinaryGapSearch;
 import org.jebtk.bioinformatics.genomic.Chromosome;
+import org.jebtk.bioinformatics.genomic.Genome;
 import org.jebtk.bioinformatics.genomic.GenomeService;
+import org.jebtk.bioinformatics.genomic.GenomicRegion;
 import org.jebtk.core.tree.TreeNode;
 import org.jebtk.core.tree.TreeRootNode;
 import org.jebtk.database.DatabaseResultsTable;
@@ -168,7 +170,7 @@ public class EnhancerTreePanel extends ModernWidget {
     mTree.selectNode(i);
   }
 
-  public Map<String, BinaryGapSearch<Annotation>> getGappedSearch(String genome)
+  public Map<String, BinaryGapSearch<Annotation>> getGappedSearch(Genome genome)
       throws IOException {
     /*
      * List<File> files = new ArrayList<File>();
@@ -203,7 +205,7 @@ public class EnhancerTreePanel extends ModernWidget {
             int end = table.getInt(i, 4);
             int tid = table.getInt(i, 5);
 
-            BedElement region = new BedElement(chr, start, end, name);
+            BedElement region = new BedElement("bed", name, new GenomicRegion(chr, start, end));
 
             Annotation annotation = new Annotation(region.getName(), region);
 

@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.swing.Box;
 
 import org.jebtk.bioinformatics.gapsearch.BinaryGapSearch;
+import org.jebtk.bioinformatics.genomic.Genome;
 import org.jebtk.modern.ModernComponent;
 import org.jebtk.modern.UI;
 import org.jebtk.modern.button.ModernButtonGroup;
@@ -169,7 +170,7 @@ public class EnhancerDialog extends ModernDialogTaskWindow {
      */
   }
 
-  public Map<String, BinaryGapSearch<Annotation>> getGappedSearch(String genome)
+  public Map<String, BinaryGapSearch<Annotation>> getGappedSearch(Genome genome)
       throws IOException {
     return mEnhancersPanel.getGappedSearch(genome);
 

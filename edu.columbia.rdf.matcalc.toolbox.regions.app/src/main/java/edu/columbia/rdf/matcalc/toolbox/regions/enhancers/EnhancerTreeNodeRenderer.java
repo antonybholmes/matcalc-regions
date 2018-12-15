@@ -50,7 +50,7 @@ public class EnhancerTreeNodeRenderer extends ModernTreeNodeRenderer {
   }
 
   @Override
-  public void drawForegroundAAText(Graphics2D g2) {
+  public void drawForegroundAA(Graphics2D g2) {
 
     int y;
 

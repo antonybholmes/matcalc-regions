@@ -74,7 +74,7 @@ public class ConservationDialog extends ModernDialogTaskWindow {
     return mCheckScores.isSelected();
   }
 
-  public String getGenome() {
+  public Genome getGenome() {
     return Genome.HG19;
   }
 }

@@ -95,7 +95,7 @@ public class ExtendDialog extends ModernDialogTaskWindow {
     return mExt3pText.getIntValue();
   }
 
-  public String getGenome() {
+  public Genome getGenome() {
     return Genome.HG19;
   }
 }

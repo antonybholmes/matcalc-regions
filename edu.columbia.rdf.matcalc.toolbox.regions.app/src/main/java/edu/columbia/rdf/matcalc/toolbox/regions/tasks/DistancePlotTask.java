@@ -6,6 +6,7 @@ import java.util.List;
 import javax.swing.SwingWorker;
 
 import org.jebtk.bioinformatics.gapsearch.BinaryGapSearch;
+import org.jebtk.bioinformatics.genomic.Genome;
 import org.jebtk.bioinformatics.genomic.GenomeService;
 import org.jebtk.bioinformatics.genomic.GenomicRegion;
 import org.jebtk.core.io.Io;
@@ -24,10 +25,10 @@ public class DistancePlotTask extends SwingWorker<Void, Void> {
   private double mBinSize;
   private int mBinUnits;
   private MainMatCalcWindow mWindow;
-  private String mGenome;
+  private Genome mGenome;
 
   public DistancePlotTask(MainMatCalcWindow window,
-      String genome,
+      Genome genome,
       BinaryGapSearch<Annotation> gappedSearch, double start, double end,
       int units, double binSize, int binUnits) {
     mWindow = window;

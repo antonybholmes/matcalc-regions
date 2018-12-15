@@ -68,7 +68,7 @@ import edu.columbia.rdf.matcalc.bio.Annotation;
 import edu.columbia.rdf.matcalc.bio.AnnotationGene;
 import edu.columbia.rdf.matcalc.bio.AnnotationService;
 import edu.columbia.rdf.matcalc.bio.GenomeDatabase;
-import edu.columbia.rdf.matcalc.toolbox.CalcModule;
+import edu.columbia.rdf.matcalc.toolbox.Module;
 import edu.columbia.rdf.matcalc.toolbox.core.venn.CircleStyle;
 import edu.columbia.rdf.matcalc.toolbox.core.venn.MainVennWindow;
 import edu.columbia.rdf.matcalc.toolbox.regions.app.RegionsInfo;
@@ -79,7 +79,7 @@ import edu.columbia.rdf.matcalc.toolbox.regions.tasks.NWayOverlapTask;
 import edu.columbia.rdf.matcalc.toolbox.regions.tasks.OneWayOverlapTask;
 import edu.columbia.rdf.matcalc.toolbox.regions.tasks.TssPlotTask;
 
-public class RegionsModule extends CalcModule implements ModernClickListener {
+public class RegionsModule extends Module implements ModernClickListener {
   private MainMatCalcWindow mWindow;
 
   private ConservationAssembly mConservationAssembly;
@@ -116,13 +116,13 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     @Override
     public void done() {
       if (mNewModel != null) {
-        mWindow.addToHistory("Add Super Enhancers", mNewModel);
+        mWindow.history().addToHistory("Add Super Enhancers", mNewModel);
       }
 
       mSearchScreen.close();
     }
 
-    private DataFrame enhancers(String genome) throws IOException {
+    private DataFrame enhancers(Genome genome) throws IOException {
       DataFrame model = getCurrentModel();
 
       List<String> annotations = CollectionUtils.sortKeys(mGappedSearch);
@@ -259,7 +259,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
    * return null; }
    * 
    * @Override public void done() { if (mNewModel != null) {
-   * mWindow.addToHistory("Overlap with " + PathUtils.getName(mFile2),
+   * mWindow.history().addToHistory("Overlap with " + PathUtils.getName(mFile2),
    * mNewModel); }
    * 
    * mSearchScreen.close(); }
@@ -385,7 +385,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
    * return null; }
    * 
    * @Override public void done() { if (mNewModel != null) {
-   * mWindow.addToHistory("Overlap with " + PathUtils.getName(mFile),
+   * mWindow.history().addToHistory("Overlap with " + PathUtils.getName(mFile),
    * mNewModel); }
    * 
    * mSearchScreen.close(); }
@@ -526,7 +526,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     @Override
     public void done() {
       if (mNewModel != null) {
-        mWindow.addToHistory("Overlap with " + PathUtils.getName(mFile2),
+        mWindow.history().addToHistory("Overlap with " + PathUtils.getName(mFile2),
             mNewModel);
       }
 
@@ -763,9 +763,9 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     private boolean mShowScores;
     private boolean mShowMedian;
     private boolean mShowMean;
-    private String mGenome;
+    private Genome mGenome;
 
-    public ConservationTask(String genome,
+    public ConservationTask(Genome genome,
         boolean showMean, boolean showMedian,
         boolean showScores) {
       mGenome = genome;
@@ -790,7 +790,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     @Override
     public void done() {
       if (mNewModel != null) {
-        mWindow.addToHistory("Add Conservation", mNewModel);
+        mWindow.history().addToHistory("Add Conservation", mNewModel);
       }
 
       mSearchScreen.close();
@@ -879,9 +879,9 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     private MessageDialogTaskGlassPane mSearchScreen;
     private boolean mShowScores;
     private boolean mShowConservation;
-    private String mGenome;
+    private Genome mGenome;
 
-    public ConservationMouseOnlyTask(String genome,
+    public ConservationMouseOnlyTask(Genome genome,
         boolean showConservation,
         boolean showScores) {
       mGenome = genome;
@@ -905,7 +905,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     @Override
     public void done() {
       if (mNewModel != null) {
-        mWindow.addToHistory("Add Mouse Conservation", mNewModel);
+        mWindow.history().addToHistory("Add Mouse Conservation", mNewModel);
       }
 
       mSearchScreen.close();
@@ -984,9 +984,9 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     private int mExt5p;
     private int mExt3p;
     private BinarySearch<AnnotationGene> mTssSearch;
-    private String mGenome;
+    private Genome mGenome;
 
-    public StitchTask(String genome,
+    public StitchTask(Genome genome,
         BinarySearch<AnnotationGene> tssSearch, int distance,
         boolean tssExclusion, int ext5p, int ext3p) {
       mGenome = genome;
@@ -1013,7 +1013,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     @Override
     public void done() {
       if (mNewModel != null) {
-        mWindow.addToHistory("Stitch", mNewModel);
+        mWindow.history().addToHistory("Stitch", mNewModel);
       }
 
       mSearchScreen.close();
@@ -1250,9 +1250,9 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     private MessageDialogTaskGlassPane mSearchScreen;
     private int mExt3p;
     private int mExt5p;
-    private String mGenome;
+    private Genome mGenome;
 
-    public ExtendTask(String genome, int ext5p, int ext3p) {
+    public ExtendTask(Genome genome, int ext5p, int ext3p) {
       mGenome = genome;
       mExt5p = ext5p;
       mExt3p = ext3p;
@@ -1274,7 +1274,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     @Override
     public void done() {
       if (mNewModel != null) {
-        mWindow.addToHistory("Extend", mNewModel);
+        mWindow.history().addToHistory("Extend", mNewModel);
       }
 
       mSearchScreen.close();
@@ -1562,7 +1562,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     }
   }
 
-  private void exportBed(String genome) throws IOException {
+  private void exportBed(Genome genome) throws IOException {
     DataFrame m = mWindow.getCurrentMatrix();
 
     if (m == null) {
@@ -1581,7 +1581,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     ModernMessageDialog.createFileSavedDialog(mWindow, file);
   }
 
-  private void enhancers(String genome) throws IOException {
+  private void enhancers(Genome genome) throws IOException {
     EnhancerDialog dialog = new EnhancerDialog(mWindow);
 
     dialog.setVisible(true);
@@ -1626,7 +1626,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
    * task.execute(); } }
    */
 
-  private void nWayOverlap(String genome) throws InvalidFormatException, IOException {
+  private void nWayOverlap(Genome genome) throws InvalidFormatException, IOException {
     NWayOverlapDialog dialog = new NWayOverlapDialog(mWindow);
 
     dialog.setVisible(true);
@@ -1654,7 +1654,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     }
   }
 
-  private void closest(String genome) throws IOException, InvalidFormatException {
+  private void closest(Genome genome) throws IOException, InvalidFormatException {
     if (mWindow.getInputFile() == null) {
       return;
     }
@@ -1811,7 +1811,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
     task.plot();
   }
 
-  private void distancePlot(String genome) throws IOException, InvalidFormatException {
+  private void distancePlot(Genome genome) throws IOException, InvalidFormatException {
     if (mWindow.getInputFile() == null) {
       return;
     }
@@ -1869,7 +1869,7 @@ public class RegionsModule extends CalcModule implements ModernClickListener {
         new BedGraphGuiFileFilter());
   }
 
-  private static List<GenomicRegion> getRegions(String genome, DataFrame model) {
+  private static List<GenomicRegion> getRegions(Genome genome, DataFrame model) {
 
     List<GenomicRegion> regions = new ArrayList<GenomicRegion>();
 
