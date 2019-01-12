@@ -131,7 +131,7 @@ public class RegionsModule extends Module implements ModernClickListener {
           model.getCols() + annotations.size());
 
       for (int i = 0; i < model.getCols(); ++i) {
-        matrix.setColumnName(i, model.getColumnName(i));
+        matrix.setColumnName(i, model.getColumnHeader().getHeader(i));
       }
 
       int c = model.getCols();
@@ -237,7 +237,7 @@ public class RegionsModule extends Module implements ModernClickListener {
   /**
    * Overlap segments.
    * 
-   * @author Antony Holmes Holmes
+   * @author Antony Holmes
    *
    */
   /*
@@ -284,7 +284,7 @@ public class RegionsModule extends Module implements ModernClickListener {
    * cell.setCellValue("Overlap Feature Location"); }
    * 
    * // The header for (int i = 0; i < model.getColumnCount(); ++i) { cell =
-   * row.createCell(c++); cell.setCellValue(model.getColumnName(i)); }
+   * row.createCell(c++); cell.setCellValue(model.getColumnHeader().getHeader(i)); }
    * 
    * if (!mAddBeginning) { cell = row.createCell(c++);
    * cell.setCellValue("Overlap Region"); cell = row.createCell(c++);
@@ -460,7 +460,7 @@ public class RegionsModule extends Module implements ModernClickListener {
   /**
    * Overlap segments.
    * 
-   * @author Antony Holmes Holmes
+   * @author Antony Holmes
    */
   private class TwoWayOverlapTask extends SwingWorker<Void, Void> {
 
@@ -752,7 +752,7 @@ public class RegionsModule extends Module implements ModernClickListener {
   /**
    * Annotate
    * 
-   * @author Antony Holmes Holmes
+   * @author Antony Holmes
    *
    */
 
@@ -816,7 +816,7 @@ public class RegionsModule extends Module implements ModernClickListener {
       DataFrame matrix = DataFrame.createDataFrame(model.getRows(),
           model.getCols() + extra);
 
-      DataFrame.copyColumnAnnotations(model, matrix);
+      DataFrame.copyColumnHeaders(model, matrix);
 
       int c = model.getCols();
 
@@ -927,7 +927,7 @@ public class RegionsModule extends Module implements ModernClickListener {
       DataFrame matrix = DataFrame.createDataFrame(model.getRows(),
           model.getCols() + extra);
 
-      DataFrame.copyColumnAnnotations(model, matrix);
+      DataFrame.copyColumnHeaders(model, matrix);
 
       int c = model.getCols();
 

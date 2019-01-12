@@ -14,7 +14,7 @@ import org.jebtk.modern.tree.ModernTree;
  * The experiment tree can be sorted in multiple ways. Given a list of
  * experiments and a tree, generate a custom sorted tree of experiments.
  *
- * @author Antony Holmes Holmes
+ * @author Antony Holmes
  *
  */
 public abstract class EnhancerSorter extends Sorter<Enhancer> {

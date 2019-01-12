@@ -6,7 +6,7 @@ import org.jebtk.modern.search.SortModel;
  * Allows sort objects to be shared between entities that control how samples
  * and experiments are sorted.
  * 
- * @author Antony Holmes Holmes
+ * @author Antony Holmes
  *
  */
 public class EnhancerSortModel extends SortModel<Enhancer> {

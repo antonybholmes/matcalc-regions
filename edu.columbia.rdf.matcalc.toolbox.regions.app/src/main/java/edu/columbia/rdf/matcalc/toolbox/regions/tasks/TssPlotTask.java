@@ -30,7 +30,7 @@ import edu.columbia.rdf.matcalc.toolbox.regions.plot.tss.TssSubFigure;
 /**
  * Overlap segments.
  * 
- * @author Antony Holmes Holmes
+ * @author Antony Holmes
  *
  */
 public class TssPlotTask extends SwingWorker<Void, Void> {

@@ -15,7 +15,7 @@ import org.jebtk.math.statistics.HistBin;
 /**
  * Draw peaks.
  * 
- * @author Antony Holmes Holmes
+ * @author Antony Holmes
  *
  */
 public class TssMultiPlotSubFigure extends SubFigure {

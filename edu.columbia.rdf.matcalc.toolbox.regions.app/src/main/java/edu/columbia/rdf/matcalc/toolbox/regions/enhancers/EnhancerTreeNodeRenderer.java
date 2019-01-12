@@ -16,7 +16,7 @@ import org.jebtk.modern.widget.ModernWidget;
  * Displays a sample as a two line node with title and some basic info. Headers
  * are displayed in bold
  *
- * @author Antony Holmes Holmes
+ * @author Antony Holmes
  *
  */
 public class EnhancerTreeNodeRenderer extends ModernTreeNodeRenderer {

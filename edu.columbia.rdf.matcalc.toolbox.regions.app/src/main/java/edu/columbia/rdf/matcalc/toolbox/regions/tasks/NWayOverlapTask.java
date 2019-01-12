@@ -36,7 +36,7 @@ import edu.columbia.rdf.matcalc.toolbox.core.venn.MainVennWindow;
 /**
  * Overlap segments.
  * 
- * @author Antony Holmes Holmes
+ * @author Antony Holmes
  */
 public class NWayOverlapTask extends SwingWorker<Void, Void> {
 

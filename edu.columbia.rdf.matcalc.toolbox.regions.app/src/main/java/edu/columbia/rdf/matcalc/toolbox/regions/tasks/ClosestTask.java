@@ -21,7 +21,7 @@ import edu.columbia.rdf.matcalc.bio.Annotation;
 /**
  * Overlap segments.
  * 
- * @author Antony Holmes Holmes
+ * @author Antony Holmes
  *
  */
 public class ClosestTask extends SwingWorker<Void, Void> {
@@ -69,7 +69,7 @@ public class ClosestTask extends SwingWorker<Void, Void> {
     matrix.setColumnName(m.getCols() + 1, "Closest Feature Location");
     matrix.setColumnName(m.getCols() + 2, "Closest Feature Distance (bp)");
 
-    DataFrame.copyColumnAnnotations(m, matrix);
+    DataFrame.copyColumnHeaders(m, matrix);
     matrix.copyRows(m, 0, m.getRows() - 1);
 
     int c = m.getCols();

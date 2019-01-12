@@ -28,7 +28,7 @@ import org.jebtk.modern.window.WindowWidgetFocusEvents;
 /**
  * Control which conservation scores are shown.
  * 
- * @author Antony Holmes Holmes
+ * @author Antony Holmes
  *
  */
 public class OverlapDialog extends ModernDialogTaskWindow
