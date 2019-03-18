@@ -22,6 +22,9 @@ import org.jebtk.math.statistics.HistBin;
 public class Log10TssSubFigure extends SubFigure {
 
   private static final long serialVersionUID = 1L;
+  
+  /** GRAPH must show Y axis with some minimum value */
+  public static final double MIN_Y = 10;
 
   public Log10TssSubFigure(String title, String xPrefix,
       List<HistBin> log10TssHist) {
@@ -42,8 +45,7 @@ public class Log10TssSubFigure extends SubFigure {
       m.set(r, 0, hist.getX());
       m.set(r, 1, hist.getCount());
 
-      // System.err.println("r " + r + " " + hist.getX() + " " +
-      // hist.getCount());
+      //System.err.println("r " + r + " " + hist.getX() + " " + hist.getCount());
 
       ++r;
     }
@@ -81,8 +83,8 @@ public class Log10TssSubFigure extends SubFigure {
     } else {
       axes.getX1Axis().getTitle().setText("Absolute Distance (bp)");
     }
-
-    axes.getY1Axis().setLimitsAutoRound(0, XYSeries.getYMax(m, series));
+    
+    axes.getY1Axis().setLimitsAutoRound(0, Math.max(MIN_Y, XYSeries.getYMax(m, series)));
     axes.getY1Axis().getTitle().setText("Count");
 
     axes.setInternalSize(800, 400);

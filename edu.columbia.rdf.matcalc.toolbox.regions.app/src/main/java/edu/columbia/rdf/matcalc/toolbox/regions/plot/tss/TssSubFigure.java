@@ -41,8 +41,7 @@ public class TssSubFigure extends SubFigure {
       m.set(r, 0, hist.getX());
       m.set(r, 1, hist.getCount());
 
-      // System.err.println("r " + r + " " + hist.getX() + " " +
-      // hist.getCount());
+      //System.err.println("r " + r + " " + hist.getX() + " " + hist.getCount());
 
       ++r;
     }
@@ -79,7 +78,7 @@ public class TssSubFigure extends SubFigure {
       axes.getX1Axis().getTitle().setText("Distance (kb)");
     }
 
-    axes.getY1Axis().setLimitsAutoRound(0, XYSeries.getYMax(m, series));
+    axes.getY1Axis().setLimitsAutoRound(0, Math.max(Log10TssSubFigure.MIN_Y, XYSeries.getYMax(m, series)));
     axes.getY1Axis().getTitle().setText("Count");
 
     axes.setInternalSize(600, 400);

@@ -159,14 +159,20 @@ public class TssPlotTask extends SwingWorker<Void, Void> {
     List<HistBin> log10TssHist = Statistics
         .histogram(log10TssPoints, 0, 8, 0.1);
 
+    System.err.println("ss here");
+    
     Log10TssSubFigure tssLogCanvas = new Log10TssSubFigure("TSS", "TSS",
         log10TssHist);
+    
+    System.err.println("ss here 1");
 
     Figure figure = new Figure("TSS Figure", new PlotBoxGridStorage(1, 2),
         new PlotBoxGridLayout(1, 2));
     figure.addChild(tssCanvas, 0, 0);
     figure.addChild(tssLogCanvas, 0, 1);
 
+    System.err.println("tss here");
+    
     Graph2dWindow plotWindow = new Graph2dWindow(window, figure);
 
     plotWindow.getStyle().set(PlotStyle.JOINED_BARS);

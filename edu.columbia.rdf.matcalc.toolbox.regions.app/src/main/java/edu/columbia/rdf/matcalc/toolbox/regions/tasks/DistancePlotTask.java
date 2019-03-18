@@ -72,8 +72,8 @@ public class DistancePlotTask extends SwingWorker<Void, Void> {
 
         region = new GenomicRegion(
             GenomeService.getInstance().chr(mGenome, model.getText(i, 0)),
-            Integer.parseInt(model.getText(i, 1)),
-            Integer.parseInt(model.getText(i, 2)));
+            model.getInt(i, 1),
+            model.getInt(i, 2));
       }
 
       // System.err.println("region: " + region);
@@ -84,15 +84,22 @@ public class DistancePlotTask extends SwingWorker<Void, Void> {
       List<Annotation> results = mSearch.getClosestFeatures(midPoint);
 
       if (results != null) {
-        double tss = Double.MAX_VALUE;
-
+        double min = Double.MAX_VALUE;
+        double d;
         // region is from file 1
         for (Annotation annotation : results) {
-          tss = Math.min(tss,
-              GenomicRegion.midDist(annotation.getRegion(), region));
+          d = GenomicRegion.midDist(region, annotation.getRegion()); //, region);
+          
+          if (Math.abs(d) < Math.abs(min)) {
+            min = d;
+          }
+          
+          
         }
+        
+        System.err.println("tss " + min);
 
-        tssPoints.add(tss);
+        tssPoints.add(min);
       }
     }
 
