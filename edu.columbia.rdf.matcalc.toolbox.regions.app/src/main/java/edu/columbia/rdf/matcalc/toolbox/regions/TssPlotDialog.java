@@ -56,7 +56,7 @@ public class TssPlotDialog extends ModernDialogTaskWindow {
   private void setup() {
     addWindowListener(new WindowWidgetFocusEvents(mOkButton));
 
-    setSize(640, 480);
+    setSize(640, 500);
 
     UI.centerWindowToScreen(this);
   }
@@ -68,7 +68,7 @@ public class TssPlotDialog extends ModernDialogTaskWindow {
     // box.add(new HExpandBox("Species", mSpeciesCombo));
 
     UI.setSize(mGenomesPanel, 600, 200);
-    box.add(mGenomesPanel);
+    box.addChild(mGenomesPanel);
 
     midSectionHeader("Distance", box);
 
@@ -122,6 +122,6 @@ public class TssPlotDialog extends ModernDialogTaskWindow {
   }
 
   public GenomeDatabase getGenome() {
-    return mGenomesPanel.getGenome();
+    return mGenomesPanel.getGenomeId();
   }
 }
