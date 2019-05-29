@@ -2,6 +2,7 @@ package edu.columbia.rdf.matcalc.toolbox.regions;
 
 import javax.swing.Box;
 
+import org.jebtk.bioinformatics.genomic.Genome;
 import org.jebtk.core.settings.SettingsService;
 import org.jebtk.modern.UI;
 import org.jebtk.modern.Validation;
@@ -19,7 +20,6 @@ import org.jebtk.modern.window.ModernWindow;
 import org.jebtk.modern.window.WindowWidgetFocusEvents;
 
 import edu.columbia.rdf.matcalc.bio.AnnotationSidePanel;
-import edu.columbia.rdf.matcalc.bio.GenomeDatabase;
 
 /**
  * Control which conservation scores are shown.
@@ -139,7 +139,7 @@ public class StitchDialog extends ModernDialogHelpWindow {
     return mCheckTssExclusion.isSelected();
   }
 
-  public GenomeDatabase getGenome() {
+  public Genome getGenome() {
     return mGenomesPanel.getGenome();
   }
 }

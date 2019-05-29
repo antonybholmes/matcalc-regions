@@ -23,13 +23,15 @@ import org.jebtk.bioinformatics.conservation.ConservationAssembly;
 import org.jebtk.bioinformatics.conservation.ConservationAssemblyWeb;
 import org.jebtk.bioinformatics.ext.ucsc.Bed;
 import org.jebtk.bioinformatics.gapsearch.BinaryGapSearch;
-import org.jebtk.bioinformatics.gapsearch.BinarySearch;
 import org.jebtk.bioinformatics.gapsearch.FixedGapSearch;
 import org.jebtk.bioinformatics.gapsearch.GappedSearchFeatures;
 import org.jebtk.bioinformatics.genomic.Chromosome;
+import org.jebtk.bioinformatics.genomic.GenesDB;
 import org.jebtk.bioinformatics.genomic.Genome;
 import org.jebtk.bioinformatics.genomic.GenomeService;
+import org.jebtk.bioinformatics.genomic.GenomicElement;
 import org.jebtk.bioinformatics.genomic.GenomicRegion;
+import org.jebtk.bioinformatics.genomic.GenomicType;
 import org.jebtk.bioinformatics.ui.BioInfDialog;
 import org.jebtk.bioinformatics.ui.Bioinformatics;
 import org.jebtk.bioinformatics.ui.external.ucsc.BedGraphGuiFileFilter;
@@ -65,9 +67,7 @@ import org.jebtk.modern.widget.ModernClickWidget;
 
 import edu.columbia.rdf.matcalc.MainMatCalcWindow;
 import edu.columbia.rdf.matcalc.bio.Annotation;
-import edu.columbia.rdf.matcalc.bio.AnnotationGene;
 import edu.columbia.rdf.matcalc.bio.AnnotationService;
-import edu.columbia.rdf.matcalc.bio.GenomeDatabase;
 import edu.columbia.rdf.matcalc.toolbox.Module;
 import edu.columbia.rdf.matcalc.toolbox.core.venn.CircleStyle;
 import edu.columbia.rdf.matcalc.toolbox.core.venn.MainVennWindow;
@@ -983,11 +983,11 @@ public class RegionsModule extends Module implements ModernClickListener {
     private boolean mTssExclusion;
     private int mExt5p;
     private int mExt3p;
-    private BinarySearch<AnnotationGene> mTssSearch;
+    private GenesDB mTssSearch;
     private Genome mGenome;
 
     public StitchTask(Genome genome,
-        BinarySearch<AnnotationGene> tssSearch, int distance,
+        GenesDB tssSearch, int distance,
         boolean tssExclusion, int ext5p, int ext3p) {
       mGenome = genome;
       mTssSearch = tssSearch;
@@ -1059,7 +1059,7 @@ public class RegionsModule extends Module implements ModernClickListener {
           stitchMap.get(chr).put(start1, new ArrayList<GenomicRegion>());
           stitchMap.get(chr).get(start1).add(region1);
 
-          AnnotationGene region1UpstreamGene = upstreamOfTss(region1);
+          GenomicElement region1UpstreamGene = upstreamOfTss(region1);
 
           // If we are in the exclusion zone then stop
           if (mTssExclusion && inTssExZone(region1)) {
@@ -1169,13 +1169,14 @@ public class RegionsModule extends Module implements ModernClickListener {
      * 
      * @param region
      * @return
+     * @throws IOException 
      */
-    private boolean inTssExZone(GenomicRegion region) {
+    private boolean inTssExZone(GenomicRegion region) throws IOException {
 
-      List<AnnotationGene> closestFeatures = mTssSearch
-          .getClosestFeatures(region);
+      List<GenomicElement> closestFeatures = mTssSearch
+          .closest(mGenome, region, GenomicType.TRANSCRIPT);
 
-      for (AnnotationGene gene : closestFeatures) {
+      for (GenomicElement gene : closestFeatures) {
         GenomicRegion tss = gene.getTss();
 
         // Extend around the tss
@@ -1191,12 +1192,12 @@ public class RegionsModule extends Module implements ModernClickListener {
       return false;
     }
 
-    private boolean overlappingTssExZone(GenomicRegion region) {
+    private boolean overlappingTssExZone(GenomicRegion region) throws IOException {
 
-      List<AnnotationGene> closestFeatures = mTssSearch
-          .getClosestFeatures(region);
+      List<GenomicElement> closestFeatures = mTssSearch
+          .closest(mGenome, region, GenomicType.TRANSCRIPT);
 
-      for (AnnotationGene gene : closestFeatures) {
+      for (GenomicElement gene : closestFeatures) {
         GenomicRegion tss = gene.getTss();
 
         // Extend around the tss
@@ -1212,12 +1213,12 @@ public class RegionsModule extends Module implements ModernClickListener {
       return false;
     }
 
-    private AnnotationGene upstreamOfTss(GenomicRegion region) {
+    private GenomicElement upstreamOfTss(GenomicRegion region) throws IOException {
 
-      List<AnnotationGene> closestFeatures = mTssSearch
-          .getClosestFeatures(region);
+      List<GenomicElement> closestFeatures = mTssSearch
+          .closest(mGenome, region, GenomicType.TRANSCRIPT);
 
-      for (AnnotationGene gene : closestFeatures) {
+      for (GenomicElement gene : closestFeatures) {
         GenomicRegion tss = gene.getTss();
 
         // Extend around the tss
@@ -1231,7 +1232,7 @@ public class RegionsModule extends Module implements ModernClickListener {
       return null;
     }
 
-    private boolean downstreamOfTss(GenomicRegion region, AnnotationGene gene) {
+    private boolean downstreamOfTss(GenomicRegion region, GenomicElement gene) {
       if (gene == null) {
         return false;
       }
@@ -1711,12 +1712,12 @@ public class RegionsModule extends Module implements ModernClickListener {
       return;
     }
 
-    GenomeDatabase genome = dialog.getGenome();
+    Genome genome = dialog.getGenome();
 
-    BinarySearch<AnnotationGene> tssSearch = AnnotationService.getInstance()
-        .getBinarySearch(genome);
+    GenesDB tssSearch = AnnotationService.getInstance()
+        .getSearch(genome); //getBinarySearch(genome);
 
-    StitchTask task = new StitchTask(genome.getGenome(), tssSearch, dialog.getDistance(),
+    StitchTask task = new StitchTask(genome, tssSearch, dialog.getDistance(),
         dialog.getTssExclusion(), dialog.getTss5p(), dialog.getTss3p());
 
     task.execute();
@@ -1795,16 +1796,16 @@ public class RegionsModule extends Module implements ModernClickListener {
       return;
     }
 
-    GenomeDatabase genome = dialog.getGenome();
+    Genome genome = dialog.getGenome();
 
     if (genome == null) {
       return;
     }
 
-    BinarySearch<AnnotationGene> tssSearch = AnnotationService.getInstance()
-        .getBinarySearch(genome);
+    GenesDB tssSearch = AnnotationService.getInstance()
+        .getSearch(genome);
 
-    TssPlotTask task = new TssPlotTask(mWindow, genome.getGenome(), tssSearch, dialog.getStart(),
+    TssPlotTask task = new TssPlotTask(mWindow, genome, tssSearch, dialog.getStart(),
         dialog.getEnd(), dialog.getUnits(), dialog.getBinSize(),
         dialog.getBinUnits());
 

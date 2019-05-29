@@ -14,6 +14,7 @@ import org.jebtk.bioinformatics.genomic.Chromosome;
 import org.jebtk.bioinformatics.genomic.Genome;
 import org.jebtk.bioinformatics.genomic.GenomeService;
 import org.jebtk.bioinformatics.genomic.GenomicRegion;
+import org.jebtk.bioinformatics.genomic.GenomicType;
 import org.jebtk.core.tree.TreeNode;
 import org.jebtk.core.tree.TreeRootNode;
 import org.jebtk.database.DatabaseResultsTable;
@@ -205,7 +206,7 @@ public class EnhancerTreePanel extends ModernWidget {
             int end = table.getInt(i, 4);
             int tid = table.getInt(i, 5);
 
-            BedElement region = new BedElement("bed", name, new GenomicRegion(chr, start, end));
+            BedElement region = new BedElement(GenomicType.SUPER_ENHANCER, name, new GenomicRegion(chr, start, end));
 
             Annotation annotation = new Annotation(region.getName(), region);
 

@@ -1,5 +1,7 @@
 package edu.columbia.rdf.matcalc.toolbox.regions;
 
+import java.io.IOException;
+
 import org.jebtk.modern.UI;
 import org.jebtk.modern.combobox.ModernComboBox;
 
@@ -9,8 +11,8 @@ public class SpeciesCombo extends ModernComboBox {
 
   private static final long serialVersionUID = 1L;
 
-  public SpeciesCombo() {
-    for (String name : AnnotationService.getInstance()) {
+  public SpeciesCombo() throws IOException {
+    for (String name : AnnotationService.getInstance().names()) {
       addMenuItem(name);
     }
 

@@ -1,5 +1,6 @@
 package edu.columbia.rdf.matcalc.toolbox.regions.tasks;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +8,12 @@ import java.util.List;
 import javax.swing.SwingWorker;
 
 import org.jebtk.bioinformatics.gapsearch.BinarySearch;
+import org.jebtk.bioinformatics.genomic.GenesDB;
 import org.jebtk.bioinformatics.genomic.Genome;
 import org.jebtk.bioinformatics.genomic.GenomeService;
+import org.jebtk.bioinformatics.genomic.GenomicElement;
 import org.jebtk.bioinformatics.genomic.GenomicRegion;
+import org.jebtk.bioinformatics.genomic.GenomicType;
 import org.jebtk.core.Mathematics;
 import org.jebtk.core.io.Io;
 import org.jebtk.core.text.TextUtils;
@@ -22,7 +26,6 @@ import org.jebtk.math.statistics.HistBin;
 import org.jebtk.math.statistics.Statistics;
 
 import edu.columbia.rdf.matcalc.MainMatCalcWindow;
-import edu.columbia.rdf.matcalc.bio.AnnotationGene;
 import edu.columbia.rdf.matcalc.figure.graph2d.Graph2dWindow;
 import edu.columbia.rdf.matcalc.toolbox.regions.plot.tss.Log10TssSubFigure;
 import edu.columbia.rdf.matcalc.toolbox.regions.plot.tss.TssSubFigure;
@@ -35,7 +38,7 @@ import edu.columbia.rdf.matcalc.toolbox.regions.plot.tss.TssSubFigure;
  */
 public class TssPlotTask extends SwingWorker<Void, Void> {
 
-  private BinarySearch<AnnotationGene> mTssSearch;
+  private GenesDB mTssSearch;
   private double mStart;
   private double mEnd;
   private int mUnits;
@@ -46,7 +49,7 @@ public class TssPlotTask extends SwingWorker<Void, Void> {
 
   public TssPlotTask(MainMatCalcWindow window,
       Genome genome,
-      BinarySearch<AnnotationGene> tssSearch, double start, double end,
+      GenesDB tssSearch, double start, double end,
       int units, double binSize, int binUnits) {
     mWindow = window;
     mGenome = genome;
@@ -69,7 +72,7 @@ public class TssPlotTask extends SwingWorker<Void, Void> {
     return null;
   }
 
-  public void plot() throws ParseException {
+  public void plot() throws IOException {
     DataFrame matrix = mWindow.getCurrentMatrix();
 
     List<Double> tssPoints = new ArrayList<Double>();
@@ -97,14 +100,14 @@ public class TssPlotTask extends SwingWorker<Void, Void> {
       GenomicRegion midPoint = GenomicRegion.midRegion(region);
 
       // Find Gene TSS near the midpoint
-      List<AnnotationGene> results = mTssSearch.getClosestFeatures(midPoint);
+      List<GenomicElement> results = mTssSearch.closest(mGenome, midPoint, GenomicType.TRANSCRIPT);
 
       if (results != null) {
         double tss = Double.MAX_VALUE;
 
-        for (AnnotationGene gene : results) {
+        for (GenomicElement gene : results) {
           tss = Math.min(tss,
-              AnnotationGene.getTssMidDist(gene, midPoint.getStart()));
+              GenomicElement.getTssMidDist(gene, midPoint.getStart()));
         }
 
         tssPoints.add(tss);
