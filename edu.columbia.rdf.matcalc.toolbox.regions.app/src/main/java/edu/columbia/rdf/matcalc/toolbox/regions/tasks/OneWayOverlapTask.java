@@ -174,7 +174,7 @@ public class OneWayOverlapTask extends SwingWorker<Void, Void> {
       } else {
         // three column format
 
-        region = new GenomicRegion(
+        region = new GenomicRegion(mGenome,
             GenomeService.getInstance().chr(mGenome, matrix.getText(i, 0)),
             TextUtils.parseInt(matrix.getText(i, 1)),
             TextUtils.parseInt(matrix.getText(i, 2)));

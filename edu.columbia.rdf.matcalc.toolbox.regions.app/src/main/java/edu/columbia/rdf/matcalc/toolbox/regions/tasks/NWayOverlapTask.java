@@ -107,7 +107,7 @@ public class NWayOverlapTask extends SwingWorker<Void, Void> {
             // int start = region.getStart();
             // int end = region.getEnd();
 
-            GenomicRegion consensusRegion = region; // GenomicRegion.create(chr,
+            GenomicRegion consensusRegion = region; // GenomicRegion.create(genome, chr,
                                                     // region.getStart(),
                                                     // region.getEnd())
 
@@ -158,7 +158,7 @@ public class NWayOverlapTask extends SwingWorker<Void, Void> {
             // not set, it means the read is isolated and nothing
             // overlaps it.
             if (overlaps.size() > 1 || !allocated) {
-              // GenomicRegion overlap = GenomicRegion.create(chr, start, end);
+              // GenomicRegion overlap = GenomicRegion.create(genome, chr, start, end);
 
               for (Path f : overlaps.keySet()) {
                 for (GenomicRegion r : overlaps.get(f)) {

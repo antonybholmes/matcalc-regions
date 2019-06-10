@@ -156,7 +156,7 @@ public class RegionsModule extends Module implements ModernClickListener {
         } else {
           // three column format
 
-          region = new GenomicRegion(
+          region = new GenomicRegion(genome,
               GenomeService.getInstance().chr(genome, model.getText(i, 0)),
               Integer.parseInt(model.getText(i, 1)),
               Integer.parseInt(model.getText(i, 2)));
@@ -541,6 +541,8 @@ public class RegionsModule extends Module implements ModernClickListener {
       for (Chromosome chr1 : mGappedSearch) {
         for (Annotation annotation1 : mGappedSearch.getFeatures(chr1)) {
           GenomicRegion region1 = annotation1.getRegion();
+          
+          Genome genome = region1.mGenome;
 
           List<Annotation> testRegions = mGappedSearch.getFeatureSet(region1);
 
@@ -609,7 +611,7 @@ public class RegionsModule extends Module implements ModernClickListener {
             }
 
             if (groupedRegions.size() > 1 || !allocated.contains(region1)) {
-              GenomicRegion overlapRegion = new GenomicRegion(chr1, start1,
+              GenomicRegion overlapRegion = new GenomicRegion(genome, chr1, start1,
                   end1);
 
               for (GenomicRegion region : groupedRegions) {
@@ -846,7 +848,7 @@ public class RegionsModule extends Module implements ModernClickListener {
         } else {
           // three column format
 
-          region = new GenomicRegion(
+          region = new GenomicRegion(mGenome,
               GenomeService.getInstance().chr(mGenome, model.getText(i, 0)),
               TextUtils.parseInt(model.getText(i, 1)),
               TextUtils.parseInt(model.getText(i, 2)));
@@ -953,7 +955,7 @@ public class RegionsModule extends Module implements ModernClickListener {
         } else {
           // three column format
 
-          region = new GenomicRegion(
+          region = new GenomicRegion(mGenome,
               GenomeService.getInstance().chr(mGenome, model.getText(i, 0)),
               TextUtils.parseInt(model.getText(i, 1)),
               TextUtils.parseInt(model.getText(i, 2)));
@@ -1032,6 +1034,8 @@ public class RegionsModule extends Module implements ModernClickListener {
 
       int stitchCount = 0;
 
+      Genome genome = Genome.NO_GENOME;
+      
       for (Chromosome chr : CollectionUtils.sort(sortedRegions.keySet())) {
         // from each earliest start, build a cluster
 
@@ -1044,6 +1048,8 @@ public class RegionsModule extends Module implements ModernClickListener {
 
         while (i < regions.size()) {
           GenomicRegion region1 = regions.get(i);
+          
+          genome = region1.mGenome;
 
           ++stitchCount;
 
@@ -1143,7 +1149,7 @@ public class RegionsModule extends Module implements ModernClickListener {
           int min = stitchList.get(0).getStart();
           int max = stitchList.get(stitchList.size() - 1).getEnd();
 
-          GenomicRegion newRegion = new GenomicRegion(chr, min, max);
+          GenomicRegion newRegion = new GenomicRegion(genome, chr, min, max);
 
           // row = (XSSFRow)sheet.createRow(r);
 
@@ -1886,7 +1892,7 @@ public class RegionsModule extends Module implements ModernClickListener {
       } else {
         // three column format
 
-        region = new GenomicRegion(
+        region = new GenomicRegion(genome,
             GenomeService.getInstance().chr(genome, model.getText(i, 0)),
             Integer.parseInt(model.getText(i, 1)),
             Integer.parseInt(model.getText(i, 2)));

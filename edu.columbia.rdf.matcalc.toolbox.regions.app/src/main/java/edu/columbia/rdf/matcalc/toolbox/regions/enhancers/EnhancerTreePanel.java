@@ -206,7 +206,7 @@ public class EnhancerTreePanel extends ModernWidget {
             int end = table.getInt(i, 4);
             int tid = table.getInt(i, 5);
 
-            BedElement region = new BedElement(GenomicType.SUPER_ENHANCER, name, new GenomicRegion(chr, start, end));
+            BedElement region = new BedElement(GenomicType.SUPER_ENHANCER, name, new GenomicRegion(genome, chr, start, end));
 
             Annotation annotation = new Annotation(region.getName(), region);
 
