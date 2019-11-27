@@ -28,7 +28,7 @@ import org.jebtk.bioinformatics.gapsearch.GappedSearchFeatures;
 import org.jebtk.bioinformatics.genomic.Chromosome;
 import org.jebtk.bioinformatics.genomic.GenesDB;
 import org.jebtk.bioinformatics.genomic.Genome;
-import org.jebtk.bioinformatics.genomic.GenomeService;
+import org.jebtk.bioinformatics.genomic.ChromosomeService;
 import org.jebtk.bioinformatics.genomic.GenomicElement;
 import org.jebtk.bioinformatics.genomic.GenomicRegion;
 import org.jebtk.bioinformatics.genomic.GenomicType;
@@ -157,7 +157,7 @@ public class RegionsModule extends Module implements ModernClickListener {
           // three column format
 
           region = new GenomicRegion(genome,
-              GenomeService.getInstance().chr(genome, model.getText(i, 0)),
+              ChromosomeService.getInstance().chr(genome, model.getText(i, 0)),
               Integer.parseInt(model.getText(i, 1)),
               Integer.parseInt(model.getText(i, 2)));
         }
@@ -849,7 +849,7 @@ public class RegionsModule extends Module implements ModernClickListener {
           // three column format
 
           region = new GenomicRegion(mGenome,
-              GenomeService.getInstance().chr(mGenome, model.getText(i, 0)),
+              ChromosomeService.getInstance().chr(mGenome, model.getText(i, 0)),
               TextUtils.parseInt(model.getText(i, 1)),
               TextUtils.parseInt(model.getText(i, 2)));
         }
@@ -956,7 +956,7 @@ public class RegionsModule extends Module implements ModernClickListener {
           // three column format
 
           region = new GenomicRegion(mGenome,
-              GenomeService.getInstance().chr(mGenome, model.getText(i, 0)),
+              ChromosomeService.getInstance().chr(mGenome, model.getText(i, 0)),
               TextUtils.parseInt(model.getText(i, 1)),
               TextUtils.parseInt(model.getText(i, 2)));
         }
@@ -1893,7 +1893,7 @@ public class RegionsModule extends Module implements ModernClickListener {
         // three column format
 
         region = new GenomicRegion(genome,
-            GenomeService.getInstance().chr(genome, model.getText(i, 0)),
+            ChromosomeService.getInstance().chr(genome, model.getText(i, 0)),
             Integer.parseInt(model.getText(i, 1)),
             Integer.parseInt(model.getText(i, 2)));
       }
