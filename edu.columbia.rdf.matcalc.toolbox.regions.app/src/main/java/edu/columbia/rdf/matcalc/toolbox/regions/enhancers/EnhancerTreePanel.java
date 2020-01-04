@@ -20,13 +20,13 @@ import org.jebtk.core.tree.TreeRootNode;
 import org.jebtk.database.DatabaseResultsTable;
 import org.jebtk.database.SqliteJDBCConnection;
 import org.jebtk.modern.ModernComponent;
+import org.jebtk.modern.ModernWidget;
 import org.jebtk.modern.event.ModernClickEvent;
 import org.jebtk.modern.event.ModernClickListener;
 import org.jebtk.modern.scrollpane.ModernScrollPane;
 import org.jebtk.modern.scrollpane.ScrollBarPolicy;
 import org.jebtk.modern.search.ModernSearchPanel;
 import org.jebtk.modern.tree.ModernTree;
-import org.jebtk.modern.widget.ModernWidget;
 
 import edu.columbia.rdf.matcalc.bio.Annotation;
 

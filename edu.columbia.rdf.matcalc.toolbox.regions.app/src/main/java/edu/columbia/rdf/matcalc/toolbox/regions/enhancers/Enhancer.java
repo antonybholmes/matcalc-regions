@@ -1,8 +1,8 @@
 package edu.columbia.rdf.matcalc.toolbox.regions.enhancers;
 
-import org.jebtk.core.NameProperty;
+import org.jebtk.core.NameGetter;
 
-public class Enhancer implements NameProperty {
+public class Enhancer implements NameGetter {
 
   private String mName;
 

@@ -10,6 +10,7 @@ import org.jebtk.core.io.PathUtils;
 import org.jebtk.core.settings.SettingsService;
 import org.jebtk.math.external.microsoft.Excel;
 import org.jebtk.modern.BorderService;
+import org.jebtk.modern.ModernWidget;
 import org.jebtk.modern.UI;
 import org.jebtk.modern.button.ModernButtonGroup;
 import org.jebtk.modern.button.ModernCheckBox;
@@ -21,7 +22,6 @@ import org.jebtk.modern.event.ModernClickListener;
 import org.jebtk.modern.panel.HBox;
 import org.jebtk.modern.panel.VBox;
 import org.jebtk.modern.text.ModernAutoSizeLabel;
-import org.jebtk.modern.widget.ModernWidget;
 import org.jebtk.modern.window.ModernWindow;
 import org.jebtk.modern.window.WindowWidgetFocusEvents;
 

@@ -47,6 +47,7 @@ import org.jebtk.math.matrix.DataFrame;
 import org.jebtk.math.statistics.Statistics;
 import org.jebtk.math.ui.external.microsoft.XlsxGuiFileFilter;
 import org.jebtk.modern.AssetService;
+import org.jebtk.modern.button.ModernClickWidget;
 import org.jebtk.modern.dataview.ModernDataModel;
 import org.jebtk.modern.dialog.MessageDialogTaskGlassPane;
 import org.jebtk.modern.dialog.ModernDialogStatus;
@@ -63,7 +64,6 @@ import org.jebtk.modern.ribbon.Ribbon;
 import org.jebtk.modern.ribbon.RibbonLargeButton;
 import org.jebtk.modern.ribbon.RibbonLargeDropDownButton2;
 import org.jebtk.modern.tooltip.ModernToolTip;
-import org.jebtk.modern.widget.ModernClickWidget;
 
 import edu.columbia.rdf.matcalc.MainMatCalcWindow;
 import edu.columbia.rdf.matcalc.bio.Annotation;

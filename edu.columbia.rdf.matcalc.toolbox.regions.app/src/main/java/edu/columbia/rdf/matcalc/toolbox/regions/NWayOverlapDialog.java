@@ -15,6 +15,7 @@ import org.jebtk.modern.UI;
 import org.jebtk.modern.button.ModernButtonGroup;
 import org.jebtk.modern.button.ModernCheckSwitch;
 import org.jebtk.modern.button.ModernRadioButton;
+import org.jebtk.modern.button.ModernTwoStateWidget;
 import org.jebtk.modern.dialog.ModernDialogHelpWindow;
 import org.jebtk.modern.dialog.ModernMessageDialog;
 import org.jebtk.modern.event.ModernClickEvent;
@@ -23,7 +24,6 @@ import org.jebtk.modern.io.ChooseFilesPanel;
 import org.jebtk.modern.io.CsvGuiFileFilter;
 import org.jebtk.modern.io.TsvGuiFileFilter;
 import org.jebtk.modern.panel.VBox;
-import org.jebtk.modern.widget.ModernTwoStateWidget;
 import org.jebtk.modern.window.WindowWidgetFocusEvents;
 
 import edu.columbia.rdf.matcalc.MainMatCalcWindow;

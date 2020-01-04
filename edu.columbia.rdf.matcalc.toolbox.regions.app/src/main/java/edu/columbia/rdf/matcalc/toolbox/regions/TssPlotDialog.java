@@ -5,6 +5,7 @@ import java.text.ParseException;
 import javax.swing.Box;
 
 import org.jebtk.bioinformatics.genomic.Genome;
+import org.jebtk.modern.ModernWidget;
 import org.jebtk.modern.UI;
 import org.jebtk.modern.combobox.ModernComboBox;
 import org.jebtk.modern.dialog.ModernDialogTaskWindow;
@@ -13,7 +14,6 @@ import org.jebtk.modern.panel.HSpacedBox;
 import org.jebtk.modern.panel.VBox;
 import org.jebtk.modern.spinner.ModernCompactSpinner;
 import org.jebtk.modern.text.ModernAutoSizeLabel;
-import org.jebtk.modern.widget.ModernWidget;
 import org.jebtk.modern.window.ModernWindow;
 import org.jebtk.modern.window.WindowWidgetFocusEvents;
 

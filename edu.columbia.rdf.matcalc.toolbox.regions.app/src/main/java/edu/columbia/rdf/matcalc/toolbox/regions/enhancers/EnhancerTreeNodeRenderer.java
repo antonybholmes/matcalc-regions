@@ -6,11 +6,11 @@ import java.awt.Rectangle;
 
 import org.jebtk.core.tree.TreeNode;
 import org.jebtk.modern.AssetService;
+import org.jebtk.modern.ModernWidget;
 import org.jebtk.modern.theme.ThemeService;
 import org.jebtk.modern.tree.ModernTreeNodeRenderer;
 import org.jebtk.modern.tree.Tree;
 import org.jebtk.modern.tree.TreeIconNodeCountRenderer;
-import org.jebtk.modern.widget.ModernWidget;
 
 /**
  * Displays a sample as a two line node with title and some basic info. Headers
