@@ -76,8 +76,7 @@ public class OneWayOverlapTask extends SwingWorker<Void, Void> {
    * @throws IOException Signals that an I/O exception has occurred.
    */
   public OneWayOverlapTask(MainMatCalcWindow window, Genome genome,
-      List<Path> files,
-      boolean addBeginning, boolean simpleMode)
+      List<Path> files, boolean addBeginning, boolean simpleMode)
       throws InvalidFormatException, IOException {
     mWindow = window;
     mGenome = genome;

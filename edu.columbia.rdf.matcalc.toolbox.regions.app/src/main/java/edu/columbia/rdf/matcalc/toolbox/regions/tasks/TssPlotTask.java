@@ -47,10 +47,8 @@ public class TssPlotTask extends SwingWorker<Void, Void> {
   private MainMatCalcWindow mWindow;
   private Genome mGenome;
 
-  public TssPlotTask(MainMatCalcWindow window,
-      Genome genome,
-      GenesDB tssSearch, double start, double end,
-      int units, double binSize, int binUnits) {
+  public TssPlotTask(MainMatCalcWindow window, Genome genome, GenesDB tssSearch,
+      double start, double end, int units, double binSize, int binUnits) {
     mWindow = window;
     mGenome = genome;
     mTssSearch = tssSearch;
@@ -100,7 +98,8 @@ public class TssPlotTask extends SwingWorker<Void, Void> {
       GenomicRegion midPoint = GenomicRegion.midRegion(region);
 
       // Find Gene TSS near the midpoint
-      List<GenomicElement> results = mTssSearch.closest(mGenome, midPoint, GenomicType.TRANSCRIPT);
+      List<GenomicElement> results = mTssSearch
+          .closest(mGenome, midPoint, GenomicType.TRANSCRIPT);
 
       if (results != null) {
         double tss = Double.MAX_VALUE;
@@ -163,10 +162,10 @@ public class TssPlotTask extends SwingWorker<Void, Void> {
         .histogram(log10TssPoints, 0, 8, 0.1);
 
     System.err.println("ss here");
-    
+
     Log10TssSubFigure tssLogCanvas = new Log10TssSubFigure("TSS", "TSS",
         log10TssHist);
-    
+
     System.err.println("ss here 1");
 
     Figure figure = new Figure("TSS Figure", new PlotBoxGridStorage(1, 2),
@@ -175,7 +174,7 @@ public class TssPlotTask extends SwingWorker<Void, Void> {
     figure.addChild(tssLogCanvas, 0, 1);
 
     System.err.println("tss here");
-    
+
     Graph2dWindow plotWindow = new Graph2dWindow(window, figure);
 
     plotWindow.getStyle().set(PlotStyle.JOINED_BARS);

@@ -27,8 +27,7 @@ public class DistancePlotTask extends SwingWorker<Void, Void> {
   private MainMatCalcWindow mWindow;
   private Genome mGenome;
 
-  public DistancePlotTask(MainMatCalcWindow window,
-      Genome genome,
+  public DistancePlotTask(MainMatCalcWindow window, Genome genome,
       BinaryGapSearch<Annotation> gappedSearch, double start, double end,
       int units, double binSize, int binUnits) {
     mWindow = window;
@@ -72,8 +71,7 @@ public class DistancePlotTask extends SwingWorker<Void, Void> {
 
         region = new GenomicRegion(mGenome,
             ChromosomeService.getInstance().chr(mGenome, model.getText(i, 0)),
-            model.getInt(i, 1),
-            model.getInt(i, 2));
+            model.getInt(i, 1), model.getInt(i, 2));
       }
 
       // System.err.println("region: " + region);
@@ -88,15 +86,15 @@ public class DistancePlotTask extends SwingWorker<Void, Void> {
         double d;
         // region is from file 1
         for (Annotation annotation : results) {
-          d = GenomicRegion.midDist(region, annotation.getRegion()); //, region);
-          
+          d = GenomicRegion.midDist(region, annotation.getRegion()); // ,
+                                                                     // region);
+
           if (Math.abs(d) < Math.abs(min)) {
             min = d;
           }
-          
-          
+
         }
-        
+
         System.err.println("tss " + min);
 
         tssPoints.add(min);

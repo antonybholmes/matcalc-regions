@@ -32,8 +32,7 @@ public class ClosestTask extends SwingWorker<Void, Void> {
   private MainMatCalcWindow mWindow;
   private Genome mGenome;
 
-  public ClosestTask(MainMatCalcWindow window,
-      Genome genome,
+  public ClosestTask(MainMatCalcWindow window, Genome genome,
       BinaryGapSearch<Annotation> gappedSearch, Path file2) {
     mWindow = window;
     mGenome = genome;
@@ -55,8 +54,8 @@ public class ClosestTask extends SwingWorker<Void, Void> {
   @Override
   public void done() {
     if (mNewModel != null) {
-      mWindow.history().addToHistory("Closest from " + PathUtils.getName(mFile2),
-          mNewModel);
+      mWindow.history()
+          .addToHistory("Closest from " + PathUtils.getName(mFile2), mNewModel);
     }
   }
 

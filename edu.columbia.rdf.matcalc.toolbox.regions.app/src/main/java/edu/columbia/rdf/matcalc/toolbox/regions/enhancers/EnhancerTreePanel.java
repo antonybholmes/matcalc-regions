@@ -200,13 +200,14 @@ public class EnhancerTreePanel extends ModernWidget {
 
           for (int i = 0; i < table.getRowCount(); ++i) {
             String name = table.getString(i, 1);
-            Chromosome chr = ChromosomeService.getInstance()
-                .chr(genome, table.getString(i, 2));
+            Chromosome chr = ChromosomeService.getInstance().chr(genome,
+                table.getString(i, 2));
             int start = table.getInt(i, 3);
             int end = table.getInt(i, 4);
             int tid = table.getInt(i, 5);
 
-            BedElement region = new BedElement(GenomicType.SUPER_ENHANCER, name, new GenomicRegion(genome, chr, start, end));
+            BedElement region = new BedElement(GenomicType.SUPER_ENHANCER, name,
+                new GenomicRegion(genome, chr, start, end));
 
             Annotation annotation = new Annotation(region.getName(), region);
 
