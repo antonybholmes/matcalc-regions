@@ -546,7 +546,7 @@ public class RegionsModule extends Module implements ModernClickListener {
 
           Genome genome = region1.mGenome;
 
-          List<Annotation> testRegions = mGappedSearch.getFeatureSet(region1);
+          List<Annotation> testRegions = mGappedSearch.getValues(region1);
 
           boolean exhausted = false;
 
