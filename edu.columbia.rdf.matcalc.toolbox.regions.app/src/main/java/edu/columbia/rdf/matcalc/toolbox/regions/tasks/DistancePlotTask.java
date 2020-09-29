@@ -6,8 +6,8 @@ import java.util.List;
 import javax.swing.SwingWorker;
 
 import org.jebtk.bioinformatics.gapsearch.BinaryGapSearch;
-import org.jebtk.bioinformatics.genomic.Genome;
 import org.jebtk.bioinformatics.genomic.ChromosomeService;
+import org.jebtk.bioinformatics.genomic.Genome;
 import org.jebtk.bioinformatics.genomic.GenomicRegion;
 import org.jebtk.core.io.Io;
 import org.jebtk.core.text.TextUtils;

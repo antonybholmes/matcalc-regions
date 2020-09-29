@@ -1,16 +1,14 @@
 package edu.columbia.rdf.matcalc.toolbox.regions.tasks;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.SwingWorker;
 
-import org.jebtk.bioinformatics.gapsearch.BinarySearch;
+import org.jebtk.bioinformatics.genomic.ChromosomeService;
 import org.jebtk.bioinformatics.genomic.GenesDB;
 import org.jebtk.bioinformatics.genomic.Genome;
-import org.jebtk.bioinformatics.genomic.ChromosomeService;
 import org.jebtk.bioinformatics.genomic.GenomicElement;
 import org.jebtk.bioinformatics.genomic.GenomicRegion;
 import org.jebtk.bioinformatics.genomic.GenomicType;
@@ -99,7 +97,7 @@ public class TssPlotTask extends SwingWorker<Void, Void> {
 
       // Find Gene TSS near the midpoint
       List<GenomicElement> results = mTssSearch
-          .closest(mGenome, midPoint, GenomicType.TRANSCRIPT);
+          .closest(mGenome, midPoint, GenomicType.TRANSCRIPT, 1);
 
       if (results != null) {
         double tss = Double.MAX_VALUE;

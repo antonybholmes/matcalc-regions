@@ -26,9 +26,9 @@ import org.jebtk.bioinformatics.gapsearch.BinaryGapSearch;
 import org.jebtk.bioinformatics.gapsearch.FixedGapSearch;
 import org.jebtk.bioinformatics.gapsearch.GappedSearchFeatures;
 import org.jebtk.bioinformatics.genomic.Chromosome;
+import org.jebtk.bioinformatics.genomic.ChromosomeService;
 import org.jebtk.bioinformatics.genomic.GenesDB;
 import org.jebtk.bioinformatics.genomic.Genome;
-import org.jebtk.bioinformatics.genomic.ChromosomeService;
 import org.jebtk.bioinformatics.genomic.GenomicElement;
 import org.jebtk.bioinformatics.genomic.GenomicRegion;
 import org.jebtk.bioinformatics.genomic.GenomicType;
@@ -546,7 +546,7 @@ public class RegionsModule extends Module implements ModernClickListener {
 
           Genome genome = region1.mGenome;
 
-          List<Annotation> testRegions = mGappedSearch.getValues(region1);
+          List<Annotation> testRegions = mGappedSearch.getFeatureSet(region1);
 
           boolean exhausted = false;
 
@@ -1183,7 +1183,7 @@ public class RegionsModule extends Module implements ModernClickListener {
     private boolean inTssExZone(GenomicRegion region) throws IOException {
 
       List<GenomicElement> closestFeatures = mTssSearch
-          .closest(mGenome, region, GenomicType.TRANSCRIPT);
+          .closest(mGenome, region, GenomicType.TRANSCRIPT, 1);
 
       for (GenomicElement gene : closestFeatures) {
         GenomicRegion tss = gene.getTss();
@@ -1207,7 +1207,7 @@ public class RegionsModule extends Module implements ModernClickListener {
         throws IOException {
 
       List<GenomicElement> closestFeatures = mTssSearch
-          .closest(mGenome, region, GenomicType.TRANSCRIPT);
+          .closest(mGenome, region, GenomicType.TRANSCRIPT, 1);
 
       for (GenomicElement gene : closestFeatures) {
         GenomicRegion tss = gene.getTss();
@@ -1229,7 +1229,7 @@ public class RegionsModule extends Module implements ModernClickListener {
         throws IOException {
 
       List<GenomicElement> closestFeatures = mTssSearch
-          .closest(mGenome, region, GenomicType.TRANSCRIPT);
+          .closest(mGenome, region, GenomicType.TRANSCRIPT, 1);
 
       for (GenomicElement gene : closestFeatures) {
         GenomicRegion tss = gene.getTss();
