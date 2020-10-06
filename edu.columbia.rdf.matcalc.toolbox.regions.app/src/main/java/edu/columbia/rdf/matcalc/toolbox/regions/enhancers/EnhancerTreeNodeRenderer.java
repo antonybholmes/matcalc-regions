@@ -26,8 +26,7 @@ public class EnhancerTreeNodeRenderer extends ModernTreeNodeRenderer {
   private static final int HEIGHT = 50;
   // private static final int LINE_HEIGHT = Resources.ICON_SIZE_24;
 
-  private static final Color FILL_COLOR = ThemeService.getInstance().getColors()
-      .getGray(2);
+  private static final Color FILL_COLOR = ThemeService.getInstance().getColors().getGray(2);
 
   private String text1 = null;
   private String text2 = null;
@@ -35,8 +34,7 @@ public class EnhancerTreeNodeRenderer extends ModernTreeNodeRenderer {
 
   @Override
   public final void drawBackground(Graphics2D g2) {
-    Rectangle r = new Rectangle(mRect.getX(), mRect.getY(), mRect.getW(),
-        mRect.getH());
+    Rectangle r = new Rectangle(mRect.getX(), mRect.getY(), mRect.getW(), mRect.getH());
 
     if (mNode.isParent()) {
       fill(g2, FILL_COLOR, r);
@@ -97,13 +95,11 @@ public class EnhancerTreeNodeRenderer extends ModernTreeNodeRenderer {
       g2.setColor(mNodeIsSelected ? TEXT_COLOR : ALT_TEXT_COLOR);
       g2.setFont(ModernWidget.FONT);
 
-      y = mRect.getH() / 2
-          + (mRect.getH() / 2 + g2.getFontMetrics().getAscent()) / 2;
+      y = mRect.getH() / 2 + (mRect.getH() / 2 + g2.getFontMetrics().getAscent()) / 2;
       g2.drawString(getTruncatedText(g2, text2, x, mRect.getW()), x, y);
 
       y = (mRect.getH() + g2.getFontMetrics().getAscent()) / 2;
-      x = mRect.getW() - g2.getFontMetrics().stringWidth(text3)
-          - ModernWidget.DOUBLE_PADDING;
+      x = mRect.getW() - g2.getFontMetrics().stringWidth(text3) - ModernWidget.DOUBLE_PADDING;
       g2.drawString(getTruncatedText(g2, text3, x, mRect.getW()), x, y);
 
       if (!mNodeIsHighlighted) {
@@ -114,22 +110,9 @@ public class EnhancerTreeNodeRenderer extends ModernTreeNodeRenderer {
   }
 
   @Override
-  public ModernTreeNodeRenderer getRenderer(Tree<?> tree,
-      TreeNode<?> node,
-      boolean nodeIsHighlighted,
-      boolean nodeIsSelected,
-      boolean hasFocus,
-      boolean isDragToNode,
-      int depth,
-      int row) {
-    super.getRenderer(tree,
-        node,
-        nodeIsHighlighted,
-        nodeIsSelected,
-        hasFocus,
-        isDragToNode,
-        depth,
-        row);
+  public ModernTreeNodeRenderer getRenderer(Tree<?> tree, TreeNode<?> node, boolean nodeIsHighlighted,
+      boolean nodeIsSelected, boolean hasFocus, boolean isDragToNode, int depth, int row) {
+    super.getRenderer(tree, node, nodeIsHighlighted, nodeIsSelected, hasFocus, isDragToNode, depth, row);
 
     if (node.isParent()) {
       text1 = node.getName();

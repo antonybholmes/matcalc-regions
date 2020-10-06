@@ -20,6 +20,7 @@ import java.nio.file.Path;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import javax.swing.SwingWorker;
 
@@ -68,16 +69,15 @@ public class OneWayOverlapTask extends SwingWorker<Void, Void> {
   /**
    * Instantiates a new one way overlap task.
    *
-   * @param window the window
-   * @param files the files
+   * @param window       the window
+   * @param files        the files
    * @param addBeginning the add beginning
    * @throws InvalidFormatException the invalid format exception
-   * @throws ParseException the parse exception
-   * @throws IOException Signals that an I/O exception has occurred.
+   * @throws ParseException         the parse exception
+   * @throws IOException            Signals that an I/O exception has occurred.
    */
-  public OneWayOverlapTask(MainMatCalcWindow window, Genome genome,
-      List<Path> files, boolean addBeginning, boolean simpleMode)
-      throws InvalidFormatException, IOException {
+  public OneWayOverlapTask(MainMatCalcWindow window, Genome genome, List<Path> files, boolean addBeginning,
+      boolean simpleMode) throws InvalidFormatException, IOException {
     mWindow = window;
     mGenome = genome;
     mAddBeginning = addBeginning;
@@ -124,8 +124,7 @@ public class OneWayOverlapTask extends SwingWorker<Void, Void> {
 
     DataFrame matrix = Annotation.toMatrix(file);
 
-    DataFrame outputMatrix = DataFrame.createDataFrame(matrix.getRows(),
-        matrix.getCols() + NEW_COLUMN_COUNT);
+    DataFrame outputMatrix = DataFrame.createDataFrame(matrix.getRows(), matrix.getCols() + NEW_COLUMN_COUNT);
 
     int c = 0;
 
@@ -173,18 +172,15 @@ public class OneWayOverlapTask extends SwingWorker<Void, Void> {
       } else {
         // three column format
 
-        region = new GenomicRegion(mGenome,
-            ChromosomeService.getInstance().chr(mGenome, matrix.getText(i, 0)),
-            TextUtils.parseInt(matrix.getText(i, 1)),
-            TextUtils.parseInt(matrix.getText(i, 2)));
+        region = new GenomicRegion(ChromosomeService.getInstance().chr(mGenome, matrix.getText(i, 0)),
+            TextUtils.parseInt(matrix.getText(i, 1)), TextUtils.parseInt(matrix.getText(i, 2)));
       }
 
       // Use the next file to overlap with
       FixedGapSearch<Annotation> gappedSearch = mAnnotations.get(1);
 
       // Find the closest feature
-      List<GappedSearchFeatures<Annotation>> results = gappedSearch
-          .getFeatures(region);
+      List<GappedSearchFeatures<Annotation>> results = gappedSearch.getFeatures(region);
 
       List<Double> maxOverlapWidth = new ArrayList<Double>();
       List<GenomicRegion> maxOverlap = new ArrayList<GenomicRegion>();
@@ -196,13 +192,12 @@ public class OneWayOverlapTask extends SwingWorker<Void, Void> {
         double maxP = 0;
 
         for (GappedSearchFeatures<Annotation> features : results) {
-          for (GenomicRegion r : features) {
-            for (Annotation annotation : features.getValues(r)) {
+          for (Entry<GenomicRegion, List<Annotation>> r : features) {
+            for (Annotation annotation : r.getValue()) {
               // System.err.println("Comp " + region + " " +
               // annotation.getRegion());
 
-              GenomicRegion overlap = GenomicRegion.overlap(region,
-                  annotation.getRegion());
+              GenomicRegion overlap = GenomicRegion.overlap(region, annotation.getRegion());
 
               if (overlap != null) {
                 double p = 100.0 * Math.min(1.0, overlap.getLength() / l);
@@ -219,15 +214,13 @@ public class OneWayOverlapTask extends SwingWorker<Void, Void> {
                     maxOverlapWidth.add(p);
                     maxOverlap.add(overlap);
                     maxAnnotation.add(annotation);
-                    maxOverlapType.add(GenomicRegion.overlapType(region,
-                        annotation.getRegion()));
+                    maxOverlapType.add(GenomicRegion.overlapType(region, annotation.getRegion()));
                   }
                 } else {
                   maxOverlapWidth.add(p);
                   maxOverlap.add(overlap);
                   maxAnnotation.add(annotation);
-                  maxOverlapType.add(GenomicRegion.overlapType(region,
-                      annotation.getRegion()));
+                  maxOverlapType.add(GenomicRegion.overlapType(region, annotation.getRegion()));
                 }
               }
             }
@@ -239,28 +232,22 @@ public class OneWayOverlapTask extends SwingWorker<Void, Void> {
         outputMatrix.set(i, c, Stream.of(maxOverlap).join(";")); // Join.onSemiColon().values(maxOverlap).toString());
         outputMatrix.set(i, c + 1, name);
         outputMatrix.set(i, c + 2, maxOverlap.size());
-        outputMatrix.set(i,
-            c + 3,
-            Stream.of(maxOverlapWidth).asDouble().round(2).join(";")); // Join.onSemiColon().values(Mathematics.round(maxOverlapWidth,
-                                                                       // 2)).toString()
+        outputMatrix.set(i, c + 3, Stream.of(maxOverlapWidth).asDouble().round(2).join(";")); // Join.onSemiColon().values(Mathematics.round(maxOverlapWidth,
+                                                                                              // 2)).toString()
         outputMatrix.set(i, c + 4, Stream.of(maxOverlapType).join(";")); // Join.onSemiColon().values(maxOverlapType).toString());
-        outputMatrix.set(i,
-            c + 5,
-            Stream.of(maxAnnotation).map(new StringMapFunction<Annotation>() {
-              @Override
-              public String apply(Annotation a) {
-                return a.getName();
-              }
-            }).join(";"));
+        outputMatrix.set(i, c + 5, Stream.of(maxAnnotation).map(new StringMapFunction<Annotation>() {
+          @Override
+          public String apply(Annotation a) {
+            return a.getName();
+          }
+        }).join(";"));
 
-        outputMatrix.set(i,
-            c + 6,
-            Stream.of(maxAnnotation).map(new StringMapFunction<Annotation>() {
-              @Override
-              public String apply(Annotation a) {
-                return a.getRegion().getLocation();
-              }
-            }).join(";"));
+        outputMatrix.set(i, c + 6, Stream.of(maxAnnotation).map(new StringMapFunction<Annotation>() {
+          @Override
+          public String apply(Annotation a) {
+            return a.getRegion().getLocation();
+          }
+        }).join(";"));
       } else {
         outputMatrix.set(i, c, TextUtils.NA);
         outputMatrix.set(i, c + 1, name);

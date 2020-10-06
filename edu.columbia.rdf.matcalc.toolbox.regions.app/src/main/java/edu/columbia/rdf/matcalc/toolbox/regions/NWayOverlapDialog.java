@@ -34,20 +34,16 @@ import edu.columbia.rdf.matcalc.MainMatCalcWindow;
  * @author Antony Holmes
  *
  */
-public class NWayOverlapDialog extends ModernDialogHelpWindow
-    implements ModernClickListener {
+public class NWayOverlapDialog extends ModernDialogHelpWindow implements ModernClickListener {
   private static final long serialVersionUID = 1L;
 
-  private ModernRadioButton mCheckOneWay = new ModernRadioButton("One way",
-      true);
+  private ModernRadioButton mCheckOneWay = new ModernRadioButton("One way", true);
 
   private ModernRadioButton mCheckTwoWay = new ModernRadioButton("Two way");
 
-  private ModernTwoStateWidget mCheckVenn = new ModernCheckSwitch(
-      "Show Venn diagram");
+  private ModernTwoStateWidget mCheckVenn = new ModernCheckSwitch("Show Venn diagram");
 
-  private ModernTwoStateWidget mCheckBeginning = new ModernCheckSwitch(
-      "At beginning", true);
+  private ModernTwoStateWidget mCheckBeginning = new ModernCheckSwitch("At beginning", true);
 
   private ChooseFilesPanel mChooseFilesPanel;
 
@@ -56,10 +52,9 @@ public class NWayOverlapDialog extends ModernDialogHelpWindow
 
     setTitle("Overlap");
 
-    mChooseFilesPanel = new ChooseFilesPanel(parent,
-        new AllRegionGuiFileFilter(), BedGuiFileFilter.INSTANCE,
-        BedGraphGuiFileFilter.INSTANCE, CsvGuiFileFilter.INSTANCE,
-        TsvGuiFileFilter.INSTANCE, ExcelGuiFileFilter.INSTANCE);
+    mChooseFilesPanel = new ChooseFilesPanel(parent, new AllRegionGuiFileFilter(), BedGuiFileFilter.INSTANCE,
+        BedGraphGuiFileFilter.INSTANCE, CsvGuiFileFilter.INSTANCE, TsvGuiFileFilter.INSTANCE,
+        ExcelGuiFileFilter.INSTANCE);
 
     setup();
 
@@ -76,8 +71,7 @@ public class NWayOverlapDialog extends ModernDialogHelpWindow
 
     new ModernButtonGroup(mCheckOneWay, mCheckTwoWay);
 
-    if (SettingsService.getInstance()
-        .getBool("org.matcalc.toolbox.bio.regions.nway.one-way", true)) {
+    if (SettingsService.getInstance().getBool("org.matcalc.toolbox.bio.regions.nway.one-way", true)) {
       mCheckOneWay.doClick();
     } else {
       mCheckTwoWay.doClick();
@@ -111,15 +105,12 @@ public class NWayOverlapDialog extends ModernDialogHelpWindow
   public void clicked(ModernClickEvent e) {
     if (e.getSource().equals(mOkButton)) {
       if (getFiles().size() == 0) {
-        ModernMessageDialog.createWarningDialog(mParent,
-            "You must choose at least one file.");
+        ModernMessageDialog.createWarningDialog(mParent, "You must choose at least one file.");
 
         return;
       }
 
-      SettingsService.getInstance().update(
-          "org.matcalc.toolbox.bio.regions.nway.one-way",
-          mCheckOneWay.isSelected());
+      SettingsService.getInstance().update("org.matcalc.toolbox.bio.regions.nway.one-way", mCheckOneWay.isSelected());
     }
 
     super.clicked(e);

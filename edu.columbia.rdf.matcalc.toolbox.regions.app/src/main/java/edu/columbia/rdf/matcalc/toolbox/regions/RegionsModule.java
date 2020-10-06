@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -93,8 +94,7 @@ public class RegionsModule extends Module implements ModernClickListener {
     private boolean mOverlapMode;
     private MessageDialogTaskGlassPane mSearchScreen;
 
-    public EnhancerTask(Map<String, BinaryGapSearch<Annotation>> gappedSearch,
-        boolean overlapMode) {
+    public EnhancerTask(Map<String, BinaryGapSearch<Annotation>> gappedSearch, boolean overlapMode) {
 
       mGappedSearch = gappedSearch;
       mOverlapMode = overlapMode;
@@ -127,8 +127,7 @@ public class RegionsModule extends Module implements ModernClickListener {
 
       List<String> annotations = CollectionUtils.sortKeys(mGappedSearch);
 
-      DataFrame matrix = DataFrame.createDataFrame(model.getRows(),
-          model.getCols() + annotations.size());
+      DataFrame matrix = DataFrame.createDataFrame(model.getRows(), model.getCols() + annotations.size());
 
       for (int i = 0; i < model.getCols(); ++i) {
         matrix.setColumnName(i, model.getColumnHeader().getHeader(i));
@@ -156,10 +155,8 @@ public class RegionsModule extends Module implements ModernClickListener {
         } else {
           // three column format
 
-          region = new GenomicRegion(genome,
-              ChromosomeService.getInstance().chr(genome, model.getText(i, 0)),
-              Integer.parseInt(model.getText(i, 1)),
-              Integer.parseInt(model.getText(i, 2)));
+          region = new GenomicRegion(ChromosomeService.getInstance().chr(genome, model.getText(i, 0)),
+              Integer.parseInt(model.getText(i, 1)), Integer.parseInt(model.getText(i, 2)));
         }
 
         c = model.getCols();
@@ -169,17 +166,15 @@ public class RegionsModule extends Module implements ModernClickListener {
 
           Set<String> enhancers = new HashSet<String>();
 
-          List<GappedSearchFeatures<Annotation>> results = mGappedSearch
-              .get(type).getFeatures(region);
+          List<GappedSearchFeatures<Annotation>> results = mGappedSearch.get(type).getFeatures(region);
 
           if (results != null) {
             if (mOverlapMode) {
               for (GappedSearchFeatures<Annotation> features : results) {
-                for (GenomicRegion r : features) {
-                  for (Annotation annotation : features.getValues(r)) {
+                for (Entry<GenomicRegion, List<Annotation>> r : features) {
+                  for (Annotation annotation : r.getValue()) {
 
-                    GenomicRegion overlap = GenomicRegion.overlap(region,
-                        annotation.getRegion());
+                    GenomicRegion overlap = GenomicRegion.overlap(region, annotation.getRegion());
 
                     if (overlap != null) {
                       enhancers.add(annotation.getName());
@@ -191,10 +186,9 @@ public class RegionsModule extends Module implements ModernClickListener {
               int minD = Integer.MAX_VALUE;
 
               for (GappedSearchFeatures<Annotation> features : results) {
-                for (GenomicRegion r : features) {
-                  for (Annotation annotation : features.getValues(r)) {
-                    int d = GenomicRegion.midDist(region,
-                        annotation.getRegion());
+                for (Entry<GenomicRegion, List<Annotation>> r : features) {
+                  for (Annotation annotation : r.getValue()) {
+                    int d = GenomicRegion.midDist(region, annotation.getRegion());
 
                     if (Math.abs(d) < minD) {
                       minD = Math.abs(d);
@@ -204,10 +198,9 @@ public class RegionsModule extends Module implements ModernClickListener {
               }
 
               for (GappedSearchFeatures<Annotation> features : results) {
-                for (GenomicRegion r : features) {
-                  for (Annotation annotation : features.getValues(r)) {
-                    int d = GenomicRegion.midDist(region,
-                        annotation.getRegion());
+                for (Entry<GenomicRegion, List<Annotation>> r : features) {
+                  for (Annotation annotation : r.getValue()) {
+                    int d = GenomicRegion.midDist(region, annotation.getRegion());
 
                     if (Math.abs(d) == minD) {
                       enhancers.add(annotation.getName());
@@ -221,9 +214,7 @@ public class RegionsModule extends Module implements ModernClickListener {
           // Write out the enhancers or put n/a if none were
           // found
           if (enhancers.size() > 0) {
-            matrix.set(i,
-                c + j,
-                TextUtils.scJoin(CollectionUtils.sort(enhancers)));
+            matrix.set(i, c + j, TextUtils.scJoin(CollectionUtils.sort(enhancers)));
           } else {
             matrix.set(i, c + j, TextUtils.NA);
           }
@@ -247,9 +238,9 @@ public class RegionsModule extends Module implements ModernClickListener {
    * mNewModel; private MessageDialogTaskGlassPane mSearchScreen; private Path
    * mFile2; private boolean mAddBeginning;
    * 
-   * public OverlapTask(GappedSearch<Annotation> gappedSearch, Path file2,
-   * boolean addBeginning) { mGappedSearch = gappedSearch; mFile2 = file2;
-   * mAddBeginning = addBeginning; }
+   * public OverlapTask(GappedSearch<Annotation> gappedSearch, Path file2, boolean
+   * addBeginning) { mGappedSearch = gappedSearch; mFile2 = file2; mAddBeginning =
+   * addBeginning; }
    * 
    * @Override public Void doInBackground() { mSearchScreen =
    * mWindow.createTaskDialog("Overlapping...");
@@ -284,8 +275,8 @@ public class RegionsModule extends Module implements ModernClickListener {
    * cell.setCellValue("Overlap Feature Location"); }
    * 
    * // The header for (int i = 0; i < model.getColumnCount(); ++i) { cell =
-   * row.createCell(c++);
-   * cell.setCellValue(model.getColumnHeader().getHeader(i)); }
+   * row.createCell(c++); cell.setCellValue(model.getColumnHeader().getHeader(i));
+   * }
    * 
    * if (!mAddBeginning) { cell = row.createCell(c++);
    * cell.setCellValue("Overlap Region"); cell = row.createCell(c++);
@@ -304,9 +295,8 @@ public class RegionsModule extends Module implements ModernClickListener {
    * (GenomicRegion.isRegion(model.getText(i, 0))) { region =
    * GenomicRegion.parse(model.getText(i, 0)); } else { // three column format
    * 
-   * region = new
-   * GenomicRegion(GenomeService.getInstance().parse(model.getText(i, 0)),
-   * TextUtils.parseInt(model.getText(i, 1)),
+   * region = new GenomicRegion(GenomeService.getInstance().parse(model.getText(i,
+   * 0)), TextUtils.parseInt(model.getText(i, 1)),
    * TextUtils.parseInt(model.getText(i, 2))); }
    * 
    * row = (XSSFRow)sheet.createRow(r);
@@ -325,19 +315,18 @@ public class RegionsModule extends Module implements ModernClickListener {
    * annotation.getRegion());
    * 
    * if (overlap != null) { if (overlap.getLength() > maxOverlapWidth) {
-   * maxOverlapWidth = overlap.getLength(); maxOverlap = overlap; maxAnnotation
-   * = annotation; } } } } }
+   * maxOverlapWidth = overlap.getLength(); maxOverlap = overlap; maxAnnotation =
+   * annotation; } } } } }
    * 
    * if (mAddBeginning) { if (maxOverlapWidth > 0) { double p = 100.0 *
    * Math.min(1.0, maxOverlapWidth / (double)region.getLength());
    * 
    * 
-   * cell = row.createCell(c++); cell.setCellValue(maxOverlap.toString()); cell
-   * = row.createCell(c++); cell.setCellValue(Mathematics.round(p, 2)); cell =
+   * cell = row.createCell(c++); cell.setCellValue(maxOverlap.toString()); cell =
+   * row.createCell(c++); cell.setCellValue(Mathematics.round(p, 2)); cell =
    * row.createCell(c++); cell.setCellValue(maxAnnotation.getName()); cell =
-   * row.createCell(c++);
-   * cell.setCellValue(maxAnnotation.getRegion().toString()); } else { cell =
-   * row.createCell(c++); cell.setCellValue(TextUtils.NA); cell =
+   * row.createCell(c++); cell.setCellValue(maxAnnotation.getRegion().toString());
+   * } else { cell = row.createCell(c++); cell.setCellValue(TextUtils.NA); cell =
    * row.createCell(c++); cell.setCellValue(TextUtils.NA); cell =
    * row.createCell(c++); cell.setCellValue(TextUtils.NA); cell =
    * row.createCell(c++); cell.setCellValue(TextUtils.NA); } }
@@ -350,12 +339,11 @@ public class RegionsModule extends Module implements ModernClickListener {
    * if (!mAddBeginning) { if (maxOverlapWidth > 0) { double p = 100.0 *
    * Math.min(1.0, maxOverlapWidth / (double)region.getLength());
    * 
-   * cell = row.createCell(c++); cell.setCellValue(maxOverlap.toString()); cell
-   * = row.createCell(c++); cell.setCellValue(Mathematics.round(p, 2)); cell =
+   * cell = row.createCell(c++); cell.setCellValue(maxOverlap.toString()); cell =
+   * row.createCell(c++); cell.setCellValue(Mathematics.round(p, 2)); cell =
    * row.createCell(c++); cell.setCellValue(maxAnnotation.getName()); cell =
-   * row.createCell(c++);
-   * cell.setCellValue(maxAnnotation.getRegion().toString()); } else { cell =
-   * row.createCell(c++); cell.setCellValue(TextUtils.NA); cell =
+   * row.createCell(c++); cell.setCellValue(maxAnnotation.getRegion().toString());
+   * } else { cell = row.createCell(c++); cell.setCellValue(TextUtils.NA); cell =
    * row.createCell(c++); cell.setCellValue(TextUtils.NA); cell =
    * row.createCell(c++); cell.setCellValue(TextUtils.NA); cell =
    * row.createCell(c++); cell.setCellValue(TextUtils.NA); } }
@@ -403,10 +391,9 @@ public class RegionsModule extends Module implements ModernClickListener {
    * 
    * String name = PathUtils.getNameNoExt(mFile);
    * 
-   * matrix.setColumnName(c + 0, name + " Overlap Region");
-   * matrix.setColumnName(c + 1, name + " Overlap %"); matrix.setColumnName(c +
-   * 2, name + " Overlap Feature"); matrix.setColumnName(c + 3, name +
-   * " Overlap Location");
+   * matrix.setColumnName(c + 0, name + " Overlap Region"); matrix.setColumnName(c
+   * + 1, name + " Overlap %"); matrix.setColumnName(c + 2, name +
+   * " Overlap Feature"); matrix.setColumnName(c + 3, name + " Overlap Location");
    * 
    * if (mAddBeginning) { c = 4; } else { c = 0; }
    * 
@@ -415,21 +402,19 @@ public class RegionsModule extends Module implements ModernClickListener {
    * 
    * if (mAddBeginning) { c = 0; } else { c = matrix.getColumnCount() - 4; }
    * 
-   * for (int i = 0; i < model.getRowCount(); ++i) { GenomicRegion region =
-   * null;
+   * for (int i = 0; i < model.getRowCount(); ++i) { GenomicRegion region = null;
    * 
    * if (Io.isEmptyLine(model.getText(i, 0))) { region = null; } else if
    * (model.getText(i, 0).contains(TextUtils.NA)) { region = null; } else if
    * (GenomicRegion.isRegion(model.getText(i, 0))) { region =
    * GenomicRegion.parse(model.getText(i, 0)); } else { // three column format
    * 
-   * region = new
-   * GenomicRegion(GenomeService.getInstance().parse(model.getText(i, 0)),
-   * TextUtils.parseInt(model.getText(i, 1)),
+   * region = new GenomicRegion(GenomeService.getInstance().parse(model.getText(i,
+   * 0)), TextUtils.parseInt(model.getText(i, 1)),
    * TextUtils.parseInt(model.getText(i, 2))); }
    * 
-   * // Find the closest feature List<GappedSearchFeatures<Annotation>> results
-   * = mGappedSearch1.getFeatures(region);
+   * // Find the closest feature List<GappedSearchFeatures<Annotation>> results =
+   * mGappedSearch1.getFeatures(region);
    * 
    * int maxOverlapWidth = -1; GenomicRegion maxOverlap = null; Annotation
    * maxAnnotation = null;
@@ -442,18 +427,18 @@ public class RegionsModule extends Module implements ModernClickListener {
    * annotation.getRegion());
    * 
    * if (overlap != null) { if (overlap.getLength() > maxOverlapWidth) {
-   * maxOverlapWidth = overlap.getLength(); maxOverlap = overlap; maxAnnotation
-   * = annotation; } } } } }
+   * maxOverlapWidth = overlap.getLength(); maxOverlap = overlap; maxAnnotation =
+   * annotation; } } } } }
    * 
-   * if (maxOverlapWidth > 0) { double p = 100.0 * Math.min(1.0, maxOverlapWidth
-   * / (double)region.getLength());
+   * if (maxOverlapWidth > 0) { double p = 100.0 * Math.min(1.0, maxOverlapWidth /
+   * (double)region.getLength());
    * 
    * matrix.setText(i, c + 0, maxOverlap.toString()); matrix.setValue(i, c + 1,
-   * Mathematics.round(p, 2)); matrix.setText(i, c + 2,
-   * maxAnnotation.getName()); matrix.setText(i, c + 3,
-   * maxAnnotation.getRegion().getLocation()); } else { matrix.setText(i, c + 0,
-   * TextUtils.NA); matrix.setText(i, c + 1, TextUtils.NA); matrix.setText(i, c
-   * + 2, TextUtils.NA); matrix.setText(i, c + 3, TextUtils.NA); } }
+   * Mathematics.round(p, 2)); matrix.setText(i, c + 2, maxAnnotation.getName());
+   * matrix.setText(i, c + 3, maxAnnotation.getRegion().getLocation()); } else {
+   * matrix.setText(i, c + 0, TextUtils.NA); matrix.setText(i, c + 1,
+   * TextUtils.NA); matrix.setText(i, c + 2, TextUtils.NA); matrix.setText(i, c +
+   * 3, TextUtils.NA); } }
    * 
    * return matrix; } }
    */
@@ -473,8 +458,7 @@ public class RegionsModule extends Module implements ModernClickListener {
     private Map<GenomicRegion, Set<Path>> mFileMap = new HashMap<GenomicRegion, Set<Path>>();
     private boolean mVenn;
 
-    public TwoWayOverlapTask(Path file1, int header1, Path file2, int header2,
-        boolean venn)
+    public TwoWayOverlapTask(Path file1, int header1, Path file2, int header2, boolean venn)
         throws InvalidFormatException, IOException, ParseException {
       mFile1 = file1;
       mFile2 = file2;
@@ -527,9 +511,7 @@ public class RegionsModule extends Module implements ModernClickListener {
     @Override
     public void done() {
       if (mNewModel != null) {
-        mWindow.history().addToHistory(
-            "Overlap with " + PathUtils.getName(mFile2),
-            mNewModel);
+        mWindow.history().addToHistory("Overlap with " + PathUtils.getName(mFile2), mNewModel);
       }
 
       mSearchScreen.close();
@@ -544,9 +526,9 @@ public class RegionsModule extends Module implements ModernClickListener {
         for (Annotation annotation1 : mGappedSearch.getFeatures(chr1)) {
           GenomicRegion region1 = annotation1.getRegion();
 
-          Genome genome = region1.mGenome;
+          // Genome genome = region1.mGenome;
 
-          List<Annotation> testRegions = mGappedSearch.getFeatureSet(region1);
+          List<Annotation> testRegions = mGappedSearch.getValues(region1);
 
           boolean exhausted = false;
 
@@ -613,29 +595,24 @@ public class RegionsModule extends Module implements ModernClickListener {
             }
 
             if (groupedRegions.size() > 1 || !allocated.contains(region1)) {
-              GenomicRegion overlapRegion = new GenomicRegion(genome, chr1,
-                  start1, end1);
+              GenomicRegion overlapRegion = new GenomicRegion(chr1, start1, end1);
 
               for (GenomicRegion region : groupedRegions) {
                 Set<Path> files = mFileMap.get(region);
 
                 if (!overlapMap.containsKey(region.getChr())) {
-                  overlapMap.put(overlapRegion.getChr(),
-                      new TreeMap<GenomicRegion, Map<Path, GenomicRegion>>());
+                  overlapMap.put(overlapRegion.getChr(), new TreeMap<GenomicRegion, Map<Path, GenomicRegion>>());
                 }
 
-                if (!overlapMap.get(overlapRegion.getChr())
-                    .containsKey(overlapRegion)) {
-                  overlapMap.get(overlapRegion.getChr()).put(overlapRegion,
-                      new TreeMap<Path, GenomicRegion>());
+                if (!overlapMap.get(overlapRegion.getChr()).containsKey(overlapRegion)) {
+                  overlapMap.get(overlapRegion.getChr()).put(overlapRegion, new TreeMap<Path, GenomicRegion>());
                 }
 
                 // In cases where the same peak occurs in both
                 // files, make sure both files are added to
                 // the overlap map.
                 for (Path file : files) {
-                  overlapMap.get(overlapRegion.getChr()).get(overlapRegion)
-                      .put(file, region);
+                  overlapMap.get(overlapRegion.getChr()).get(overlapRegion).put(file, region);
                 }
 
                 used.add(region);
@@ -665,17 +642,14 @@ public class RegionsModule extends Module implements ModernClickListener {
       matrix.setColumnName(1, "Overlap Width");
       matrix.setColumnName(2, "Number Of Overlapping Regions");
       matrix.setColumnName(3, PathUtils.getNameNoExt(mFile1) + " Regions");
-      matrix.setColumnName(4,
-          PathUtils.getNameNoExt(mFile1) + " Region Widths");
+      matrix.setColumnName(4, PathUtils.getNameNoExt(mFile1) + " Region Widths");
       matrix.setColumnName(5, PathUtils.getNameNoExt(mFile1) + " % Overlap");
       matrix.setColumnName(6, PathUtils.getNameNoExt(mFile2) + " Regions");
-      matrix.setColumnName(7,
-          PathUtils.getNameNoExt(mFile2) + " Region Widths");
+      matrix.setColumnName(7, PathUtils.getNameNoExt(mFile2) + " Region Widths");
       matrix.setColumnName(8, PathUtils.getNameNoExt(mFile2) + " % Overlap");
 
       final Group group1 = new Group(PathUtils.getNameNoExt(mFile1), Color.RED);
-      final Group group2 = new Group(PathUtils.getNameNoExt(mFile2),
-          Color.BLUE);
+      final Group group2 = new Group(PathUtils.getNameNoExt(mFile2), Color.BLUE);
 
       r = 0;
 
@@ -688,19 +662,12 @@ public class RegionsModule extends Module implements ModernClickListener {
           if ((overlapMap.get(chr).get(overlapRegion).containsKey(mFile1))) {
             group1.add(overlapRegion.getLocation());
 
-            matrix.set(r,
-                3,
-                overlapMap.get(chr).get(overlapRegion).get(mFile1)
-                    .getLocation());
-            matrix.set(r,
-                4,
-                overlapMap.get(chr).get(overlapRegion).get(mFile1).getLength());
+            matrix.set(r, 3, overlapMap.get(chr).get(overlapRegion).get(mFile1).getLocation());
+            matrix.set(r, 4, overlapMap.get(chr).get(overlapRegion).get(mFile1).getLength());
 
-            GenomicRegion region = overlapMap.get(chr).get(overlapRegion)
-                .get(mFile1);
+            GenomicRegion region = overlapMap.get(chr).get(overlapRegion).get(mFile1);
 
-            double p = 100.0
-                * Math.min(1.0, GenomicRegion.p(overlapRegion, region));
+            double p = 100.0 * Math.min(1.0, GenomicRegion.p(overlapRegion, region));
 
             matrix.set(r, 5, Mathematics.round(p, 2));
           } else {
@@ -712,20 +679,13 @@ public class RegionsModule extends Module implements ModernClickListener {
           if ((overlapMap.get(chr).get(overlapRegion).containsKey(mFile2))) {
             group2.add(overlapRegion.getLocation());
 
-            matrix.set(r,
-                6,
-                overlapMap.get(chr).get(overlapRegion).get(mFile2)
-                    .getLocation());
+            matrix.set(r, 6, overlapMap.get(chr).get(overlapRegion).get(mFile2).getLocation());
 
-            matrix.set(r,
-                7,
-                overlapMap.get(chr).get(overlapRegion).get(mFile2).getLength());
+            matrix.set(r, 7, overlapMap.get(chr).get(overlapRegion).get(mFile2).getLength());
 
-            GenomicRegion region = overlapMap.get(chr).get(overlapRegion)
-                .get(mFile2);
+            GenomicRegion region = overlapMap.get(chr).get(overlapRegion).get(mFile2);
 
-            double p = 100.0
-                * Math.min(1.0, GenomicRegion.p(overlapRegion, region));
+            double p = 100.0 * Math.min(1.0, GenomicRegion.p(overlapRegion, region));
 
             matrix.set(r, 8, Mathematics.round(p, 2));
           } else {
@@ -741,8 +701,7 @@ public class RegionsModule extends Module implements ModernClickListener {
       if (mVenn) {
         SwingUtilities.invokeLater(new Runnable() {
           public void run() {
-            MainVennWindow plotWindow = new MainVennWindow(group1, group2,
-                CircleStyle.PROPORTIONAL);
+            MainVennWindow plotWindow = new MainVennWindow(group1, group2, CircleStyle.PROPORTIONAL);
 
             plotWindow.setVisible(true);
           }
@@ -769,8 +728,7 @@ public class RegionsModule extends Module implements ModernClickListener {
     private boolean mShowMean;
     private Genome mGenome;
 
-    public ConservationTask(Genome genome, boolean showMean, boolean showMedian,
-        boolean showScores) {
+    public ConservationTask(Genome genome, boolean showMean, boolean showMedian, boolean showScores) {
       mGenome = genome;
       mShowMean = showMean;
       mShowMedian = showMedian;
@@ -816,8 +774,7 @@ public class RegionsModule extends Module implements ModernClickListener {
         ++extra;
       }
 
-      DataFrame matrix = DataFrame.createDataFrame(model.getRows(),
-          model.getCols() + extra);
+      DataFrame matrix = DataFrame.createDataFrame(model.getRows(), model.getCols() + extra);
 
       DataFrame.copyColumnHeaders(model, matrix);
 
@@ -849,10 +806,8 @@ public class RegionsModule extends Module implements ModernClickListener {
         } else {
           // three column format
 
-          region = new GenomicRegion(mGenome,
-              ChromosomeService.getInstance().chr(mGenome, model.getText(i, 0)),
-              TextUtils.parseInt(model.getText(i, 1)),
-              TextUtils.parseInt(model.getText(i, 2)));
+          region = new GenomicRegion(ChromosomeService.getInstance().chr(mGenome, model.getText(i, 0)),
+              TextUtils.parseInt(model.getText(i, 1)), TextUtils.parseInt(model.getText(i, 2)));
         }
 
         c = model.getCols();
@@ -884,8 +839,7 @@ public class RegionsModule extends Module implements ModernClickListener {
     private boolean mShowConservation;
     private Genome mGenome;
 
-    public ConservationMouseOnlyTask(Genome genome, boolean showConservation,
-        boolean showScores) {
+    public ConservationMouseOnlyTask(Genome genome, boolean showConservation, boolean showScores) {
       mGenome = genome;
       mShowConservation = showConservation;
       mShowScores = showScores;
@@ -926,8 +880,7 @@ public class RegionsModule extends Module implements ModernClickListener {
         ++extra;
       }
 
-      DataFrame matrix = DataFrame.createDataFrame(model.getRows(),
-          model.getCols() + extra);
+      DataFrame matrix = DataFrame.createDataFrame(model.getRows(), model.getCols() + extra);
 
       DataFrame.copyColumnHeaders(model, matrix);
 
@@ -955,10 +908,8 @@ public class RegionsModule extends Module implements ModernClickListener {
         } else {
           // three column format
 
-          region = new GenomicRegion(mGenome,
-              ChromosomeService.getInstance().chr(mGenome, model.getText(i, 0)),
-              TextUtils.parseInt(model.getText(i, 1)),
-              TextUtils.parseInt(model.getText(i, 2)));
+          region = new GenomicRegion(ChromosomeService.getInstance().chr(mGenome, model.getText(i, 0)),
+              TextUtils.parseInt(model.getText(i, 1)), TextUtils.parseInt(model.getText(i, 2)));
         }
 
         c = model.getCols();
@@ -988,8 +939,7 @@ public class RegionsModule extends Module implements ModernClickListener {
     private GenesDB mTssSearch;
     private Genome mGenome;
 
-    public StitchTask(Genome genome, GenesDB tssSearch, int distance,
-        boolean tssExclusion, int ext5p, int ext3p) {
+    public StitchTask(Genome genome, GenesDB tssSearch, int distance, boolean tssExclusion, int ext5p, int ext3p) {
       mGenome = genome;
       mTssSearch = tssSearch;
       mDistance = distance;
@@ -1025,12 +975,10 @@ public class RegionsModule extends Module implements ModernClickListener {
 
       // Keep track of all peaks closest to a given reference start
       // peak
-      Map<Chromosome, Map<Integer, List<GenomicRegion>>> stitchMap = 
-          new TreeMap<Chromosome, Map<Integer, List<GenomicRegion>>>();
+      Map<Chromosome, Map<Integer, List<GenomicRegion>>> stitchMap = new TreeMap<Chromosome, Map<Integer, List<GenomicRegion>>>();
 
       // sort regions by start
-      Map<Chromosome, List<GenomicRegion>> sortedRegions = GenomicRegion
-          .sortByStart(getRegions(mGenome, model));
+      Map<Chromosome, List<GenomicRegion>> sortedRegions = GenomicRegion.sortByStart(getRegions(mGenome, model));
 
       int stitchCount = 0;
 
@@ -1049,7 +997,7 @@ public class RegionsModule extends Module implements ModernClickListener {
         while (i < regions.size()) {
           GenomicRegion region1 = regions.get(i);
 
-          genome = region1.mGenome;
+          // genome = region1.mGenome;
 
           ++stitchCount;
 
@@ -1058,7 +1006,7 @@ public class RegionsModule extends Module implements ModernClickListener {
           int start1 = region1.getStart();
           int end1 = region1.getEnd();
 
-          //System.err.println("start " + start1 + " " + end1);
+          // System.err.println("start " + start1 + " " + end1);
 
           // Use the first closest peak as an an anchor and
           // attempt to add peaks to it
@@ -1070,7 +1018,7 @@ public class RegionsModule extends Module implements ModernClickListener {
           // If we are in the exclusion zone then stop
           if (mTssExclusion && inTssExZone(region1)) {
             System.err.println("region 1 exclusion " + region1UpstreamGene);
-            
+
             continue;
           }
           // region 1 cannot be wholly inside a tss
@@ -1090,16 +1038,14 @@ public class RegionsModule extends Module implements ModernClickListener {
               break;
             }
 
-            boolean region2TssDownstream = downstreamOfTss(region2,
-                region1UpstreamGene);
+            boolean region2TssDownstream = downstreamOfTss(region2, region1UpstreamGene);
 
             // System.err.println("r2 " + region2 + " " + region2TssDownstream);
 
             // Region 1 cannnot be before the tss and region 2
             // cannot be after as this means they are spanning
             // a tss, so they cannot be stiched
-            if (mTssExclusion && region1UpstreamGene != null
-                && region2TssDownstream) {
+            if (mTssExclusion && region1UpstreamGene != null && region2TssDownstream) {
               break;
             }
 
@@ -1152,7 +1098,7 @@ public class RegionsModule extends Module implements ModernClickListener {
           int min = stitchList.get(0).getStart();
           int max = stitchList.get(stitchList.size() - 1).getEnd();
 
-          GenomicRegion newRegion = new GenomicRegion(genome, chr, min, max);
+          GenomicRegion newRegion = new GenomicRegion(chr, min, max);
 
           // row = (XSSFRow)sheet.createRow(r);
 
@@ -1182,8 +1128,7 @@ public class RegionsModule extends Module implements ModernClickListener {
      */
     private boolean inTssExZone(GenomicRegion region) throws IOException {
 
-      List<GenomicElement> closestFeatures = mTssSearch
-          .closest(mGenome, region, GenomicType.TRANSCRIPT, 1);
+      List<GenomicElement> closestFeatures = mTssSearch.closest(mGenome, region, GenomicType.TRANSCRIPT, 1);
 
       for (GenomicElement gene : closestFeatures) {
         GenomicRegion tss = gene.getTss();
@@ -1192,8 +1137,9 @@ public class RegionsModule extends Module implements ModernClickListener {
         GenomicRegion extTss = GenomicRegion.extend(tss, mExt5p, mExt3p);
 
         // see if the region is wholly within the tss
-        
-        //System.out.println(tss + " " + extTss + " " + gene + " " + region + " " + GenomicRegion.within(region, extTss));
+
+        // System.out.println(tss + " " + extTss + " " + gene + " " + region + " " +
+        // GenomicRegion.within(region, extTss));
 
         if (GenomicRegion.within(region, extTss)) {
           return true;
@@ -1203,11 +1149,9 @@ public class RegionsModule extends Module implements ModernClickListener {
       return false;
     }
 
-    private boolean overlappingTssExZone(GenomicRegion region)
-        throws IOException {
+    private boolean overlappingTssExZone(GenomicRegion region) throws IOException {
 
-      List<GenomicElement> closestFeatures = mTssSearch
-          .closest(mGenome, region, GenomicType.TRANSCRIPT, 1);
+      List<GenomicElement> closestFeatures = mTssSearch.closest(mGenome, region, GenomicType.TRANSCRIPT, 1);
 
       for (GenomicElement gene : closestFeatures) {
         GenomicRegion tss = gene.getTss();
@@ -1225,11 +1169,9 @@ public class RegionsModule extends Module implements ModernClickListener {
       return false;
     }
 
-    private GenomicElement upstreamOfTss(GenomicRegion region)
-        throws IOException {
+    private GenomicElement upstreamOfTss(GenomicRegion region) throws IOException {
 
-      List<GenomicElement> closestFeatures = mTssSearch
-          .closest(mGenome, region, GenomicType.TRANSCRIPT, 1);
+      List<GenomicElement> closestFeatures = mTssSearch.closest(mGenome, region, GenomicType.TRANSCRIPT, 1);
 
       for (GenomicElement gene : closestFeatures) {
         GenomicRegion tss = gene.getTss();
@@ -1299,8 +1241,7 @@ public class RegionsModule extends Module implements ModernClickListener {
 
       List<GenomicRegion> regions = getRegions(mGenome, model);
 
-      List<GenomicRegion> extendedRegions = GenomicRegion
-          .extend(regions, mExt5p, mExt3p);
+      List<GenomicRegion> extendedRegions = GenomicRegion.extend(regions, mExt5p, mExt3p);
 
       DataFrame matrix = DataFrame.createTextMatrix(extendedRegions.size(), 1);
 
@@ -1344,8 +1285,7 @@ public class RegionsModule extends Module implements ModernClickListener {
   public RegionsModule() {
     try {
       mConservationAssembly = new ConservationAssemblyWeb(
-          new URL(SettingsService.getInstance()
-              .getString("regions.conservation.remote-url")));
+          new URL(SettingsService.getInstance().getString("regions.conservation.remote-url")));
     } catch (MalformedURLException e) {
       e.printStackTrace();
     } catch (IOException e) {
@@ -1354,8 +1294,7 @@ public class RegionsModule extends Module implements ModernClickListener {
 
     try {
       mMouseConservationAssembly = new ConservationAssemblyWeb(
-          new URL(SettingsService.getInstance()
-              .getString("regions.mouse.conservation.remote-url")));
+          new URL(SettingsService.getInstance().getString("regions.mouse.conservation.remote-url")));
     } catch (MalformedURLException e) {
       e.printStackTrace();
     } catch (IOException e) {
@@ -1381,10 +1320,8 @@ public class RegionsModule extends Module implements ModernClickListener {
 
     ModernClickWidget button;
 
-    button = new RibbonLargeButton("Overlap",
-        AssetService.getInstance().loadIcon("common_regions", 24));
-    button.setToolTip(new ModernToolTip("Overlap",
-        "Find common regions between two sets of coordinates."));
+    button = new RibbonLargeButton("Overlap", AssetService.getInstance().loadIcon("common_regions", 24));
+    button.setToolTip(new ModernToolTip("Overlap", "Find common regions between two sets of coordinates."));
     button.addClickListener(this);
     ribbon.getToolbar("Genomic").getSection("Regions").add(button);
 
@@ -1397,23 +1334,19 @@ public class RegionsModule extends Module implements ModernClickListener {
      * ribbon.getToolbar("Genomic").getSection("Regions").add(button);
      */
 
-    button = new RibbonLargeButton("Closest",
-        AssetService.getInstance().loadIcon("closest", 24));
-    button.setToolTip(new ModernToolTip("Closest",
-        "Find the closest feature in another list of features."));
+    button = new RibbonLargeButton("Closest", AssetService.getInstance().loadIcon("closest", 24));
+    button.setToolTip(new ModernToolTip("Closest", "Find the closest feature in another list of features."));
     // Ui.setSize(button, new Dimension(60, getRibbon().LARGE_BUTTON_HEIGHT));
     button.addClickListener(this);
     ribbon.getToolbar("Genomic").getSection("Regions").add(button);
 
-    button = new RibbonLargeButton("Stitch",
-        AssetService.getInstance().loadIcon("stitch", 24));
+    button = new RibbonLargeButton("Stitch", AssetService.getInstance().loadIcon("stitch", 24));
     button.setToolTip(new ModernToolTip("Stitch", "Stitch regions together."));
     // Ui.setSize(button, new Dimension(60, getRibbon().LARGE_BUTTON_HEIGHT));
     button.addClickListener(this);
     ribbon.getToolbar("Genomic").getSection("Regions").add(button);
 
-    button = new RibbonLargeButton("Extend",
-        AssetService.getInstance().loadIcon("extend", 24));
+    button = new RibbonLargeButton("Extend", AssetService.getInstance().loadIcon("extend", 24));
     button.setToolTip(new ModernToolTip("Extend", "Extend regions."));
     // Ui.setSize(button, new Dimension(60, getRibbon().LARGE_BUTTON_HEIGHT));
     button.addClickListener(this);
@@ -1421,10 +1354,8 @@ public class RegionsModule extends Module implements ModernClickListener {
 
     ribbon.getToolbar("Genomic").getSection("Regions").addSeparator();
 
-    button = new RibbonLargeButton("Super", "Enhancers",
-        AssetService.getInstance().loadIcon("enhancers", 24));
-    button.setToolTip(
-        new ModernToolTip("Super Enhancers", "Annotate peaks with enhancers."));
+    button = new RibbonLargeButton("Super", "Enhancers", AssetService.getInstance().loadIcon("enhancers", 24));
+    button.setToolTip(new ModernToolTip("Super Enhancers", "Annotate peaks with enhancers."));
     // Ui.setSize(button, new Dimension(60, getRibbon().LARGE_BUTTON_HEIGHT));
     button.addClickListener(this);
     ribbon.getToolbar("Genomic").getSection("Regions").add(button);
@@ -1449,23 +1380,23 @@ public class RegionsModule extends Module implements ModernClickListener {
      * button = new RibbonLargeDropDownButton("Conservation",
      * UIService.getInstance().loadIcon("conservation", 24), popup);
      * button.setToolTip("Conservation", "Add conservation scores to regions.");
-     * mWindow.getRibbon().getToolbar("Genomic").getSection("Regions").add(
-     * button); button.addClickListener(this);
+     * mWindow.getRibbon().getToolbar("Genomic").getSection("Regions").add( button);
+     * button.addClickListener(this);
      */
 
     /*
      * button = new RibbonLargeButton("46-way Cons",
-     * UIService.getInstance().loadIcon("conservation", 24));
-     * button.setToolTip(new ModernToolTip("46-way Conservation",
-     * "Add 46-way conservation.")); //Ui.setSize(button, new Dimension(80,
-     * getRibbon().LARGE_BUTTON_HEIGHT)); button.addClickListener(this);
+     * UIService.getInstance().loadIcon("conservation", 24)); button.setToolTip(new
+     * ModernToolTip("46-way Conservation", "Add 46-way conservation."));
+     * //Ui.setSize(button, new Dimension(80, getRibbon().LARGE_BUTTON_HEIGHT));
+     * button.addClickListener(this);
      * ribbon.getToolbar("Genomic").getSection("Conservation").add(button);
      * 
      * button = new RibbonLargeButton("Mouse Cons",
-     * UIService.getInstance().loadIcon("conservation", 24));
-     * button.setToolTip(new ModernToolTip("Mouse Only Conservation",
-     * "Add conservation in mouse.")); //Ui.setSize(button, new Dimension(80,
-     * getRibbon().LARGE_BUTTON_HEIGHT)); button.addClickListener(this);
+     * UIService.getInstance().loadIcon("conservation", 24)); button.setToolTip(new
+     * ModernToolTip("Mouse Only Conservation", "Add conservation in mouse."));
+     * //Ui.setSize(button, new Dimension(80, getRibbon().LARGE_BUTTON_HEIGHT));
+     * button.addClickListener(this);
      * ribbon.getToolbar("Genomic").getSection("Conservation").add(button);
      */
 
@@ -1477,12 +1408,10 @@ public class RegionsModule extends Module implements ModernClickListener {
 
     popup = new ModernPopupMenu2();
 
-    popup.addMenuItem(new ModernTwoLineMenuItem("TSS Plot",
-        "Plot the distance between regions and gene TSS.",
+    popup.addMenuItem(new ModernTwoLineMenuItem("TSS Plot", "Plot the distance between regions and gene TSS.",
         AssetService.getInstance().loadIcon("graph", 24)));
 
-    popup.addMenuItem(new ModernTwoLineMenuItem("Distance Plot",
-        "Plot distances between two sets of regions.",
+    popup.addMenuItem(new ModernTwoLineMenuItem("Distance Plot", "Plot distances between two sets of regions.",
         AssetService.getInstance().loadIcon("graph", 24)));
 
     // popup.addMenuItem(new ModernMenuSeparator());
@@ -1491,8 +1420,7 @@ public class RegionsModule extends Module implements ModernClickListener {
     // matrix...",
     // "matcalc.split.help.url").setTextOffset(48));
 
-    button = new RibbonLargeDropDownButton2(
-        AssetService.getInstance().loadIcon("graph", 24), popup);
+    button = new RibbonLargeDropDownButton2(AssetService.getInstance().loadIcon("graph", 24), popup);
     button.setToolTip("Distance Plot", "Plot the distance between regions.");
 
     mWindow.getRibbon().getToolbar("Genomic").getSection("Regions").add(button);
@@ -1516,8 +1444,7 @@ public class RegionsModule extends Module implements ModernClickListener {
       } catch (IOException e1) {
         e1.printStackTrace();
       }
-    } else if (e.getMessage().equals("Overlap")
-        || e.getMessage().equals("N-way Overlap")) {
+    } else if (e.getMessage().equals("Overlap") || e.getMessage().equals("N-way Overlap")) {
       try {
         nWayOverlap(Genome.HG19);
       } catch (IOException | InvalidFormatException e1) {
@@ -1581,8 +1508,7 @@ public class RegionsModule extends Module implements ModernClickListener {
 
     List<GenomicRegion> regions = getRegions(genome, m);
 
-    Path file = BioInfDialog.saveBedFile(mWindow,
-        RecentFilesService.getInstance().getPwd());
+    Path file = BioInfDialog.saveBedFile(mWindow, RecentFilesService.getInstance().getPwd());
 
     Bed.writeBed(regions, file);
 
@@ -1600,8 +1526,7 @@ public class RegionsModule extends Module implements ModernClickListener {
       return;
     }
 
-    Map<String, BinaryGapSearch<Annotation>> gappedSearch = dialog
-        .getGappedSearch(genome);
+    Map<String, BinaryGapSearch<Annotation>> gappedSearch = dialog.getGappedSearch(genome);
 
     EnhancerTask task = new EnhancerTask(gappedSearch, dialog.getOverlapMode());
 
@@ -1636,8 +1561,7 @@ public class RegionsModule extends Module implements ModernClickListener {
    * task.execute(); } }
    */
 
-  private void nWayOverlap(Genome genome)
-      throws InvalidFormatException, IOException {
+  private void nWayOverlap(Genome genome) throws InvalidFormatException, IOException {
     NWayOverlapDialog dialog = new NWayOverlapDialog(mWindow);
 
     dialog.setVisible(true);
@@ -1653,26 +1577,22 @@ public class RegionsModule extends Module implements ModernClickListener {
     }
 
     if (dialog.getOneWay()) {
-      OneWayOverlapTask task = new OneWayOverlapTask(mWindow, genome, files,
-          dialog.getAtBeginning(), true);
+      OneWayOverlapTask task = new OneWayOverlapTask(mWindow, genome, files, dialog.getAtBeginning(), true);
 
       task.doInBackground();
     } else {
-      NWayOverlapTask task = new NWayOverlapTask(mWindow, files,
-          dialog.getDrawVenn());
+      NWayOverlapTask task = new NWayOverlapTask(mWindow, files, dialog.getDrawVenn());
 
       task.doInBackground();
     }
   }
 
-  private void closest(Genome genome)
-      throws IOException, InvalidFormatException {
+  private void closest(Genome genome) throws IOException, InvalidFormatException {
     if (mWindow.getInputFile() == null) {
       return;
     }
 
-    Path file = openOverlapFileDialog(mWindow,
-        RecentFilesService.getInstance().getPwd());
+    Path file = openOverlapFileDialog(mWindow, RecentFilesService.getInstance().getPwd());
 
     if (file == null) {
       return;
@@ -1685,8 +1605,7 @@ public class RegionsModule extends Module implements ModernClickListener {
     } else if (PathUtils.getFileExt(file).equals("bedgraph")) {
       gappedSearch = Annotation.parseBed(file);
     } else {
-      ModernDataModel model = Bioinformatics
-          .getModel(file, 1, TextUtils.emptyList(), 0, TextUtils.TAB_DELIMITER);
+      ModernDataModel model = Bioinformatics.getModel(file, 1, TextUtils.emptyList(), 0, TextUtils.TAB_DELIMITER);
 
       gappedSearch = Annotation.parsePeaks(genome, model);
     }
@@ -1724,8 +1643,8 @@ public class RegionsModule extends Module implements ModernClickListener {
 
     GenesDB tssSearch = AnnotationService.getInstance().getSearch(genome); // getBinarySearch(genome);
 
-    StitchTask task = new StitchTask(genome, tssSearch, dialog.getDistance(),
-        dialog.getTssExclusion(), dialog.getTss5p(), dialog.getTss3p());
+    StitchTask task = new StitchTask(genome, tssSearch, dialog.getDistance(), dialog.getTssExclusion(),
+        dialog.getTss5p(), dialog.getTss3p());
 
     task.execute();
 
@@ -1744,8 +1663,7 @@ public class RegionsModule extends Module implements ModernClickListener {
       return;
     }
 
-    ExtendTask task = new ExtendTask(dialog.getGenome(), dialog.getExt5p(),
-        dialog.getExt3p());
+    ExtendTask task = new ExtendTask(dialog.getGenome(), dialog.getExt5p(), dialog.getExt3p());
 
     task.execute();
   }
@@ -1763,14 +1681,13 @@ public class RegionsModule extends Module implements ModernClickListener {
       return;
     }
 
-    ConservationTask task = new ConservationTask(dialog.getGenome(),
-        dialog.getShowMean(), dialog.getShowMedian(), dialog.getShowScores());
+    ConservationTask task = new ConservationTask(dialog.getGenome(), dialog.getShowMean(), dialog.getShowMedian(),
+        dialog.getShowScores());
 
     task.execute();
   }
 
-  private void conservationMouseOnly()
-      throws IOException, InvalidFormatException {
+  private void conservationMouseOnly() throws IOException, InvalidFormatException {
     if (mWindow.getInputFile() == null) {
       return;
     }
@@ -1783,8 +1700,7 @@ public class RegionsModule extends Module implements ModernClickListener {
       return;
     }
 
-    ConservationMouseOnlyTask task = new ConservationMouseOnlyTask(
-        dialog.getGenome(), dialog.getShowConservation(),
+    ConservationMouseOnlyTask task = new ConservationMouseOnlyTask(dialog.getGenome(), dialog.getShowConservation(),
         dialog.getShowScores());
 
     task.execute();
@@ -1811,21 +1727,18 @@ public class RegionsModule extends Module implements ModernClickListener {
 
     GenesDB tssSearch = AnnotationService.getInstance().getSearch(genome);
 
-    TssPlotTask task = new TssPlotTask(mWindow, genome, tssSearch,
-        dialog.getStart(), dialog.getEnd(), dialog.getUnits(),
-        dialog.getBinSize(), dialog.getBinUnits());
+    TssPlotTask task = new TssPlotTask(mWindow, genome, tssSearch, dialog.getStart(), dialog.getEnd(),
+        dialog.getUnits(), dialog.getBinSize(), dialog.getBinUnits());
 
     task.plot();
   }
 
-  private void distancePlot(Genome genome)
-      throws IOException, InvalidFormatException {
+  private void distancePlot(Genome genome) throws IOException, InvalidFormatException {
     if (mWindow.getInputFile() == null) {
       return;
     }
 
-    Path file = openOverlapFileDialog(mWindow,
-        RecentFilesService.getInstance().getPwd());
+    Path file = openOverlapFileDialog(mWindow, RecentFilesService.getInstance().getPwd());
 
     if (file == null) {
       return;
@@ -1846,15 +1759,13 @@ public class RegionsModule extends Module implements ModernClickListener {
     } else if (PathUtils.getFileExt(file).equals("bedgraph")) {
       gappedSearch = Annotation.parseBed(file);
     } else {
-      ModernDataModel model = Bioinformatics
-          .getModel(file, 1, TextUtils.emptyList(), 0, TextUtils.TAB_DELIMITER);
+      ModernDataModel model = Bioinformatics.getModel(file, 1, TextUtils.emptyList(), 0, TextUtils.TAB_DELIMITER);
 
       gappedSearch = Annotation.parsePeaks(plotDialog.getGenome(), model);
     }
 
-    DistancePlotTask task = new DistancePlotTask(mWindow, genome, gappedSearch,
-        plotDialog.getStart(), plotDialog.getEnd(), plotDialog.getUnits(),
-        plotDialog.getBinSize(), plotDialog.getBinUnits());
+    DistancePlotTask task = new DistancePlotTask(mWindow, genome, gappedSearch, plotDialog.getStart(),
+        plotDialog.getEnd(), plotDialog.getUnits(), plotDialog.getBinSize(), plotDialog.getBinUnits());
 
     task.plot();
   }
@@ -1863,19 +1774,12 @@ public class RegionsModule extends Module implements ModernClickListener {
     return mWindow.getCurrentMatrix();
   }
 
-  public static Path openOverlapFileDialog(Frame parent, Path pwd)
-      throws IOException {
-    return FileDialog.openFile(parent,
-        pwd,
-        new AllRegionGuiFileFilter(),
-        new XlsxGuiFileFilter(),
-        new TxtGuiFileFilter(),
-        new BedGuiFileFilter(),
-        new BedGraphGuiFileFilter());
+  public static Path openOverlapFileDialog(Frame parent, Path pwd) throws IOException {
+    return FileDialog.openFile(parent, pwd, new AllRegionGuiFileFilter(), new XlsxGuiFileFilter(),
+        new TxtGuiFileFilter(), new BedGuiFileFilter(), new BedGraphGuiFileFilter());
   }
 
-  private static List<GenomicRegion> getRegions(Genome genome,
-      DataFrame model) {
+  private static List<GenomicRegion> getRegions(Genome genome, DataFrame model) {
 
     List<GenomicRegion> regions = new ArrayList<GenomicRegion>();
 
@@ -1891,10 +1795,8 @@ public class RegionsModule extends Module implements ModernClickListener {
       } else {
         // three column format
 
-        region = new GenomicRegion(genome,
-            ChromosomeService.getInstance().chr(genome, model.getText(i, 0)),
-            Integer.parseInt(model.getText(i, 1)),
-            Integer.parseInt(model.getText(i, 2)));
+        region = new GenomicRegion(ChromosomeService.getInstance().chr(genome, model.getText(i, 0)),
+            Integer.parseInt(model.getText(i, 1)), Integer.parseInt(model.getText(i, 2)));
       }
 
       regions.add(region);

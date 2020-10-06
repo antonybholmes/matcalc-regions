@@ -45,8 +45,8 @@ public class TssPlotTask extends SwingWorker<Void, Void> {
   private MainMatCalcWindow mWindow;
   private Genome mGenome;
 
-  public TssPlotTask(MainMatCalcWindow window, Genome genome, GenesDB tssSearch,
-      double start, double end, int units, double binSize, int binUnits) {
+  public TssPlotTask(MainMatCalcWindow window, Genome genome, GenesDB tssSearch, double start, double end, int units,
+      double binSize, int binUnits) {
     mWindow = window;
     mGenome = genome;
     mTssSearch = tssSearch;
@@ -85,10 +85,8 @@ public class TssPlotTask extends SwingWorker<Void, Void> {
       } else {
         // three column format
 
-        region = new GenomicRegion(mGenome,
-            ChromosomeService.getInstance().chr(mGenome, matrix.getText(i, 0)),
-            TextUtils.parseInt(matrix.getText(i, 1)),
-            TextUtils.parseInt(matrix.getText(i, 2)));
+        region = new GenomicRegion(ChromosomeService.getInstance().chr(mGenome, matrix.getText(i, 0)),
+            TextUtils.parseInt(matrix.getText(i, 1)), TextUtils.parseInt(matrix.getText(i, 2)));
       }
 
       // System.err.println("region: " + region);
@@ -96,15 +94,13 @@ public class TssPlotTask extends SwingWorker<Void, Void> {
       GenomicRegion midPoint = GenomicRegion.midRegion(region);
 
       // Find Gene TSS near the midpoint
-      List<GenomicElement> results = mTssSearch
-          .closest(mGenome, midPoint, GenomicType.TRANSCRIPT, 1);
+      List<GenomicElement> results = mTssSearch.closest(mGenome, midPoint, GenomicType.TRANSCRIPT, 1);
 
       if (results != null) {
         double tss = Double.MAX_VALUE;
 
         for (GenomicElement gene : results) {
-          tss = Math.min(tss,
-              GenomicElement.getTssMidDist(gene, midPoint.getStart()));
+          tss = Math.min(tss, GenomicElement.getTssMidDist(gene, midPoint.getStart()));
         }
 
         tssPoints.add(tss);
@@ -114,13 +110,8 @@ public class TssPlotTask extends SwingWorker<Void, Void> {
     plot(mWindow, tssPoints, mStart, mEnd, mUnits, mBinSize, mBinUnits);
   }
 
-  public static void plot(MainMatCalcWindow window,
-      List<Double> tssPoints,
-      double start,
-      double end,
-      int units,
-      double binSize,
-      int binUnits) {
+  public static void plot(MainMatCalcWindow window, List<Double> tssPoints, double start, double end, int units,
+      double binSize, int binUnits) {
 
     // Nearest plot
 
@@ -140,8 +131,7 @@ public class TssPlotTask extends SwingWorker<Void, Void> {
     }
 
     // Convert to histograms
-    List<HistBin> tssHist = Statistics
-        .histogram(plotTssPoints, start, end, binSize * binUnits / units);
+    List<HistBin> tssHist = Statistics.histogram(plotTssPoints, start, end, binSize * binUnits / units);
 
     TssSubFigure tssCanvas = new TssSubFigure("TSS", "TSS", tssHist, start, end,
         Math.pow(10, Math.floor(Math.log10(Math.abs(start)))));
@@ -156,18 +146,15 @@ public class TssPlotTask extends SwingWorker<Void, Void> {
       }
     }
 
-    List<HistBin> log10TssHist = Statistics
-        .histogram(log10TssPoints, 0, 8, 0.1);
+    List<HistBin> log10TssHist = Statistics.histogram(log10TssPoints, 0, 8, 0.1);
 
     System.err.println("ss here");
 
-    Log10TssSubFigure tssLogCanvas = new Log10TssSubFigure("TSS", "TSS",
-        log10TssHist);
+    Log10TssSubFigure tssLogCanvas = new Log10TssSubFigure("TSS", "TSS", log10TssHist);
 
     System.err.println("ss here 1");
 
-    Figure figure = new Figure("TSS Figure", new PlotBoxGridStorage(1, 2),
-        new PlotBoxGridLayout(1, 2));
+    Figure figure = new Figure("TSS Figure", new PlotBoxGridStorage(1, 2), new PlotBoxGridLayout(1, 2));
     figure.addChild(tssCanvas, 0, 0);
     figure.addChild(tssLogCanvas, 0, 1);
 

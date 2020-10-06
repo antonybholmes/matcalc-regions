@@ -24,11 +24,9 @@ import org.jebtk.modern.window.WindowWidgetFocusEvents;
 public class ExtendDialog extends ModernDialogTaskWindow {
   private static final long serialVersionUID = 1L;
 
-  private ModernCompactSpinner mExt5pText = new ModernCompactSpinner(0, 100000,
-      500, 1000, false);
+  private ModernCompactSpinner mExt5pText = new ModernCompactSpinner(0, 100000, 500, 1000, false);
 
-  private ModernCompactSpinner mExt3pText = new ModernCompactSpinner(0, 100000,
-      500, 1000, false);
+  private ModernCompactSpinner mExt3pText = new ModernCompactSpinner(0, 100000, 500, 1000, false);
 
   public ExtendDialog(ModernWindow parent) {
     super(parent);
@@ -55,13 +53,11 @@ public class ExtendDialog extends ModernDialogTaskWindow {
 
     Box box = Box.createVerticalBox();
 
-    box.add(new HExpandBox("5' extension", mExt5pText, ModernPanel.createHGap(),
-        new ModernAutoSizeLabel("bp")));
+    box.add(new HExpandBox("5' extension", mExt5pText, ModernPanel.createHGap(), new ModernAutoSizeLabel("bp")));
 
     box.add(UI.createVGap(10));
 
-    box.add(new HExpandBox("3' extension", mExt3pText, ModernPanel.createHGap(),
-        new ModernAutoSizeLabel("bp")));
+    box.add(new HExpandBox("3' extension", mExt3pText, ModernPanel.createHGap(), new ModernAutoSizeLabel("bp")));
 
     setCard(box);
   }

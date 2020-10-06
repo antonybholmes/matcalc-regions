@@ -20,8 +20,7 @@ public class TssSubFigure extends SubFigure {
 
   private static final long serialVersionUID = 1L;
 
-  public TssSubFigure(String title, String xPrefix, List<HistBin> tssHist,
-      double start, double end, double step) {
+  public TssSubFigure(String title, String xPrefix, List<HistBin> tssHist, double start, double end, double step) {
     super(title);
 
     // set the graph limits
@@ -79,8 +78,7 @@ public class TssSubFigure extends SubFigure {
       axes.getX1Axis().getTitle().setText("Distance (kb)");
     }
 
-    axes.getY1Axis().setLimitsAutoRound(0,
-        Math.max(Log10TssSubFigure.MIN_Y, XYSeries.getYMax(m, series)));
+    axes.getY1Axis().setLimitsAutoRound(0, Math.max(Log10TssSubFigure.MIN_Y, XYSeries.getYMax(m, series)));
     axes.getY1Axis().getTitle().setText("Count");
 
     axes.setInternalSize(600, 400);

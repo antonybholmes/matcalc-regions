@@ -2,6 +2,7 @@ package edu.columbia.rdf.matcalc.toolbox.regions.enhancers;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import javax.swing.Box;
 
 import org.jebtk.bioinformatics.gapsearch.BinaryGapSearch;
 import org.jebtk.bioinformatics.genomic.Genome;
+import org.jebtk.core.io.PathUtils;
 import org.jebtk.modern.ModernComponent;
 import org.jebtk.modern.UI;
 import org.jebtk.modern.button.ModernButtonGroup;
@@ -30,17 +32,13 @@ public class EnhancerDialog extends ModernDialogTaskWindow {
 
   private Map<ModernCheckBox, Integer> mFileMap = new HashMap<ModernCheckBox, Integer>();
 
-  private static final File ENHANCER_DIR = new File(
-      "res/super_enhancers/human");
+  private static final Path ENHANCER_DIR = PathUtils.getPath("res/super_enhancers/human");
 
-  public static final File SUPER_ENHANCER_DB_FILE = new File(
-      "res/super_enhancers.db");
+  public static final java.nio.file.Path SUPER_ENHANCER_DB_FILE = PathUtils.getPath("res/super_enhancers.db");
 
-  private ModernRadioButton mSearchTypeOverlap = new ModernRadioButton(
-      "Overlapping", true);
+  private ModernRadioButton mSearchTypeOverlap = new ModernRadioButton("Overlapping", true);
 
-  private ModernRadioButton mSearchTypeNearest = new ModernRadioButton(
-      "Nearest");
+  private ModernRadioButton mSearchTypeNearest = new ModernRadioButton("Nearest");
 
   // private ModernSearchPanel mSearchPanel = new ModernSearchPanel();
 
@@ -143,8 +141,7 @@ public class EnhancerDialog extends ModernDialogTaskWindow {
      * SqliteJDBCConnection(SUPER_ENHANCER_DB_FILE);
      * 
      * try { DatabaseResultsTable table = connection.
-     * getTable("SELECT tissue.id, tissue.name FROM tissue ORDER BY tissue.name"
-     * );
+     * getTable("SELECT tissue.id, tissue.name FROM tissue ORDER BY tissue.name" );
      * 
      * for (int i = 0; i < table.getRowCount(); ++i) { int id =
      * table.getDataAsInt(i, 0); String name = table.getData(i, 1);
@@ -170,8 +167,7 @@ public class EnhancerDialog extends ModernDialogTaskWindow {
      */
   }
 
-  public Map<String, BinaryGapSearch<Annotation>> getGappedSearch(Genome genome)
-      throws IOException {
+  public Map<String, BinaryGapSearch<Annotation>> getGappedSearch(Genome genome) throws IOException {
     return mEnhancersPanel.getGappedSearch(genome);
 
     /*
@@ -214,8 +210,8 @@ public class EnhancerDialog extends ModernDialogTaskWindow {
      * 
      * Annotation annotation = new Annotation(region.getName(), region);
      * 
-     * search.addFeature(region, annotation); } } } finally {
-     * connection.close(); } } catch (Exception e) { e.printStackTrace(); }
+     * search.addFeature(region, annotation); } } } finally { connection.close(); }
+     * } catch (Exception e) { e.printStackTrace(); }
      * 
      * 
      * return map; //Annotation.parseBedEnhancers(files);

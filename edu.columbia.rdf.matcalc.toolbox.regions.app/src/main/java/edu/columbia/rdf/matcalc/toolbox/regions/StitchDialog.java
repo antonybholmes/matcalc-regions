@@ -30,19 +30,14 @@ import edu.columbia.rdf.matcalc.bio.AnnotationSidePanel;
 public class StitchDialog extends ModernDialogHelpWindow {
   private static final long serialVersionUID = 1L;
 
-  private ModernCompactSpinner mDistanceField = new ModernCompactSpinner(0,
-      100000, 2000,
-      SettingsService.getInstance().getInt("regions.max-stitch-distance"),
-      false);
+  private ModernCompactSpinner mDistanceField = new ModernCompactSpinner(0, 100000, 2000,
+      SettingsService.getInstance().getInt("regions.max-stitch-distance"), false);
 
-  private ModernCompactSpinner mTss5pExt = new ModernCompactSpinner(0, 100000,
-      2000, 1000, false);
+  private ModernCompactSpinner mTss5pExt = new ModernCompactSpinner(0, 100000, 2000, 1000, false);
 
-  private ModernCompactSpinner mTss3pExt = new ModernCompactSpinner(0, 100000,
-      2000, 1000, false);
+  private ModernCompactSpinner mTss3pExt = new ModernCompactSpinner(0, 100000, 2000, 1000, false);
 
-  private ModernTwoStateWidget mCheckTssExclusion = new ModernCheckSwitch(
-      "TSS exclusion", true);
+  private ModernTwoStateWidget mCheckTssExclusion = new ModernCheckSwitch("TSS exclusion", true);
 
   private AnnotationSidePanel mGenomesPanel = new AnnotationSidePanel();
 
@@ -74,8 +69,8 @@ public class StitchDialog extends ModernDialogHelpWindow {
 
     sectionHeader("Distance", box);
 
-    box.add(new HExpandBox("Maximum Distance", mDistanceField,
-        ModernPanel.createHGap(), new ModernAutoSizeLabel("bp")));
+    box.add(
+        new HExpandBox("Maximum Distance", mDistanceField, ModernPanel.createHGap(), new ModernAutoSizeLabel("bp")));
 
     box.add(UI.createVGap(10));
 
@@ -85,13 +80,11 @@ public class StitchDialog extends ModernDialogHelpWindow {
 
     Box box2 = VBox.create();
 
-    box2.add(new HExpandBox("5' exclusion", mTss5pExt, ModernPanel.createHGap(),
-        new ModernAutoSizeLabel("bp")));
+    box2.add(new HExpandBox("5' exclusion", mTss5pExt, ModernPanel.createHGap(), new ModernAutoSizeLabel("bp")));
 
     box2.add(ModernPanel.createVGap());
 
-    box2.add(new HExpandBox("3' exclusion", mTss3pExt, ModernPanel.createHGap(),
-        new ModernAutoSizeLabel("bp")));
+    box2.add(new HExpandBox("3' exclusion", mTss3pExt, ModernPanel.createHGap(), new ModernAutoSizeLabel("bp")));
 
     box.add(box2);
 
@@ -116,8 +109,7 @@ public class StitchDialog extends ModernDialogHelpWindow {
         return;
       }
 
-      SettingsService.getInstance().update("regions.max-stitch-distance",
-          mDistanceField.getIntValue());
+      SettingsService.getInstance().update("regions.max-stitch-distance", mDistanceField.getIntValue());
     }
 
     super.clicked(e);

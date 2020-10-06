@@ -27,9 +27,8 @@ public class DistancePlotTask extends SwingWorker<Void, Void> {
   private MainMatCalcWindow mWindow;
   private Genome mGenome;
 
-  public DistancePlotTask(MainMatCalcWindow window, Genome genome,
-      BinaryGapSearch<Annotation> gappedSearch, double start, double end,
-      int units, double binSize, int binUnits) {
+  public DistancePlotTask(MainMatCalcWindow window, Genome genome, BinaryGapSearch<Annotation> gappedSearch,
+      double start, double end, int units, double binSize, int binUnits) {
     mWindow = window;
     mGenome = genome;
     mSearch = gappedSearch;
@@ -69,8 +68,7 @@ public class DistancePlotTask extends SwingWorker<Void, Void> {
       } else {
         // three column format
 
-        region = new GenomicRegion(mGenome,
-            ChromosomeService.getInstance().chr(mGenome, model.getText(i, 0)),
+        region = new GenomicRegion(ChromosomeService.getInstance().chr(mGenome, model.getText(i, 0)),
             model.getInt(i, 1), model.getInt(i, 2));
       }
 
@@ -106,8 +104,7 @@ public class DistancePlotTask extends SwingWorker<Void, Void> {
     double s = mStart * mUnits;
     double e = mEnd * mUnits;
 
-    System.err
-        .println("s " + s + " " + e + " " + (mBinSize * mBinUnits / mUnits));
+    System.err.println("s " + s + " " + e + " " + (mBinSize * mBinUnits / mUnits));
 
     for (double x : tssPoints) {
       if (x < s || x > e) {
@@ -117,8 +114,7 @@ public class DistancePlotTask extends SwingWorker<Void, Void> {
       plotTssPoints.add(x / mUnits);
     }
 
-    TssPlotTask
-        .plot(mWindow, tssPoints, mStart, mEnd, mUnits, mBinSize, mBinUnits);
+    TssPlotTask.plot(mWindow, tssPoints, mStart, mEnd, mUnits, mBinSize, mBinUnits);
 
     /*
      * List<HistBin> tssHist = Statistics.histogram(plotTssPoints, mStart, mEnd,
@@ -133,19 +129,17 @@ public class DistancePlotTask extends SwingWorker<Void, Void> {
      * 
      * List<Double> log10TssPoints = new ArrayList<Double>();
      * 
-     * for (double x : tssPoints) { double v = Mathematics.log10(Math.abs(x) +
-     * 1);
+     * for (double x : tssPoints) { double v = Mathematics.log10(Math.abs(x) + 1);
      * 
      * if (v <= 8) { log10TssPoints.add(v); } }
      * 
-     * List<HistBin> log10TssHist = Statistics.histogram(log10TssPoints, 0, 8,
-     * 0.1);
+     * List<HistBin> log10TssHist = Statistics.histogram(log10TssPoints, 0, 8, 0.1);
      * 
      * System.err.println(log10TssHist.size());
      * 
      * Log10TssPlotCanvas tssLogCanvas = new
-     * Log10TssPlotCanvas(TextUtils.truncate(PathUtils.getName(mFile2), 50),
-     * null, log10TssHist);
+     * Log10TssPlotCanvas(TextUtils.truncate(PathUtils.getName(mFile2), 50), null,
+     * log10TssHist);
      * 
      * Figure figure = new Figure(new FigureLayoutGrid(1, 2));
      * figure.getSubFigureZModel().addChild(tssCanvas);

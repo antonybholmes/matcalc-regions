@@ -18,8 +18,7 @@ import org.jebtk.modern.window.WindowWidgetFocusEvents;
  * @author Antony Holmes
  *
  */
-public class SpeciesDialog extends ModernDialogTaskWindow
-    implements ModernClickListener {
+public class SpeciesDialog extends ModernDialogTaskWindow implements ModernClickListener {
   private static final long serialVersionUID = 1L;
 
   private ModernRadioButton mCheckHuman = new ModernRadioButton("Human");

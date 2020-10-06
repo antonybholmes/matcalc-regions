@@ -18,8 +18,7 @@ import org.jebtk.modern.window.WindowWidgetFocusEvents;
 public class MouseConservationDialog extends ModernDialogTaskWindow {
   private static final long serialVersionUID = 1L;
 
-  private ModernCheckBox mCheckConservation = new ModernCheckBox("Conservation",
-      true);
+  private ModernCheckBox mCheckConservation = new ModernCheckBox("Conservation", true);
 
   private ModernCheckBox mCheckScores = new ModernCheckBox("Scores");
 
